@@ -1566,7 +1566,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
                             || name.equals("Library") || name.equals("Movies") //
                             || name.equals("Music") || name.equals("Pictures") //
                             || name.equals("Public") || name.equals("Sites");
-                } else if (parentFile.equals(unixRoot)) {
+                } else if (parentFile.equals(unixRoot.getAbsolutePath())) {
                     // Look for computer's special folders
                     String name = file.getName();
                     return name.equals("Applications") || name.equals("Library");

@@ -213,7 +213,6 @@ public class QuaquaManager {
     private static int design;
 
     static {
-        updateAvailableLAFs();
         updateDesignAndOS();
     }
 
@@ -358,89 +357,7 @@ public class QuaquaManager {
             }
         }
     }
-    /**
-     * Map of Quaqua Look and Feels.
-     *
-     * key<String> lafKey.
-     * value<String> Look and Feel class name.
-     */
-    private static HashMap lafs;
-
-    /**
-     * Updates the map of available Quaqua Look and Feels.
-     * The list may vary depending on the deployment chosen for the Quaqua Look
-     * and Feel.
-     *
-     * The list of look and feels is contained in a file named "laf.txt" in the
-     * package "ch.randelshofer.quaqua".
-     * The file contains a semicolon separated mapping according to the following
-     * EBNF production:
-     * <pre>
-     * mapping ::= {design}"."{version}"="{class}";"
-     * </pre>
-     *
-     */
-    private static void updateAvailableLAFs() {
-        lafs = new HashMap();
-
-        try {
-            InputStream s = QuaquaManager.class.getResourceAsStream("laf.txt");
-
-            if (s != null) {
-                BufferedReader r = new BufferedReader(new InputStreamReader(s, "UTF8"));
-                StreamTokenizer tt = new StreamTokenizer(r);
-                tt.wordChars('_', '_');
-                tt.ordinaryChar('=');
-                tt.ordinaryChar(';');
-                while (tt.nextToken() != StreamTokenizer.TT_EOF) {
-                    if (tt.ttype != StreamTokenizer.TT_WORD) {
-                        throw new IOException("Illegal token for 'design.version' in line " + tt.lineno() + " of laf.txt File");
-                    }
-                    String lafKey = tt.sval;
-                    if (tt.nextToken() != '=') {
-                        throw new IOException("Illegal token for '=' in line " + tt.lineno() + " of laf.txt File");
-                    }
-                    if (tt.nextToken() != StreamTokenizer.TT_WORD) {
-                        throw new IOException("Illegal token for 'class' in line " + tt.lineno() + " of laf.txt File at key '" + lafKey + "'");
-                    }
-                    String className = tt.sval;
-                    if (tt.nextToken() != ';') {
-                        throw new IOException("Illegal token " + (tt.ttype > 32 ? "'" + (char) tt.ttype + "'" : "" + tt.ttype) + " for ';' in line " + tt.lineno() + " of laf.txt File");
-                    }
-                    lafs.put(lafKey, className);
-                }
-                r.close();
-            } else {
-                throw new IOException("File laf.txt not found");
-            }
-        } catch (IOException e) {
-            System.err.println("Warning: " + QuaquaManager.class + ".updateAvailableLAFs() couldn't access resource file \"laf.txt\".");
-            // e.printStackTrace();
-
-            // Fall back to default values
-            lafs.put("Jaguar.15", "ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");
-            lafs.put("Jaguar.16", "ch.randelshofer.quaqua.jaguar.Quaqua15JaguarLookAndFeel");
-            lafs.put("Panther.15", "ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
-            lafs.put("Panther.16", "ch.randelshofer.quaqua.panther.Quaqua15PantherLookAndFeel");
-            lafs.put("Tiger.15", "ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel");
-            lafs.put("Tiger.16", "ch.randelshofer.quaqua.tiger.Quaqua15TigerLookAndFeel");
-            lafs.put("Leopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
-            lafs.put("Leopard.16", "ch.randelshofer.quaqua.leopard.Quaqua16LeopardLookAndFeel");
-            lafs.put("SnowLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardLookAndFeel");
-            lafs.put("SnowLeopard.16", "ch.randelshofer.quaqua.snowleopard.Quaqua16SnowLeopardLookAndFeel");
-            lafs.put("Lion.16", "ch.randelshofer.quaqua.lion.Quaqua16LionLookAndFeel");
-            lafs.put("MountainLion.16", "ch.randelshofer.quaqua.mountainlion.Quaqua16MountainLionLookAndFeel");
-            lafs.put("Mavericks.16", "ch.randelshofer.quaqua.mavericks.Quaqua16MavericksLookAndFeel");
-            lafs.put("CrossTiger.15", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
-            lafs.put("CrossTiger.16", "ch.randelshofer.quaqua.tiger.Quaqua15TigerCrossPlatformLookAndFeel");
-            lafs.put("CrossLeopard.15", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
-            lafs.put("CrossLeopard.16", "ch.randelshofer.quaqua.leopard.Quaqua15LeopardCrossPlatformLookAndFeel");
-            lafs.put("Yosemite.16", "ch.randelshofer.quaqua.yosemite.Quaqua16YosemiteLookAndFeel");
-            lafs.put("ElCapitan.16", "ch.randelshofer.quaqua.elcapitan.Quaqua16ElCapitanLookAndFeel");
-            lafs.put("Sierra.16", "ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel");
-            lafs.put("HighSierra.16", "ch.randelshofer.quaqua.sierra.Quaqua16SierraLookAndFeel");
-        }
-    }
+ 
 
     /**
      * Prevent instance creation.
@@ -479,144 +396,11 @@ public class QuaquaManager {
      * visual design of the operating system.
      */
     public static String getLookAndFeelClassName() {
-        updateDesignAndOS();
-
-        if (getProperty("Quaqua.noQuaqua", "false").equals("true")) {
-            return UIManager.getCrossPlatformLookAndFeelClassName();
-        }
-
-        String lafKey = null;
-        String className;
-
-        className = "apple.laf.AquaLookAndFeel";
-        try {
-            Class.forName(className);
-        } catch (ClassNotFoundException e1) {
-            className = "com.apple.mrj.swing.MacLookAndFeel";
-            try {
-                Class.forName(className);
-            } catch (ClassNotFoundException e2) {
-                className = UIManager.getCrossPlatformLookAndFeelClassName();
-            }
-        }
-
-        String javaVersion = getProperty("java.version", "");
-        if (className.equals("apple.laf.AquaLookAndFeel")) {
-            if (javaVersion.startsWith("1.5")) {
-                switch (design) {
-                    case JAGUAR:
-                        lafKey = "Jaguar.15";
-                        break;
-                    case PANTHER:
-                        lafKey = "Panther.15";
-                        break;
-                    case TIGER:
-                        lafKey = "Tiger.15";
-                        break;
-                    case LEOPARD:
-                        lafKey = "Leopard.15";
-                        break;
-                    case SNOW_LEOPARD:
-                        lafKey = "SnowLeopard.16";
-                        break;
-                    case LION:
-                        lafKey = "Lion.16";
-                        break;
-                    case MOUNTAIN_LION:
-                    	lafKey = "MountainLion.16";
-                    	break;
-                    case MAVERICKS:
-                    	lafKey = "Mavericks.16";
-                    	break;
-                    case YOSEMITE:
-                    	lafKey = "Yosemite.16";
-                    	break;
-                    case EL_CAPITAN:
-                        lafKey = "ElCapitan.16";
-                        break;
-                    case SIERRA:
-                        lafKey = "Sierra.16";
-                        break;
-                    case HIGH_SIERRA:
-                    case X:
-                    	lafKey = "HighSierra.16";
-                    	break;
-                    default:
-                        lafKey = "SnowLeopard.16";
-                        break;
-                }
-            } else {
-                switch (design) {
-                    case JAGUAR:
-                        lafKey = "Jaguar.16";
-                        break;
-                    case PANTHER:
-                        lafKey = "Panther.16";
-                        break;
-                    case TIGER:
-                        lafKey = "Tiger.16";
-                        break;
-                    case LEOPARD:
-                        lafKey = "Leopard.16";
-                        break;
-                    case SNOW_LEOPARD:
-                        lafKey = "SnowLeopard.16";
-                        break;
-                    case LION:
-                        lafKey = "Lion.16";
-                        break;
-                    case MOUNTAIN_LION:
-                    	lafKey = "MountainLion.16";
-                    	break;
-                    case MAVERICKS:
-                    	lafKey = "Mavericks.16";
-                    	break;
-                    case YOSEMITE:
-                    	lafKey = "Yosemite.16";
-                    	break;
-                    case EL_CAPITAN:
-                        lafKey = "ElCapitan.16";
-                        break;
-                    case SIERRA:
-                        lafKey = "Sierra.16";
-                        break;
-                    case HIGH_SIERRA:
-                    case X:
-                    	lafKey = "HighSierra.16";
-                    	break;
-                    default:
-                        lafKey = "SnowLeopard.16";
-                        break;
-                }
-            }
-        } else {
-            lafKey = "CrossPlatform.15";
-            switch (design) {
-                case JAGUAR:
-                    lafKey = "CrossTiger.15";
-                    break;
-                case PANTHER:
-                    lafKey = "CrossTiger.15";
-                    break;
-                case TIGER:
-                    lafKey = "CrossTiger.15";
-                    break;
-                case LEOPARD:
-                    lafKey = "CrossLeopard.15";
-                    break;
-                case SNOW_LEOPARD:
-                    lafKey = "CrossSnowLeopard.15";
-                    break;
-                default:
-                    lafKey = "CrossSnowLeopard.15";
-                    break;
-            }
-        }
-
-        if (lafs.containsKey(lafKey)) {
-            className = (String) lafs.get(lafKey);
-        }
-        return className;
+        
+        return "ch.randelshofer.quaqua.subset.QuaquaLeopardFileChooserLAF";
+    	// if I use this one, the buttons are not rendered
+        //return "ch.randelshofer.quaqua.subset.Quaqua16LionFileChooserLAF";
+       
     }
 
     /**
@@ -800,7 +584,7 @@ public class QuaquaManager {
      * Returns true, if Quaqua uses native code for some of its functionality.
      */
     public static boolean isNativeCodeAvailable() {
-        return OSXFile.canWorkWithAliases();
+        return false;
     }
 
     /**

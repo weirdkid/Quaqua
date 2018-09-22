@@ -34,7 +34,6 @@ import java.security.AccessControlException;
  */
 public class OSXImageIO {
 
-    private static int EXPECTED_NATIVE_CODE_VERSION = 1;
 
     /** Prevent instance creation. */
     private OSXImageIO() {
@@ -190,66 +189,6 @@ public class OSXImageIO {
      * This method also loads the native code.
      */
     public static boolean isNativeCodeAvailable() {
-        if (isNativeCodeAvailable == null) {
-            synchronized (OSXImageIO.class) {
-                if (isNativeCodeAvailable == null) {
-                    boolean success = false;
-                    try {
-                        String value = QuaquaManager.getProperty("Quaqua.jniIsPreloaded");
-                        if (value == null) {
-                            value = QuaquaManager.getProperty("Quaqua.JNI.isPreloaded");
-                        }
-                        String libraryName = null;
-                        if (value != null && value.equals("true")) {
-                            success = true;
-                        } else {
-                            // Try to load 64-bit libraries if possible
-                            String[] libraryNames;
-                            String osArch = System.getProperty("os.arch");
-                            if (osArch.equals("x86_64")) {
-                                libraryNames = new String[]{"quaqua64"};
-                            } else {
-                                libraryNames = new String[]{"quaqua64", "quaqua"};
-                            }
-                            for (int i=0;i<libraryNames.length;i++) {
-                                libraryName=libraryNames[i];
-                                try {
-                                    JNILoader.loadLibrary(libraryName);
-                                    success = true;
-                                    break;
-                                } catch (UnsatisfiedLinkError e) {
-                                    System.err.println("Warning: " + OSXImageIO.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                } catch (AccessControlException e) {
-                                    System.err.println("Warning: " + OSXImageIO.class + " access controller denied loading library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
-                                    System.err.println("Warning: " + OSXImageIO.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                }
-                            }
-                        }
-
-                        if (success) {
-                            try {
-                                int nativeCodeVersion = nativeGetNativeCodeVersion();
-                                if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                    System.err.println("Warning: " + OSXImageIO.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
-                                    success = false;
-                                }
-                            } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + OSXImageIO.class + " could load library " + libraryName + " but can't use it. " + e);
-                                success = false;
-                            }
-                        }
-
-                    } finally {
-                        isNativeCodeAvailable = Boolean.valueOf(success);
-                    }
-                }
-            }
-        }
-        return isNativeCodeAvailable == Boolean.TRUE;
+    	return false;
     }
 }

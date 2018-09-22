@@ -45,65 +45,7 @@ public class OSXApplication {
      * Load the native code.
      */
     private static boolean isNativeCodeAvailable() {
-        if (isNativeCodeAvailable == null) {
-            synchronized (OSXApplication.class) {
-                if (isNativeCodeAvailable == null) {
-                    boolean success = false;
-                    try {
-                        // Note: The following line ensures that AWT is started,
-                        // and has initialized NSApplication, before we attempt
-                        // to access it.
-                        Toolkit.getDefaultToolkit().getSystemEventQueue();
-
-                        String value = QuaquaManager.getProperty("Quaqua.jniIsPreloaded");
-                        if (value == null) {
-                            value = QuaquaManager.getProperty("Quaqua.JNI.isPreloaded");
-                        }
-                        if (value != null && value.equals("true")) {
-                            success = true;
-                        } else {
-                            // Try to load 64-bit libraries if possible
-                            String[] libraryNames;
-                            String osArch = System.getProperty("os.arch");
-                            if (osArch.equals("x86_64")) {
-                                libraryNames = new String[]{"quaqua64"};
-                            } else {
-                                libraryNames = new String[]{"quaqua64", "quaqua"};
-                            }
-                            for (String libraryName:libraryNames) {
-                                try {
-                                    JNILoader.loadLibrary(libraryName);
-                                    success = true;
-                                    break;
-                                } catch (UnsatisfiedLinkError e) {
-                                    System.err.println("Warning: " + OSXApplication.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                } catch (AccessControlException e) {
-                                    System.err.println("Warning: " + OSXApplication.class + " access controller denied loading library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
-                                    System.err.println("Warning: " + OSXApplication.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                }
-                            }
-                        }
-
-                        if (success) {
-                            int nativeCodeVersion = nativeGetNativeCodeVersion();
-                            if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                System.err.println("Warning: " + OSXApplication.class + " can't use library libquaqua.jnilib. It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
-                                success = false;
-                            }
-                        }
-
-                    } finally {
-                        isNativeCodeAvailable = Boolean.valueOf(success);
-                    }
-                }
-            }
-        }
-        return isNativeCodeAvailable == Boolean.TRUE;
+        return false;
     }
 
     /** Prevent instance creation. */

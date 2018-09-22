@@ -21,7 +21,7 @@ public class JNILoader {
         //Try to load the native library assuming the java.library.path was
         //set correctly at launch.
         //try {
-        System.loadLibrary(libName);
+        //System.loadLibrary(libName);
         /*} catch (Error e) {
             JFrame f=new JFrame();
             JTextArea l=new JTextArea();

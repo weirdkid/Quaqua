@@ -32,19 +32,12 @@ public class OSXFile {
     public final static int FILE_TYPE_DIRECTORY = 1;
     public final static int FILE_TYPE_FILE = 0;
     public final static int FILE_TYPE_UNKNOWN = -1;
-    /**
-     * Version of the native code library.
-     */
-    private final static int EXPECTED_NATIVE_CODE_VERSION = 6;
+    
     /**
      * This array holds the colors used for drawing the gradients of a file
      * label.
      */
     private static volatile Color[][] labelColors;
-    /**
-     * This variable is set to true, if native code is available.
-     */
-    private static volatile Boolean isNativeCodeAvailable;
 
     private static Icon computerIcon;
     private static String computerModel;
@@ -71,72 +64,8 @@ public class OSXFile {
      * This method also loads the native code.
      */
     private final static boolean isNativeCodeAvailable() {
-        if (isNativeCodeAvailable == null) {
-            synchronized (OSXFile.class) {
-                if (isNativeCodeAvailable == null) {
-                    boolean success = false;
-                    try {
-                        String value = QuaquaManager.getProperty("Quaqua.jniIsPreloaded");
-                        if (value == null) {
-                            value = QuaquaManager.getProperty("Quaqua.JNI.isPreloaded");
-                        }
-                        String libraryName = null;
-                        if (value != null && value.equals("true")) {
-                            success = true;
-                        } else {
-                            // Try to load 64-bit libraries if possible
-                            String[] libraryNames;
-                            String osArch = System.getProperty("os.arch");
-                            if (osArch.equals("x86_64")) {
-                                libraryNames = new String[]{"quaqua64"};
-                            } else {
-                                libraryNames = new String[]{"quaqua64", "quaqua"};
-                            }
-                            for (int i = 0; i < libraryNames.length; i++) {
-                                libraryName = libraryNames[i];
-                                try {
-                                    JNILoader.loadLibrary(libraryName);
-                                    success = true;
-                                    break;
-                                } catch (UnsatisfiedLinkError e) {
-                                    System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                } catch (AccessControlException e) {
-                                    System.err.println("Warning: " + OSXFile.class + " access controller denied loading library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                } catch (Throwable e) {
-                                    e.printStackTrace();
-                                    System.err.println("Warning: " + OSXFile.class + " couldn't load library \"" + System.mapLibraryName(libraryName) + "\". " + e);
-                                    success = false;
-                                }
-                            }
-                        }
-
-                        if (success) {
-                            try {
-                                int nativeCodeVersion = nativeGetNativeCodeVersion();
-                                if (nativeCodeVersion != EXPECTED_NATIVE_CODE_VERSION) {
-                                    System.err.println("Warning: " + OSXFile.class + " can't use library " + libraryName + ". It has version " + nativeCodeVersion + " instead of " + EXPECTED_NATIVE_CODE_VERSION);
-                                    success = false;
-                                }
-                            } catch (UnsatisfiedLinkError e) {
-                                System.err.println("Warning: " + OSXFile.class + " could load library " + libraryName + " but can't use it. " + e);
-                                success = false;
-                            }
-                        }
-
-                    } finally {
-                        isNativeCodeAvailable = Boolean.valueOf(success);
-                    }
-                }
-
-            }
-
-
-        }
-        return isNativeCodeAvailable == Boolean.TRUE;
-
-
+        
+        return false;
     }
 
     /** Prevent instance creation. */
