@@ -11,17 +11,27 @@
  */
 package ch.randelshofer.quaqua.leopard.filechooser;
 
-import ch.randelshofer.quaqua.ext.base64.Base64;
+import java.io.File;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.HashMap;
+
+import javax.swing.Icon;
+import javax.swing.JFileChooser;
+import javax.swing.UIManager;
+import javax.swing.event.TreeModelEvent;
+import javax.swing.event.TreeModelListener;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeModel;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
 import ch.randelshofer.quaqua.osx.OSXFile;
-import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.util.*;
-import javax.swing.*;
-import javax.swing.event.*;
-import javax.swing.tree.*;
-import java.io.*;
-import java.util.*;
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.ext.nanoxml.*;
+import ch.randelshofer.quaqua.util.SequentialDispatcher;
+import ch.randelshofer.quaqua.util.Worker;
 
 /**
  * SidebarTreeModel.
@@ -31,11 +41,6 @@ import ch.randelshofer.quaqua.ext.nanoxml.*;
  */
 public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListener {
 
-    /**
-     * This file contains information about the system list and holds the aliases
-     * for the user list.
-     */
-    private final static File sidebarFile = new File(QuaquaManager.getProperty("user.home"), "Library/Preferences/com.apple.sidebarlists.plist");
     /**
      * Holds the tree volumesPath to the /Volumes folder.
      */
@@ -52,14 +57,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      * Represents the "Places" node in the sidebar.
      */
     private DefaultMutableTreeNode placesNode;
-    /**
-     * Intervals between validations.
-     */
-    private final static long VALIDATION_TTL = 60000;
-    /**
-     * Time for next validation of the model.
-     */
-    private long bestBefore;
     /**
      * The JFileChooser.
      */
@@ -78,37 +75,12 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
      * The defaultUserItems are used when we fail to read the user items from
      * the sidebarFile.
      */
-    private final static File[] defaultUserItems;
+    private final static File[] defaultUserItems = new File[]{
+            new File(QuaquaManager.getProperty("user.home")),
+            new File(QuaquaManager.getProperty("user.home"), "Desktop"),
+            new File(QuaquaManager.getProperty("user.home"), "Documents")
+        };
 
-    static {
-        if (QuaquaManager.isOSX()
-                || QuaquaManager.getOS() == QuaquaManager.DARWIN) {
-            defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
-        } else if (QuaquaManager.getOS() == QuaquaManager.WINDOWS) {
-            defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        // Japanese ideographs for Desktop:
-                        new File(QuaquaManager.getProperty("user.home"), "\u684c\u9762"),
-                        new File(QuaquaManager.getProperty("user.home"), "My Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
-        } else if (QuaquaManager.getOS() == QuaquaManager.LINUX) {
-            defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"), "Desktop"),
-                        new File("/media"),
-                        new File(QuaquaManager.getProperty("user.home"), "Documents"),
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
-        } else {
-            defaultUserItems = new File[]{
-                        new File(QuaquaManager.getProperty("user.home"))
-                    };
-        }
-    }
 
     /** Creates a new instance. */
     public SidebarTreeModel(JFileChooser fileChooser, TreePath path, TreeModel model) {
@@ -127,95 +99,64 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         r.add(devicesNode);
         r.add(placesNode);
 
-        validate();
+        //validate();
         updateDevicesNode();
-
+        updatePlacesNode();
+        
         model.addTreeModelListener(this);
     }
 
-    public void lazyValidate() {
-        // throw new UnsupportedOperationException("Not yet implemented");
+    
+    private void updatePlacesNode() {
+    	
+    	ArrayList<FileNode> freshUserItems;
+
+        freshUserItems = new ArrayList<FileNode>();
+        for (int i = 0; i < defaultUserItems.length; i++) {
+            if (defaultUserItems[i].exists()) {
+                freshUserItems.add(new FileNode(defaultUserItems[i]));
+            }
+        }
+        
+        
+        int oldUserItemsSize = placesNode.getChildCount();
+        if (oldUserItemsSize > 0) {
+            int[] removedIndices = new int[oldUserItemsSize];
+            Object[] removedChildren = new Object[oldUserItemsSize];
+            for (int i = 0; i < oldUserItemsSize; i++) {
+                removedIndices[i] = i;
+                removedChildren[i] = placesNode.getChildAt(i);
+            }
+            placesNode.removeAllChildren();
+            fireTreeNodesRemoved(
+                    SidebarTreeModel.this,
+                    placesNode.getPath(),
+                    removedIndices,
+                    removedChildren);
+        }
+        
+        if (freshUserItems.size() > 0) {
+            int[] insertedIndices = new int[freshUserItems.size()];
+            Object[] insertedChildren = new Object[freshUserItems.size()];
+            for (int i = 0; i < freshUserItems.size(); i++) {
+                insertedIndices[i] = i;
+                insertedChildren[i] = freshUserItems.get(i);
+                if (freshUserItems.get(i) == null) {
+                    placesNode.add(new DefaultMutableTreeNode("null?"));
+                } else {
+                    placesNode.add((DefaultMutableTreeNode) freshUserItems.get(i));
+                }
+            }
+            fireTreeNodesInserted(
+                    SidebarTreeModel.this,
+                    placesNode.getPath(),
+                    insertedIndices,
+                    insertedChildren);
+        }
     }
+    
 
-    /**
-     * Immediately validates the model.
-     */
-    private void validate() {
-        // Prevent multiple invocations of this method by lazyValidate(),
-        // while we are validating;
-        bestBefore = Long.MAX_VALUE;
-
-        dispatcher.dispatch(
-                new Worker<Object[]>() {
-
-                    public Object[] construct() throws IOException {
-                        return read();
-                    }
-
-                    @Override
-                    public void done(Object[] value) {
-                        ArrayList freshUserItems;
-
-                        systemItemsMap = (HashMap) value[0];
-                        freshUserItems = (ArrayList) value[1];
-                        update(freshUserItems);
-                    }
-
-                    @Override
-                    public void failed(Throwable value) {
-                        ArrayList freshUserItems;
-
-                        System.err.println("Warning: SidebarTreeModel uses default user items.");
-                        freshUserItems = new ArrayList(defaultUserItems.length);
-                        for (int i = 0; i < defaultUserItems.length; i++) {
-                            if (defaultUserItems[i] == null) {
-                                freshUserItems.add(null);
-                            } else if (defaultUserItems[i].exists()) {
-                                freshUserItems.add(new FileNode(defaultUserItems[i]));
-                            }
-                        }
-                        update(freshUserItems);
-                    }
-
-                    private void update(ArrayList freshUserItems) {
-                        int oldUserItemsSize = placesNode.getChildCount();
-                        if (oldUserItemsSize > 0) {
-                            int[] removedIndices = new int[oldUserItemsSize];
-                            Object[] removedChildren = new Object[oldUserItemsSize];
-                            for (int i = 0; i < oldUserItemsSize; i++) {
-                                removedIndices[i] = i;
-                                removedChildren[i] = placesNode.getChildAt(i);
-                            }
-                            placesNode.removeAllChildren();
-                            fireTreeNodesRemoved(
-                                    SidebarTreeModel.this,
-                                    placesNode.getPath(),
-                                    removedIndices,
-                                    removedChildren);
-                        }
-                        if (freshUserItems.size() > 0) {
-                            int[] insertedIndices = new int[freshUserItems.size()];
-                            Object[] insertedChildren = new Object[freshUserItems.size()];
-                            for (int i = 0; i < freshUserItems.size(); i++) {
-                                insertedIndices[i] = i;
-                                insertedChildren[i] = freshUserItems.get(i);
-                                if (freshUserItems.get(i) == null) {
-                                    placesNode.add(new DefaultMutableTreeNode("null?"));
-                                } else {
-                                    placesNode.add((DefaultMutableTreeNode) freshUserItems.get(i));
-                                }
-                            }
-                            fireTreeNodesInserted(
-                                    SidebarTreeModel.this,
-                                    placesNode.getPath(),
-                                    insertedIndices,
-                                    insertedChildren);
-                        }
-                        bestBefore = System.currentTimeMillis() + VALIDATION_TTL;
-                    }
-                });
-    }
-
+    
     private void updateDevicesNode() {
         FileSystemTreeModel.Node modelDevicesNode = (FileSystemTreeModel.Node) volumesPath.getLastPathComponent();
 
@@ -265,113 +206,6 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
         }
     }
 
-    /**
-     * Reads the sidebar preferences file.
-     */
-    private Object[] read() throws IOException {
-        if (!OSXFile.canWorkWithAliases()) {
-            throw new IOException("Unable to work with aliases");
-        }
-
-        HashMap sysItemsMap = new HashMap();
-        ArrayList userItems = new ArrayList();
-
-        FileReader reader = null;
-        try {
-            reader = new FileReader(sidebarFile);
-            XMLElement xml = new XMLElement(new HashMap(), false, false);
-            try {
-                xml.parseFromReader(reader);
-            } catch (XMLParseException e) {
-                xml = new BinaryPListParser().parse(sidebarFile);
-            }
-            String key2 = "", key3 = "", key5 = "";
-            for (Iterator i0 = xml.iterateChildren(); i0.hasNext();) {
-                XMLElement xml1 = (XMLElement) i0.next();
-
-                for (Iterator i1 = xml1.iterateChildren(); i1.hasNext();) {
-                    XMLElement xml2 = (XMLElement) i1.next();
-
-                    if (xml2.getName().equals("key")) {
-                        key2 = xml2.getContent();
-                    }
-
-                    if (xml2.getName().equals("dict") && key2.equals("systemitems")) {
-                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
-                            XMLElement xml3 = (XMLElement) i2.next();
-                            if (xml3.getName().equals("key")) {
-                                key3 = xml3.getContent();
-                            }
-                            if (xml3.getName().equals("array") && key3.equals("VolumesList")) {
-                                for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
-                                    XMLElement xml4 = (XMLElement) i3.next();
-
-                                    if (xml4.getName().equals("dict")) {
-                                        SystemItemInfo info = new SystemItemInfo();
-                                        for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
-                                            XMLElement xml5 = (XMLElement) i4.next();
-
-                                            if (xml5.getName().equals("key")) {
-                                                key5 = xml5.getContent();
-                                            }
-
-                                            info.sequenceNumber = sysItemsMap.size();
-                                            if (xml5.getName().equals("string") && key5.equals("Name")) {
-                                                info.name = xml5.getContent();
-                                            }
-                                            if (xml5.getName().equals("string") && key5.equals("Visibility")) {
-                                                info.isVisible = xml5.getContent().equals("AlwaysVisible");
-                                            }
-                                        }
-                                        if (info.name != null) {
-                                            sysItemsMap.put(info.name, info);
-                                        }
-                                    }
-                                }
-                            }
-                        }
-                    }
-                    if (xml2.getName().equals("dict") && key2.equals("useritems")) {
-                        for (Iterator i2 = xml2.iterateChildren(); i2.hasNext();) {
-                            XMLElement xml3 = (XMLElement) i2.next();
-                            for (Iterator i3 = xml3.iterateChildren(); i3.hasNext();) {
-                                XMLElement xml4 = (XMLElement) i3.next();
-                                String aliasName = null;
-                                byte[] serializedAlias = null;
-                                for (Iterator i4 = xml4.iterateChildren(); i4.hasNext();) {
-                                    XMLElement xml5 = (XMLElement) i4.next();
-
-                                    if (xml5.getName().equals("key")) {
-                                        key5 = xml5.getContent();
-                                    }
-                                    if (xml5.getName().equals("string") && key5.equals("Name")) {
-                                        aliasName = xml5.getContent();
-                                    }
-                                    if (!xml5.getName().equals("key") && key5.equals("Alias")) {
-                                        serializedAlias = Base64.decode(xml5.getContent());
-                                    }
-                                }
-                                if (serializedAlias != null && aliasName != null) {
-                                    // Try to resolve the alias without user interaction
-                                    File f = OSXFile.resolveAlias(serializedAlias, true);
-                                    if (f != null) {
-                                        userItems.add(new FileNode(f));
-                                    } else {
-                                        userItems.add(new AliasNode(serializedAlias, aliasName));
-                                    }
-                                }
-                            }
-                        }
-                    }
-                }
-            }
-        } finally {
-            if (reader != null) {
-                reader.close();
-            }
-        }
-        return new Object[]{sysItemsMap, userItems};
-    }
 
     public void treeNodesChanged(TreeModelEvent e) {
         if (e.getTreePath().equals(volumesPath)) {

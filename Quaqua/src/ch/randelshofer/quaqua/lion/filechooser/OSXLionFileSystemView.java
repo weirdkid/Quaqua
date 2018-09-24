@@ -22,7 +22,18 @@ public class OSXLionFileSystemView extends BasicOSXFileSystemView {
 
     public OSXLionFileSystemView() {
 
-         String[] names = {
+        
+    	String[] volnames = {
+    			"Preboot",
+    			"TimeMachine",
+    			"Time Machine Backups",
+    			"com.apple.TimeMachine.localsnapshots"
+    	};
+    	
+    	hiddenVolumeNames.addAll(Arrays.asList(volnames));
+    	
+    	
+    	String[] tlnames = {
             "AppleShare PDS",
             "automount",
             "bin",
@@ -30,9 +41,11 @@ public class OSXLionFileSystemView extends BasicOSXFileSystemView {
             "cores",
             "Desktop DB",
             "Desktop DF",
+            "DesktopPrinters DB",
             "dev",
             "etc",
             "home",
+            "installer.failurerequests",
             "mach",
             "mach_kernel",
             "mach_kernel.ctfsys",
@@ -53,15 +66,16 @@ public class OSXLionFileSystemView extends BasicOSXFileSystemView {
             "\u0003\u0002\u0001Move&Rename",
         };
 
-        hiddenTopLevelNames.addAll(Arrays.asList(names));
+        hiddenTopLevelNames.addAll(Arrays.asList(tlnames));
 
-        names = new String[] {
+        String[] dirnames = new String[] {
             "$RECYCLE.BIN",
             "Thumbs.db",
             "desktop.ini",
         };
 
-        hiddenDirectoryNames.addAll(Arrays.asList(names));
+        hiddenDirectoryNames.addAll(Arrays.asList(dirnames));
+        
 
         File[] files={
             new File(System.getProperty("user.home"), "Library")

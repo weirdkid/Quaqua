@@ -10,6 +10,11 @@ import javax.swing.UIManager;
 
 public class JFileChooserTest extends JFrame{
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public JFileChooserTest() {
 		super("JFileChooserTest");
 	

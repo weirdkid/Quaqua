@@ -2094,9 +2094,9 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
             if (model != null) {
                 model.setAutoValidate(UIManager.getBoolean("FileChooser.autovalidate"));
                 model.validatePath(browser.getSelectionPath());
-                if (sidebarTreeModel != null) {
-                    sidebarTreeModel.lazyValidate();
-                }
+//                if (sidebarTreeModel != null) {
+//                    sidebarTreeModel.lazyValidate();
+//                }
             }
             // We update the approve button state here, because the approve
             // button can only be made the default button, if it has a root pane

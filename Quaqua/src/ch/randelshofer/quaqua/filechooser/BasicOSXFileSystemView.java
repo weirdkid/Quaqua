@@ -45,8 +45,10 @@ public abstract class BasicOSXFileSystemView extends QuaquaFileSystemView {
     protected final static Set<String> hiddenTopLevelNames = new HashSet<String>();
     protected final static Set<String> hiddenDirectoryNames = new HashSet<String>();
     protected final static Set<File> hiddenFiles = new HashSet<File>();
+    protected final static Set<String> hiddenVolumeNames = new HashSet<String>();
 
     protected BasicOSXFileSystemView() {
+    	assert Boolean.TRUE;
     }
 
     public final File getSystemVolume() {
@@ -130,14 +132,21 @@ public abstract class BasicOSXFileSystemView extends QuaquaFileSystemView {
         List<File> result = new ArrayList<File>();
         File[] fs = volumesFolder.listFiles();
         if (fs != null) {
-            result.addAll(Arrays.asList(fs));
+        	
+        	for(File vol : fs) {
+        		if(!hiddenVolumeNames.contains(vol.getName())){
+        			result.add(vol);
+        		}
+        	}
+        	
+            //result.addAll(Arrays.asList(fs));
         }
 
         /*
           Even if /Network is hidden when viewing /, it may be visible in the sidebar or under the Computer node.
         */
 
-        result.add(networkFolder);
+        //result.add(networkFolder);
         return result;
     }
 

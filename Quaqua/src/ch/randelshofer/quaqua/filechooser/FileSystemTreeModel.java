@@ -1882,17 +1882,19 @@ public class FileSystemTreeModel implements TreeModel {
 
         @Override
         protected File[] getFiles() {
-            LinkedList list = new LinkedList();
-            File[] files = getFileSystemView().getRoots();
-            for (int i = 0; i < files.length; i++) {
-                if (DEBUG) {
-                    System.out.println("FileSystemTreeModel root:" + files[i]);
-                }
-                //if (accept(files[i])) {
-                list.add(files[i]);
-                //}
-            }
-            return (File[]) list.toArray(new File[list.size()]);
+//            LinkedList list = new LinkedList();
+//            File[] files = getFileSystemView().getRoots();
+//            for (int i = 0; i < files.length; i++) {
+//                if (DEBUG) {
+//                    System.out.println("FileSystemTreeModel root:" + files[i]);
+//                }
+//                //if (accept(files[i])) {
+//                list.add(files[i]);
+//                //}
+//            }
+//            return (File[]) list.toArray(new File[list.size()]);
+            
+            return getFileSystemView().getRoots();
         }
 
         @Override
