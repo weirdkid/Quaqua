@@ -36,161 +36,72 @@
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
      
-		<!-- Java platform properties -->
-
-		<exec executable="/usr/libexec/java_home" outputproperty="java1.6Home">
-			<arg value="-F"/>
-			<arg value="-v"/>
-			<arg value="1.6"/>
-		</exec>
-
-		<exec executable="/usr/libexec/java_home" outputproperty="java1.7Home">
-			<arg value="-F"/>
-			<arg value="-v"/>
-			<arg value="1.7"/>
-		</exec>
-
-		<exec executable="/usr/libexec/java_home" outputproperty="java1.8Home">
-			<arg value="-F"/>
-			<arg value="-v"/>
-			<arg value="1.8"/>
-		</exec>
-
-		<property name="java1.6Home" value="UNKNOWN"/>
-		<property name="java1.7Home" value="UNKNOWN"/>
-		<property name="java1.8Home" value="UNKNOWN"/>
-
-		<echo message="Java 1.6: ${java1.6Home}"/>
-		<echo message="Java 1.7: ${java1.7Home}"/>
-		<echo message="Java 1.8: ${java1.8Home}"/>
-
-		<property name="java1.6cmd" value="${java1.6Home}/bin/java"/>
-		<property name="java1.7cmd" value="${java1.7Home}/bin/java"/>
-		<property name="java1.8cmd" value="${java1.8Home}/bin/java"/>
-
-        <!-- Properties for jar signing -->
-        <!-- ========================== -->
-        <property name="keystore.file" value="../../../_Keystore/JavaKeystore.jks"/>
-
+    	
+    	
+     
         <!-- Compilation properties -->
         <!-- ====================== -->
         <property name="debug" value="true"/>
 
-        <!-- Set "osx10.5" to where you Mac OS X 10.5 System folder resides.
-             In case you run this Ant task on Mac OS X 10.5, this is "".
-             If you run on Mac OS X 10.6 this is wherever your copy of
-             Mac OS X 10.5 resides. If you don't have a copy of 10.5 available specify "".
-             -->
-             <!--
-         <condition property="osx10.5"
-                    value="/Users/Shared/Developer/Mac OS X 10.5"
-                    else="">
-                <available file="/Users/Shared/Developer/Mac OS X 10.5"/>
-         </condition>
--->
-        <property name="j2se6" value="/System/Library/Java/JavaVirtualMachines/1.6.0.jdk/Contents" />
-        <property name="j2se6.jvm" value="${j2se6}/Home/bin/java"/>
-        <property name="j2se6.bootclasspath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
-        <property name="j2se6.classpath" value="${j2se6}/Classes/classes.jar:${j2se6}/Classes/ui.jar" />
-        <property name="j2se6.extdirs" value="lib/ext" />
-        <property name="j2se6.endorseddirs" value="lib/endorsed" />
-
-        <property name="j2se7" value="/Library/Java/JavaVirtualMachines/jdk1.7.0_80.jdk/Contents" />
-        <property name="j2se7.jvm" value="${j2se7}/Home/bin/java"/>
-
-        <property name="j2se8" value="/Library/Java/JavaVirtualMachines/jdk1.8.0_144.jdk/Contents" />
-        <property name="j2se8.jvm" value="${j2se8}/Home/bin/java"/>
+    	<mkdir dir="${builddir}"/>
 
     </target>
 
-    <target depends="init" name="compile">
-        <mkdir dir="${builddir}"/>
-        <!-- Both srcdir and builddir should be package roots. -->
-        <!-- They could be different of course; in that case NetBeans can also be set -->
-        <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
-        <!-- Compile BasicQuaquaLookAndFeel against J2SE6 classpath -->
-        <javac bootclasspath="${j2se6.bootclasspath}"
-                classpath="${j2se6.classpath}"
-                fork="true"
-                source="1.6" target="1.6" encoding="UTF-8"
-                srcdir="${src}" destdir="${builddir}"
-                debug="${debug}" optimize="true"
-                deprecation="true"
-                extdirs="${j2se6.extdirs}"
-                includeantruntime="false"
-                >
-            <compilerarg line="-endorseddirs ${j2se6.endorseddirs}"/>
-        </javac>
-
-        <!-- copy resources to the builddir -->
-        <copy todir="${builddir}">
-            <fileset dir="${src}">
-                <include name="**/*.properties"/>
-                <include name="**/*.png"/>
-                <include name="**/*.ttf"/>
-                <include name="**/*.txt"/>
-                <include name="**/*.icc"/>
-            </fileset>
-        </copy>
-        <echo file="${builddir}/ch/randelshofer/quaqua/version.txt" message="${version}"/>
+    <target name="compile" depends="init" >
+    	
+    	
+    	
+    	<javac 
+    	                debug="${debug}" deprecation="true"
+    	                destdir="${builddir}" optimize="true"
+    	                srcdir="${src}"
+    	                source="1.6" target="1.6" encoding="UTF-8"
+    	                includeantruntime="no"
+    	            >
+    	            <include name="**/QuaquaPantherFileChooserLAF.java"/>
+    	            <include name="**/QuaquaLeopardFileChooserLAF.java"/>
+    	            <include name="**/Quaqua16LionFileChooserLAF.java"/>
+    	            <include name="**/QuaquaMavericksFileChooserLAF.java"/>
+    	            <include name="**/QuaquaLookAndFeel.java"/>
+    	            <include name="**/QuaquaBrowserUI.java"/>
+    	            <include name="**/QuaquaFileChooserBrowserListUI.java"/>
+    	            <include name="**/DefaultBrowserCellRenderer.java"/>
+    	            <include name="**/QuaquaTreeUI.java"/>
+    	            <include name="**/QuaquaPanelUI.java"/>
+    	            <include name="**/QuaquaPantherFileChooserUI.java"/>
+    	            <include name="**/QuaquaLeopardFileChooserUI.java"/>
+    	            <include name="**/QuaquaLionFileChooserUI.java"/>
+    	            <include name="**/QuaquaMavericksFileChooserUI.java"/>
+    	            <include name="**/QuaquaJaguarFileChooserUI.java"/>
+    	            <include name="**/filechooser/*FileSystemView.java"/>
+    	            <include name="**/QuaquaIconFactory.java"/>
+    	            <include name="**/QuaquaLeopardSideBarSelectionBorder.java"/>
+    	            <include name="**/QuaquaLionSideBarSelectionBorder.java"/>
+    	            <include name="**/QuaquaNativeButtonBorder.java"/>
+    	            <include name="**/QuaquaTextFieldFocusHandler.java"/>
+    	            <include name="de/sciss/treetable/**"/>
+    	            <exclude name="**/*15*.java"/>
+    	        </javac>
+    	        <copy todir="${builddir}">
+    	            <fileset dir="${src}">
+    	                <include name="**/*.properties"/>
+    	                <include name="**/Browser*.png"/>
+    	                <include name="**/FileChooser.*.png"/>
+    	                <include name="**/FileView.*.png"/>
+    	                <include name="**/GroupBox*.png"/>
+    	                <include name="**/Tree.*.png"/>
+    	                <include name="**/*.txt"/>
+    	            </fileset>
+    	        </copy>
+    		<echo file="${builddir}/ch/randelshofer/quaqua/version.txt" message="${version}"/>
      </target>
     
     
 
-    <target depends="init" name="jar">
-        <delete dir="${builddir}"/>
-        <mkdir dir="${builddir}"/>
-        <!-- Both srcdir and builddir should be package roots. -->
-        <!-- They could be different of course; in that case NetBeans can also be set -->
-        <!-- up to compile to a different filesystem in the same way; see Compiler Types: -->
-
-        <javac bootclasspath="${j2se6.bootclasspath}"
-                debug="${debug}" deprecation="true"
-                destdir="${builddir}" optimize="true"
-                srcdir="${src}"
-                source="1.6" target="1.6" encoding="UTF-8"
-                includeantruntime="false"
-            >
-            <include name="**/QuaquaPantherFileChooserLAF.java"/>
-            <include name="**/QuaquaLeopardFileChooserLAF.java"/>
-            <include name="**/Quaqua16LionFileChooserLAF.java"/>
-            <include name="**/QuaquaMavericksFileChooserLAF.java"/>
-            <include name="**/QuaquaLookAndFeel.java"/>
-            <include name="**/QuaquaBrowserUI.java"/>
-            <include name="**/QuaquaFileChooserBrowserListUI.java"/>
-            <include name="**/DefaultBrowserCellRenderer.java"/>
-            <include name="**/QuaquaTreeUI.java"/>
-            <include name="**/QuaquaPanelUI.java"/>
-            <include name="**/QuaquaPantherFileChooserUI.java"/>
-            <include name="**/QuaquaLeopardFileChooserUI.java"/>
-            <include name="**/QuaquaLionFileChooserUI.java"/>
-            <include name="**/QuaquaMavericksFileChooserUI.java"/>
-            <include name="**/QuaquaJaguarFileChooserUI.java"/>
-            <include name="**/filechooser/*FileSystemView.java"/>
-            <include name="**/QuaquaIconFactory.java"/>
-            <include name="**/QuaquaLeopardSideBarSelectionBorder.java"/>
-            <include name="**/QuaquaLionSideBarSelectionBorder.java"/>
-            <include name="**/QuaquaNativeButtonBorder.java"/>
-            <include name="**/QuaquaTextFieldFocusHandler.java"/>
-            <include name="de/sciss/treetable/**"/>
-            <exclude name="**/*15*.java"/>
-        </javac>
-        <copy todir="${builddir}">
-            <fileset dir="${src}">
-                <include name="**/*.properties"/>
-                <include name="**/Browser*.png"/>
-                <include name="**/FileChooser.*.png"/>
-                <include name="**/FileView.*.png"/>
-                <include name="**/GroupBox*.png"/>
-                <include name="**/Tree.*.png"/>
-                <include name="**/*.txt"/>
-            </fileset>
-        </copy>
-
-		<echo file="${builddir}/ch/randelshofer/quaqua/version.txt" message="${version}"/>
+    <target name="jar" depends="compile">
+        
         <jar basedir="${builddir}" compress="true"
-            jarfile="${distdir}/quaqua-filechooser-only.jar"
-        >
+            jarfile="${distdir}/quaqua-filechooser-only.jar">
             <manifest>
                 <attribute name="Main-Class" value="ch.randelshofer.quaqua.QuaquaManager"/>
             </manifest>
@@ -201,8 +112,8 @@
     </target>
     
 
-   <target depends="init,jar,javadoc"
-        description="Build a release." name="release">
+   <target name="release" depends="jar,javadoc"
+        description="Build a release." >
         <delete>
             <fileset defaultexcludes="false" dir="${src}">
                 <include name="**/*.class"/>
@@ -227,7 +138,7 @@
         </zip>
     </target>
 
-    <target depends="init" description="Javadoc for my API." name="javadoc">
+    <target name="javadoc" depends="init" description="Javadoc for my API." >
         <mkdir dir="${docdir}"/>
         <javadoc destdir="${docdir}" footer="&lt;font size=-2>Copyright 2003-2007 (c) Werner Randelshofer.&lt;br>All rights reserved.&lt;/font>"
         header="Quaqua ${version}" encoding="UTF-8"
@@ -245,7 +156,7 @@
         </javadoc>
     </target>
 
-    <target depends="init" description="Clean all build products." name="clean">
+    <target name="clean" depends="init" description="Clean all build products." >
         <delete dir="${builddir}"/>
         <!--
         <delete>
@@ -254,71 +165,6 @@
             </fileset>
         </delete>
         -->
-    </target>
-    
-   
-    <target depends="init" name="1.6">
-        <java classname="test.Main" classpath="${distdir}/quaqua-test.jar:${distdir}/quaqua.jar"
-                fork="true"
-                jvm="${java1.6cmd}"
-        >
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="quaqua"/>
-        </java>
-    </target>
-    <target depends="init" name="1.7">
-        <java classname="test.Main" classpath="${distdir}/quaqua-test.jar:${distdir}/quaqua.jar"
-                fork="true"
-                jvm="${java1.7cmd}"
-        >
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="quaqua"/>
-        </java>
-    </target>
-    <target depends="init" name="1.8">
-        <java classname="test.Main" classpath="${distdir}/quaqua-test.jar:${distdir}/quaqua.jar"
-                fork="true"
-                jvm="${java1.8cmd}"
-        >
-            <jvmarg value="-Djava.library.path=${distdir}"/>
-            <arg value="-laf"/>
-            <arg value="quaqua"/>
-        </java>
-    </target>
-    <target depends="init" name="pure 1.6">
-        <java classname="test.Main" classpath="${distdir}/quaqua-pure-test.jar"
-                fork="true"
-                jvm="${java1.6cmd}"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
-            <arg value="-laf"/>
-            <arg value="default"/>
-        </java>
-    </target>
-    <target depends="init" name="pure 1.7">
-        <java classname="test.Main" classpath="${distdir}/quaqua-pure-test.jar"
-                fork="true"
-                jvm="${java1.7cmd}"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
-            <arg value="-laf"/>
-            <arg value="default"/>
-        </java>
-    </target>
-    <target depends="init" name="pure 1.8">
-        <java classname="test.Main" classpath="${distdir}/quaqua-pure-test.jar"
-                fork="true"
-                jvm="${java1.8cmd}"
-        >
-            <jvmarg value="-Dapple.laf.useScreenMenuBar=true"/>
-            <jvmarg value="-Dawt.useSystemAAFontSettings=lcd_hrgb"/>
-            <arg value="-laf"/>
-            <arg value="default"/>
-        </java>
     </target>
 	
 	
