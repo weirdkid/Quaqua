@@ -21,5 +21,5 @@ Code notes:
 -----------
 
 - There are variations of the UI for every version of macOS up through Mavericks, but the last one to not rely on native code was the QuaquaLeopardFileChooserUI, so that's where my effort is focused. The QuaquaManager only provides this option for UI now.
-- QuaQuaFileSystemView picks a macOS version-specific implementation of a FileSystemView. Ever since Lion, they all use OSXLionFileSystemView, so that's also where I focus.
+- QuaquaFileSystemView picks a macOS version-specific implementation of a FileSystemView. Ever since Lion, they all use OSXLionFileSystemView, so that's also where I focus.
 
