@@ -33,6 +33,7 @@
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
         <property name="distdir" value="dist"/>
+    	<property name="dist" value="dist"/>
         <property name="docdir" value="${distdir}/javadoc"/>
         <property name="classpath" value="${builddir}"/>
      
@@ -101,7 +102,7 @@
     <target name="jar" depends="compile">
         
         <jar basedir="${builddir}" compress="true"
-            jarfile="${distdir}/quaqua-filechooser-only.jar">
+            jarfile="${distdir}/${ant.project.name}.jar">
             <manifest>
                 <attribute name="Main-Class" value="ch.randelshofer.quaqua.QuaquaManager"/>
             </manifest>
@@ -168,7 +169,7 @@
     </target>
 	
 	
-	<target name="ivy-init">
+	<target name="ivy-init" depends="init">
 		<ivy:resolve/>
 		<ivy:deliver 
 			conf="*(public)"
