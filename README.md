@@ -13,8 +13,7 @@ My goal here is to try to morph Randelshofer's JFC into a pure Java implementati
 
 Now that JavaFX is being spun out of Java, some may yet still find this useful.
 
-Compile using ant:
-ant -f build-quaqua.xml jar-filechooser
+
 
 
 Code notes:

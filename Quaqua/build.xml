@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<project basedir="." default="jar-filechooser" name="quaqua">
+<project name="quaqua-jfc" basedir="." default="jar" xmlns:ivy="antlib:org.apache.ivy.ant">
 
     <target name="init">
         <!--
@@ -28,8 +28,7 @@
 
         <!-- You can set up any variables you want used throughout the script here. -->
         <property name="author" value="Werner Randelshofer"/>
-        <property name="versionNumber" value="9.5"/>
-        <property name="version" value="${versionNumber} 2018-09-21"/>
+        <property name="version" value="10.0"/>
         <property name="lib" value="lib"/>
         <property name="src" value="src"/>
         <property name="builddir" value="build/classes"/>
@@ -138,7 +137,7 @@
     
     
 
-    <target depends="init" name="jar-filechooser">
+    <target depends="init" name="jar">
         <delete dir="${builddir}"/>
         <mkdir dir="${builddir}"/>
         <!-- Both srcdir and builddir should be package roots. -->
@@ -202,7 +201,7 @@
     </target>
     
 
-   <target depends="init,jar-filechooser,javadoc"
+   <target depends="init,jar,javadoc"
         description="Build a release." name="release">
         <delete>
             <fileset defaultexcludes="false" dir="${src}">
@@ -321,4 +320,35 @@
             <arg value="default"/>
         </java>
     </target>
+	
+	
+	<target name="ivy-init">
+		<ivy:resolve/>
+		<ivy:deliver 
+			conf="*(public)"
+			deliverpattern="${dist}/[artifact].[ext]"/> 
+	</target>
+		
+	<target name="ivy-gen-pom" depends="ivy-init">
+		<ivy:makepom ivyfile="${dist}/ivy.xml" pomfile="${dist}/${ant.project.name}.pom">
+	    <!--
+	      Mapping confs to scopes is important, otherwise
+	      unmapped confs are included as optional. If you
+	      have private confs, the best option seems to
+	      be marking them as provided or system. See
+	      IVY-1201 for an ehancement request.
+	    -->
+	    <mapping conf="default" scope="compile"/>
+	  </ivy:makepom>
+	</target>
+	
+	<target name="publish" description="Publish jar" depends="ivy-gen-pom,jar">
+    	<ivy:publish 
+    		pubrevision="${version}"
+    		resolver="local" 
+    		overwrite="true"
+    	    artifactspattern="${dist}/[artifact].[ext]"/>
+    </target>
+	
+	
 </project>
