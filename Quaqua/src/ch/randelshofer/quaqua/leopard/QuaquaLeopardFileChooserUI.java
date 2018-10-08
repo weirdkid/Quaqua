@@ -11,25 +11,89 @@
  */
 package ch.randelshofer.quaqua.leopard;
 
-import ch.randelshofer.quaqua.*;
-import ch.randelshofer.quaqua.filechooser.*;
-import ch.randelshofer.quaqua.leopard.filechooser.*;
-import ch.randelshofer.quaqua.panther.filechooser.*;
-
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.event.*;
-import javax.swing.filechooser.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.tree.*;
-import java.awt.*;
-import java.awt.dnd.*;
-import java.awt.event.*;
-import java.beans.*;
+import java.awt.BorderLayout;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.IllegalComponentStateException;
+import java.awt.Insets;
+import java.awt.Point;
+import java.awt.dnd.DnDConstants;
+import java.awt.dnd.DropTarget;
+import java.awt.event.ActionEvent;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.awt.event.InputEvent;
+import java.awt.event.KeyEvent;
+import java.awt.event.MouseAdapter;
+import java.awt.event.MouseEvent;
+import java.awt.event.MouseListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
 import java.io.File;
 import java.io.IOException;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Enumeration;
+import java.util.Locale;
+
+import javax.swing.AbstractAction;
+import javax.swing.AbstractListModel;
+import javax.swing.Action;
+import javax.swing.ActionMap;
+import javax.swing.ComboBoxModel;
+import javax.swing.DefaultListCellRenderer;
+import javax.swing.Icon;
+import javax.swing.InputMap;
+import javax.swing.JButton;
+import javax.swing.JComponent;
+import javax.swing.JDialog;
+import javax.swing.JFileChooser;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JPanel;
+import javax.swing.JRootPane;
+import javax.swing.JSeparator;
+import javax.swing.JTree;
+import javax.swing.KeyStroke;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.border.EmptyBorder;
+import javax.swing.event.AncestorEvent;
+import javax.swing.event.AncestorListener;
+import javax.swing.event.DocumentEvent;
+import javax.swing.event.DocumentListener;
+import javax.swing.event.TreeSelectionEvent;
+import javax.swing.event.TreeSelectionListener;
+import javax.swing.filechooser.FileFilter;
+import javax.swing.filechooser.FileSystemView;
+import javax.swing.filechooser.FileView;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.LabelUI;
+import javax.swing.plaf.TreeUI;
+import javax.swing.plaf.basic.BasicFileChooserUI;
+import javax.swing.tree.DefaultMutableTreeNode;
+import javax.swing.tree.DefaultTreeCellRenderer;
+import javax.swing.tree.TreePath;
+import javax.swing.tree.TreeSelectionModel;
+
+import ch.randelshofer.quaqua.BrowserPreviewRenderer;
+import ch.randelshofer.quaqua.JBrowser;
+import ch.randelshofer.quaqua.QuaquaLabelUI;
+import ch.randelshofer.quaqua.QuaquaManager;
+import ch.randelshofer.quaqua.QuaquaTreeUI;
+import ch.randelshofer.quaqua.filechooser.FileInfo;
+import ch.randelshofer.quaqua.filechooser.FileSystemTreeModel;
+import ch.randelshofer.quaqua.filechooser.FileTransferHandler;
+import ch.randelshofer.quaqua.filechooser.FilenameDocument;
+import ch.randelshofer.quaqua.filechooser.QuaquaFileSystemView;
+import ch.randelshofer.quaqua.filechooser.SidebarTreeFileNode;
+import ch.randelshofer.quaqua.filechooser.SubtreeFileChooserUI;
+import ch.randelshofer.quaqua.filechooser.SubtreeTreeModel;
+import ch.randelshofer.quaqua.leopard.filechooser.LeopardFileRenderer;
+import ch.randelshofer.quaqua.leopard.filechooser.SidebarTreeModel;
+import ch.randelshofer.quaqua.osx.OSXFile;
+import ch.randelshofer.quaqua.panther.filechooser.FilePreview;
 
 /**
  * A replacement for the AquaFileChooserUI. Provides a column view similar
@@ -1496,6 +1560,7 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
         public Component getTreeCellRendererComponent(JTree tree, Object value,
                 boolean isSelected, boolean isExpanded, boolean isLeaf,
                 int row, boolean cellHasFocus) {
+        	
             super.getTreeCellRendererComponent(tree, value, isSelected,
                     isExpanded, isLeaf, row, false);
 
@@ -1505,13 +1570,46 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 
                 if (isSpecialFolder(info)) {
                     setIcon(getSpecialFolderIcon(info));
-                } else {
+                } 
+//				this isn't right -MH
+//                else if(isVolumeFolder(info)) {
+//                	setIcon(getVolumeFolderIcon(info));
+//                }
+                else {
                     setIcon(info.getIcon());
                 }
             }
             return this;
         }
 
+        
+//        /*
+//         * Is this in the "DEVICES" section -- i.e. is it a mounted volume?
+//         */
+//        private boolean isVolumeFolder(SidebarTreeFileNode info) {
+//        	
+//        	// SidebarTreeFileNode does not have the info I need
+//        	
+//        	boolean isVF = 
+//        	
+//        	return isVF;
+//        }
+        
+//        /*
+//         * get the generic hard drive icon
+//         */
+//        private Icon getVolumeFolderIcon(SidebarTreeFileNode info) {
+//        	// Load the icon from the UIDefaults table
+//            Icon icon = UIManager.getIcon("FileView.hardDriveIcon");
+//
+//            // If we somehow fail to load the icon, fall back to standard way
+//            if (icon == null) {
+//                icon = info.getIcon();
+//            }
+//
+//            return icon;
+//        }
+//        
         /**
          * Gets the special icon for the folder.
          *
@@ -1519,16 +1617,32 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
          * @return The icon.
          **/
         private Icon getSpecialFolderIcon(SidebarTreeFileNode info) {
+        	Icon icon = null;
+        	
             // BEGIN FIX QUAQUA-148 "NPE when volume is not mounted"
             File file = info.getResolvedFile();
             if (file == null) {
-                return UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");
+                icon = UIManager.getIcon("FileChooser.sideBarIcon.GenericFolder");
             }
             // END FIX QUAQUA-148
 
+            // the devices
+            else if (file.getParentFile().getPath().equals("/Volumes")) {
+                icon = UIManager.getIcon("FileView.hardDriveIcon");
+            }
+            
+            // the home folder
+            else if(file.getParentFile().getPath().equals("/Users")
+            		|| file.getPath().equals(System.getProperty("user.home"))) {
+            	icon = UIManager.getIcon("FileChooser.sideBarIcon.Home");
+            }
+            
+            // the special macOS folders
             // Load the icon from the UIDefaults table
-            Icon icon = UIManager.getIcon("FileChooser.sideBarIcon." + file.getName());
-
+            else {
+            	icon = UIManager.getIcon("FileChooser.sideBarIcon." + file.getName());
+            }
+            
             // If we somehow fail to load the icon, fall back to standard way
             if (icon == null) {
                 icon = info.getIcon();
@@ -1545,40 +1659,10 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
          * @return <code>true</code> if the OS is Mac OS X and the
          */
         private boolean isSpecialFolder(SidebarTreeFileNode info) {
-            // Only allow this for Mac OS X as directory structures are different on other OSs.
-            if (!QuaquaManager.isOSX()) {
-                return false;
-            }
-
-            File file = info.getResolvedFile();
-            // Only directories can have special icons.
-            if (file == null || file.isFile()) {
-                return false;
-            }
-
-            if (file.getParentFile() != null) {
-                String parentFile = file.getParentFile().getAbsolutePath();
-                if (parentFile.equals(System.getProperty("user.home"))) {
-                    // Look for user's home special folders
-                    String name = file.getName();
-                    return name.equals("Applications") || name.equals("Desktop")//
-                            || name.equals("Documents") || name.equals("Downloads")//
-                            || name.equals("Library") || name.equals("Movies") //
-                            || name.equals("Music") || name.equals("Pictures") //
-                            || name.equals("Public") || name.equals("Sites");
-                } else if (parentFile.equals(unixRoot.getAbsolutePath())) {
-                    // Look for computer's special folders
-                    String name = file.getName();
-                    return name.equals("Applications") || name.equals("Library");
-                } else if (parentFile.equals(new File(unixRoot, "Applications").getAbsolutePath())) {
-                    // Look for Utility folder in the /Applications folder
-                    return file.getName().equals("Utilities");
-                }
-            }
-            // Nothing found - return null
-            return false;
+            return true;
         }
     }
+    
     final static int space = 10;
 
     private static class IndentIcon implements Icon {

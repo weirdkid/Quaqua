@@ -16,11 +16,20 @@ import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.tiff.TIFFImageDecode
 import ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util.MemoryCacheSeekableStream;
 import ch.randelshofer.quaqua.util.Images;
 import java.awt.image.BufferedImage;
+import java.awt.image.BufferedImageOp;
 import java.awt.image.RenderedImage;
 import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.security.AccessControlException;
+import java.util.Iterator;
+
+import javax.imageio.ImageIO;
+import javax.imageio.ImageReadParam;
+import javax.imageio.ImageReader;
+import javax.imageio.stream.ImageInputStream;
+
+import com.twelvemonkeys.image.ResampleOp;
 
 /**
  * {@code OSXImageIO} can read images using the Mac OS X Cocoa NSImage API.
@@ -58,7 +67,7 @@ public class OSXImageIO {
 
     /**
      * Reads a <code>BufferedImage</code> scaled to the specified size
-     * from the supplied <code>File</code> using the Cocoa NSImage API.
+     * from the supplied <code>File</code> using the TwelveMonkeys ImageIO
      *
      * @param file
      *            The file containing the image.
@@ -68,15 +77,24 @@ public class OSXImageIO {
      *            The preferred height.
      */
     public static BufferedImage read(File file, int width, int height) throws IOException {
-        if (!isNativeCodeAvailable()) {
-            throw new IOException("Native code is not available");
-        }
-        byte[] tiffData = nativeRead(file.getPath(), width, height);
-        if (tiffData == null) {
-            throw new IOException("Couldn't read image from file " + file);
-        }
+    	
+    	BufferedImage image = null;
+    	
+    	image = ImageIO.read(file);
+    	
+//    	try{
+//    		image = ImageIO.read(file);
+//    	}catch(Exception e) {
+//    		System.err.println(e);
+//    		e.printStackTrace(System.err);
+//    	}
 
-        return decodeTIFF(tiffData);
+    	// how to resize to requested size?
+    	BufferedImageOp resampler = new ResampleOp(width, height, ResampleOp.FILTER_LANCZOS); // A good default filter, see class documentation for more info
+    	BufferedImage output = resampler.filter(image, null);
+    	
+    	return output;
+    	
     }
 
     /**

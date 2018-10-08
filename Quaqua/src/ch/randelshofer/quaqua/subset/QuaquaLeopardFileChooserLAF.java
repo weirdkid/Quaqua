@@ -337,8 +337,9 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
 
         Color grayedFocusCellBorderColor = (Color) table.get("listHighlight");
 
-        String sideBarIconsStart = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Toolbar";
-        String sideBarIconsEnd = "FolderIcon.icns";
+        // this used to end with Toolbar. Apple must have moved this in a later macOS version
+        String sideBarIconsStart = "/System/Library/CoreServices/CoreTypes.bundle/Contents/Resources/Sidebar";
+        String sideBarIconsEnd = "Folder.icns";
 
         BorderUIResource.CompoundBorderUIResource browserCellBorder = new BorderUIResource.CompoundBorderUIResource(
                 new BorderUIResource.MatteBorderUIResource(0, 0, 1, 0, new ColorUIResource(0xffffff)),
@@ -391,6 +392,7 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
             "FileChooser.sideBarIcon.Desktop", makeNativeIcon(sideBarIconsStart + "Desktop" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Documents", makeNativeIcon(sideBarIconsStart + "Documents" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Downloads", makeNativeIcon(sideBarIconsStart + "Downloads" + sideBarIconsEnd, 16),
+            "FileChooser.sideBarIcon.Home", makeNativeIcon(sideBarIconsStart + "Home" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Library", makeNativeIcon(sideBarIconsStart + "Library" + sideBarIconsEnd, 16),
             "FileChooser.sideBarIcon.Movies", makeNativeIcon(sideBarIconsStart + "Movie" + sideBarIconsEnd, 16), // Note: no "s" in "Movie"
             "FileChooser.sideBarIcon.Music", makeNativeIcon(sideBarIconsStart + "Music" + sideBarIconsEnd, 16),

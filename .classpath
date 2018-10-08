@@ -2,5 +2,11 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="Quaqua/src"/>
+	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.common-common-image.jar"/>
+	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.common-common-io.jar"/>
+	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.common-common-lang.jar"/>
+	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.imageio-imageio-core.jar"/>
+	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.imageio-imageio-icns.jar"/>
+	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.imageio-imageio-metadata.jar"/>
 	<classpathentry kind="output" path="Quaqua/build/classes"/>
 </classpath>
