@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<ivy-settings>
+  <settings defaultResolver="main" />
+  <!--Authentication required for publishing (deployment). 'Artifactory Realm' is the realm used by Artifactory so don't change it.-->
+  <credentials host="artifactory.home.lan" realm="Artifactory Realm" username="${security.getCurrentUsername()}" passwd="${security.getEncryptedPassword()!}" />
+  <resolvers>
+    <chain name="main">
+      <ibiblio name="public" m2compatible="true" root="http://artifactory.home.lan:8081/artifactory/ivy-release" />
+    </chain>
+  </resolvers>
+</ivy-settings>
