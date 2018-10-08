@@ -46,6 +46,10 @@
 
     	<mkdir dir="${builddir}"/>
     	<mkdir dir="${lib}"/>
+    	
+    	<path id="compile.classpath">
+    		    <fileset dir="${lib}" includes="**/*.jar"/>
+    	</path>
 
     </target>
 
@@ -54,12 +58,13 @@
     	
     	
     	<javac 
-    	                debug="${debug}" deprecation="true"
+    					debug="${debug}" deprecation="true"
     	                destdir="${builddir}" optimize="true"
     	                srcdir="${src}"
     	                source="1.8" target="1.8" encoding="UTF-8"
     	                includeantruntime="no"
     	            >
+    				<classpath refid="compile.classpath"/>
     	            <include name="**/QuaquaPantherFileChooserLAF.java"/>
     	            <include name="**/QuaquaLeopardFileChooserLAF.java"/>
     	            <include name="**/Quaqua16LionFileChooserLAF.java"/>
