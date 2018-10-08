@@ -13,7 +13,13 @@ My goal here is to try to morph Randelshofer's JFC into a pure Java implementati
 
 Now that JavaFX is being spun out of Java, some may yet still find this useful.
 
-
+Requirements/Dependencies
+------------
+- Java 8
+- TwelveMonkeys ImageIO 3.5-SNAPSHOT or newer, include these artifacts:
+  - core
+  - metadata
+  - icns
 
 
 Code notes:
