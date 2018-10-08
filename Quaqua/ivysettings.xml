@@ -4,6 +4,11 @@
   <!--Authentication required for publishing (deployment). 'Artifactory Realm' is the realm used by Artifactory so don't change it.-->
   <credentials host="artifactory.home.lan" realm="Artifactory Realm" username="${security.getCurrentUsername()}" passwd="${security.getEncryptedPassword()!}" />
   <resolvers>
+    
+    <filesystem name="local">
+            <artifact pattern="${user.home}/.ivy2/local/[organisation]/[module]/[revision]/[ext]s/[artifact].[ext]"/>
+    </filesystem>
+    
     <chain name="main">
       <ibiblio name="public" m2compatible="true" root="http://artifactory.home.lan:8081/artifactory/ivy-release" />
     </chain>
