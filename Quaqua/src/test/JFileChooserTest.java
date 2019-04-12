@@ -27,18 +27,26 @@ public class JFileChooserTest extends JFrame{
 	public void showFD() {
 		JFileChooser fileChooser = new JFileChooser();
 		fileChooser.setCurrentDirectory(new File(System.getProperty("user.home")));
-		int result = fileChooser.showOpenDialog(this);
-		System.out.println("result: " + result);
+		fileChooser.putClientProperty("JFileChooser.packageIsTraversable", Boolean.FALSE);
+		//fileChooser.putClientProperty("JFileChooser.packageIsTraversable", "never");
+		//fileChooser.putClientProperty("JFileChooser.appBundleIsTraversable", "never");
+		
+		boolean istrav = fileChooser.isTraversable(new File("/Users/mhovey/Documents/testout/testpackage.rge"));
+		
+		System.out.println("is traversible: " + istrav);
+		
+		//int result = fileChooser.showOpenDialog(this);
+		//System.out.println("result: " + result);
 	}
 	
 	public static void main(String[] args) {
 		
-		try{
-			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
-			//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
-		}catch(Exception e){
-			System.err.println("unable to load quaqua");
-		}
+//		try{
+//			UIManager.setLookAndFeel(ch.randelshofer.quaqua.QuaquaManager.getLookAndFeel());
+//			//UIManager.setLookAndFeel("javax.swing.plaf.nimbus.NimbusLookAndFeel");
+//		}catch(Exception e){
+//			System.err.println("unable to load quaqua");
+//		}
 		
 		JFileChooserTest app = new JFileChooserTest();
 		app.setVisible(true);

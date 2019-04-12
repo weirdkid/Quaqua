@@ -8,11 +8,14 @@
 package ch.randelshofer.quaqua;
 
 import java.awt.KeyboardFocusManager;
-import java.awt.event.*;
-import javax.swing.*;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+
+import javax.swing.JComponent;
+import javax.swing.JFormattedTextField;
+import javax.swing.JPasswordField;
+import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
-import sun.awt.CausedFocusEvent;
-import sun.awt.CausedFocusEvent.Cause;
 
 /**
  * QuaquaTextFieldFocusHandler. Selects all text of a JTextComponent, if
@@ -57,10 +60,9 @@ public class QuaquaTextFieldFocusHandler implements FocusListener {
             if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE ||
                     tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
                     UIManager.getBoolean(uiProperty)) {
-                if (event instanceof CausedFocusEvent) {
-                    CausedFocusEvent cfEvent = (CausedFocusEvent) event;
-                    if (cfEvent.getCause() == Cause.TRAVERSAL_FORWARD ||
-                            cfEvent.getCause() == Cause.TRAVERSAL_BACKWARD) {
+                if (event instanceof FocusEvent) {
+                    FocusEvent cfEvent = (FocusEvent) event;
+                    if (cfEvent.getID() == FocusEvent.FOCUS_GAINED) {
                         tc.selectAll();
                     }
                 }

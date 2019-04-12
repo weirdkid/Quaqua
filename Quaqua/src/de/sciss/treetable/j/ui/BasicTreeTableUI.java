@@ -95,7 +95,7 @@ import javax.swing.tree.TreeCellRenderer;
 import javax.swing.tree.TreeModel;
 import javax.swing.tree.TreePath;
 
-import com.sun.java.swing.Painter;
+import javax.swing.Painter;
 
 import de.sciss.treetable.j.TreeTable;
 import de.sciss.treetable.j.TreeTable.DropLocation;
