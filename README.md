@@ -21,6 +21,14 @@ Requirements/Dependencies
   - metadata
   - icns
 
+Illegal Reflective Access Warnings in JDK9+
+-----------
+To hide the warnings about illegal reflective access, launch your app with the jvm paramater:
+
+java --add-opens java.desktop/com.apple.laf=ALL-UNNAMED ...
+
+This will hide the warnings, but this does not fix the issue. Future jdk could remove the ability to force allowing the reflective access if not explicity allowed by the library. 
+
 
 Code notes:
 -----------
