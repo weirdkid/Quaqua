@@ -53,7 +53,7 @@
 
     </target>
 
-    <target name="compile" depends="init" >
+    <target name="compile" depends="init,ivy-retrieve" >
     	
     	
     	
