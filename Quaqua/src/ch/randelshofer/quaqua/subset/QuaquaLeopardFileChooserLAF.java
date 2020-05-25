@@ -79,9 +79,10 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
      * Creates a new instance.
      */
     public QuaquaLeopardFileChooserLAF() {
-        String targetClassName = "apple.laf.AquaLookAndFeel";
+    	//System.out.println(UIManager.getSystemLookAndFeelClassName());
+        String targetClassName = "com.apple.laf.AquaLookAndFeel";
         try {
-            setTarget((LookAndFeel) Class.forName(targetClassName).newInstance());
+            setTarget((LookAndFeel) Class.forName(targetClassName).getDeclaredConstructor().newInstance());
         } catch (Exception e) {
             throw new InternalError(
                     "Unable to instanciate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());

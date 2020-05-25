@@ -1,6 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.launching.macosx.MacOSXType/openjdk-11.0.2">
+		<attributes>
+			<attribute name="module" value="true"/>
+		</attributes>
+	</classpathentry>
 	<classpathentry kind="src" path="Quaqua/src"/>
 	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.common-common-image.jar"/>
 	<classpathentry kind="lib" path="Quaqua/lib/com.twelvemonkeys.common-common-io.jar"/>

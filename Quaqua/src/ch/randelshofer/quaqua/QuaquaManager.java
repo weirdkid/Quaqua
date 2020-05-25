@@ -411,12 +411,10 @@ public class QuaquaManager {
      */
     public static LookAndFeel getLookAndFeel() {
         try {
-            return (LookAndFeel) Class.forName(getLookAndFeelClassName()).newInstance();
+        	String lafName = getLookAndFeelClassName();
+            return (LookAndFeel) Class.forName(lafName).getDeclaredConstructor().newInstance();
         } catch (Exception e) {
             InternalError ie = new InternalError(e.toString());
-            /* FIXME - This needs JDK 1.4 to work.
-            ie.initCause(e);
-             */
             throw ie;
         }
     }
