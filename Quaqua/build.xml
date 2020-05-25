@@ -61,7 +61,7 @@
     					debug="${debug}" deprecation="true"
     	                destdir="${builddir}" optimize="true"
     	                srcdir="${src}"
-    	                source="1.8" target="1.8" encoding="UTF-8"
+    	                source="11" target="11" encoding="UTF-8"
     	                includeantruntime="no"
     	            >
     				<classpath refid="compile.classpath"/>
