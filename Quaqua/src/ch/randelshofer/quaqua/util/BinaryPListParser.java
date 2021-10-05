@@ -701,7 +701,11 @@ public class BinaryPListParser {
      */
     private void parseInt(DataInputStream in, int count) throws IOException {
         if (count > 8) {
-            throw new IOException("parseInt: unsupported byte count: " + count);
+        	// truncate it. it's big-endian, so if there's 16 bytes they are probably 
+        	// all zero's anyway
+            in.skipBytes(count - 8);
+            count = 8;
+        	//throw new IOException("parseInt: unsupported byte count: " + count);
         }
         long value = 0;
         for (int i = 0; i < count; i++) {
