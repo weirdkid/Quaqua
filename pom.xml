@@ -6,6 +6,10 @@
     <groupId>com.weirdkid</groupId>
     <artifactId>quaqua-jfc</artifactId>
     <version>23.12-SNAPSHOT</version>
+    
+    <properties>
+    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	</properties>
 
     <repositories>
         <!-- Custom repository -->
@@ -46,15 +50,23 @@
     </dependencies>
 
     <build>
+		<finalName>${project.artifactId}-${project.version}</finalName>
         <plugins>
+			<!-- compile the code -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.8.1</version> <!-- Use the latest version available -->
+                <version>3.11.0</version> <!-- Use the latest version available -->
                 <configuration>
-                    <source>1.8</source> <!-- Set your JDK version -->
-                    <target>1.8</target> <!-- Set your JDK version -->
+                    <source>1.8</source> <!-- newer jdk will not compile because lib uses sun.awt packages -->
+                    <target>1.8</target> 
                 </configuration>
+            </plugin>
+            <!-- jar the compiled code -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-jar-plugin</artifactId>
+                <version>3.3.0</version> <!-- use the latest version -->
             </plugin>
         </plugins>
     </build>
