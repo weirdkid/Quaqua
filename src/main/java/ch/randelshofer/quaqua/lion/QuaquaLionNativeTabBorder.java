@@ -10,9 +10,10 @@
  */
 package ch.randelshofer.quaqua.lion;
 
+import java.awt.Insets;
+
 import ch.randelshofer.quaqua.border.QuaquaNativeBorder;
 import ch.randelshofer.quaqua.osx.OSXAquaPainter.Widget;
-import java.awt.Insets;
 
 /**
  * {@code QuaquaLionNativeTabBorder}.
@@ -22,20 +23,20 @@ import java.awt.Insets;
  */
 public class QuaquaLionNativeTabBorder extends QuaquaNativeBorder {
 
-    public QuaquaLionNativeTabBorder(int cacheSize, Insets imageInsets, Insets borderInsets) {
-        super(cacheSize, Widget.tab, imageInsets, borderInsets);
-    }
+	public QuaquaLionNativeTabBorder(int cacheSize, Insets imageInsets, Insets borderInsets) {
+		super(cacheSize, Widget.tab, imageInsets, borderInsets);
+	}
 
-    public QuaquaLionNativeTabBorder(Insets imageInsets, Insets borderInsets) {
-        super(Widget.tab,  imageInsets, borderInsets);
-    }
+	public QuaquaLionNativeTabBorder(Insets imageInsets, Insets borderInsets) {
+		super(Widget.tab, imageInsets, borderInsets);
+	}
 
-    public QuaquaLionNativeTabBorder(int cacheSize) {
-        super(cacheSize, Widget.tab);
-    }
+	public QuaquaLionNativeTabBorder(int cacheSize) {
+		super(cacheSize, Widget.tab);
+	}
 
-    public QuaquaLionNativeTabBorder() {
-        super(Widget.tab);
-    }
-    
+	public QuaquaLionNativeTabBorder() {
+		super(Widget.tab);
+	}
+
 }

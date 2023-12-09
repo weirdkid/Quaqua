@@ -18,8 +18,8 @@ import javax.swing.UIManager;
 import javax.swing.text.JTextComponent;
 
 /**
- * QuaquaTextFieldFocusHandler. Selects all text of a JTextComponent, if
- * the user used a keyboard focus traversal key to transfer the focus on the
+ * QuaquaTextFieldFocusHandler. Selects all text of a JTextComponent, if the
+ * user used a keyboard focus traversal key to transfer the focus on the
  * JTextComponent.
  *
  * @author Werner Randelshofer
@@ -27,55 +27,57 @@ import javax.swing.text.JTextComponent;
  */
 public class QuaquaTextFieldFocusHandler implements FocusListener {
 
-    private static QuaquaTextFieldFocusHandler instance;
+	private static QuaquaTextFieldFocusHandler instance;
 
-    public static QuaquaTextFieldFocusHandler getInstance() {
-        if (instance == null) {
-            instance = new QuaquaTextFieldFocusHandler();
-        }
-        return instance;
-    }
+	public static QuaquaTextFieldFocusHandler getInstance() {
+		if (instance == null) {
+			instance = new QuaquaTextFieldFocusHandler();
+		}
+		return instance;
+	}
 
-    /**
-     * Allow instance creation by UIManager.
-     */
-    public QuaquaTextFieldFocusHandler() {
-    }
+	/**
+	 * Allow instance creation by UIManager.
+	 */
+	public QuaquaTextFieldFocusHandler() {
+	}
 
-    public void focusGained(FocusEvent event) {
-        QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
+	@Override
+	public void focusGained(FocusEvent event) {
+		QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
 
-        final JTextComponent tc = (JTextComponent) event.getSource();
-        if (tc.isEditable() && tc.isEnabled()) {
+		final JTextComponent tc = (JTextComponent) event.getSource();
+		if (tc.isEditable() && tc.isEnabled()) {
 
-            String uiProperty;
-            if (tc instanceof JPasswordField) {
-                uiProperty = "PasswordField.autoSelect";
-            } else if (tc instanceof JFormattedTextField) {
-                uiProperty = "FormattedTextField.autoSelect";
-            } else {
-                uiProperty = "TextField.autoSelect";
-            }
+			String uiProperty;
+			if (tc instanceof JPasswordField) {
+				uiProperty = "PasswordField.autoSelect";
+			} else if (tc instanceof JFormattedTextField) {
+				uiProperty = "FormattedTextField.autoSelect";
+			} else {
+				uiProperty = "TextField.autoSelect";
+			}
 
-            if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE ||
-                    tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null &&
-                    UIManager.getBoolean(uiProperty)) {
-                if (event instanceof FocusEvent) {
-                    FocusEvent cfEvent = (FocusEvent) event;
-                    if (cfEvent.getID() == FocusEvent.FOCUS_GAINED) {
-                        tc.selectAll();
-                    }
-                }
-            }
-        }
-        if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
-            QuaquaKeyboardFocusManager kfm = (QuaquaKeyboardFocusManager) KeyboardFocusManager.getCurrentKeyboardFocusManager();
-            kfm.setLastKeyboardTraversingComponent(null);
-        }
-    }
+			if (tc.getClientProperty("Quaqua.TextComponent.autoSelect") == Boolean.TRUE
+					|| tc.getClientProperty("Quaqua.TextComponent.autoSelect") == null
+							&& UIManager.getBoolean(uiProperty)) {
+				if (event instanceof FocusEvent) {
+					FocusEvent cfEvent = event;
+					if (cfEvent.getID() == FocusEvent.FOCUS_GAINED) {
+						tc.selectAll();
+					}
+				}
+			}
+		}
+		if (KeyboardFocusManager.getCurrentKeyboardFocusManager() instanceof QuaquaKeyboardFocusManager) {
+			QuaquaKeyboardFocusManager kfm = (QuaquaKeyboardFocusManager) KeyboardFocusManager
+					.getCurrentKeyboardFocusManager();
+			kfm.setLastKeyboardTraversingComponent(null);
+		}
+	}
 
-    public void focusLost(FocusEvent event) {
-        QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
-    }
+	@Override
+	public void focusLost(FocusEvent event) {
+		QuaquaUtilities.repaintBorder((JComponent) event.getComponent());
+	}
 }
-

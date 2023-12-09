@@ -8,7 +8,8 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.table.*;
+import javax.swing.table.DefaultTableCellRenderer;
+
 /**
  * QuaquaDefaultTableCellRenderer.
  *
@@ -16,10 +17,12 @@ import javax.swing.table.*;
  * @version $Id$
  */
 public class QuaquaDefaultTableCellRenderer extends DefaultTableCellRenderer.UIResource {
-    
-    /** Creates a new instance. */
-    public QuaquaDefaultTableCellRenderer() {
-        setOpaque(false);
-    }
-    
+
+	private static final long serialVersionUID = 1L;
+
+	/** Creates a new instance. */
+	public QuaquaDefaultTableCellRenderer() {
+		setOpaque(false);
+	}
+
 }

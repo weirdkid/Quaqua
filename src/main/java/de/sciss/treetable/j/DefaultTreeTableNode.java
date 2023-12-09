@@ -17,29 +17,35 @@ package de.sciss.treetable.j;
 import javax.swing.tree.DefaultMutableTreeNode;
 
 public class DefaultTreeTableNode extends DefaultMutableTreeNode implements MutableTreeTableNode {
-	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DefaultTreeTableNode() {
 		this("");
 	}
-	
-	public DefaultTreeTableNode(Object ... rowData) {
-		if (rowData == null)
+
+	public DefaultTreeTableNode(Object... rowData) {
+		if (rowData == null) {
 			throw new NullPointerException();
+		}
 		this.rowData = rowData;
 	}
-	
+
 	private Object[] rowData;
 
 	@Override
 	public Object getValueAt(int column) {
 		return rowData[column];
 	}
-	
+
 	@Override
 	public void setValueAt(Object value, int column) {
 		rowData[column] = value;
 	}
-	
+
 	@Override
 	public int getColumnCount() {
 		return rowData.length;

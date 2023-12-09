@@ -18,15 +18,12 @@ import java.awt.Component;
 
 import javax.swing.CellEditor;
 
-import de.sciss.treetable.j.TreeTable;
-
 public interface TreeTableCellEditor extends CellEditor {
 
-	Component getTreeTableCellEditorComponent(TreeTable treeTable,
-			Object value, boolean isSelected, int row, int column);
+	Component getTreeTableCellEditorComponent(TreeTable treeTable, Object value, boolean isSelected, int row,
+			int column);
 
-	Component getTreeTableCellEditorComponent(TreeTable treeTable,
-			Object value, boolean isSelected, int row, int column,
-			boolean expanded, boolean leaf);
+	Component getTreeTableCellEditorComponent(TreeTable treeTable, Object value, boolean isSelected, int row,
+			int column, boolean expanded, boolean leaf);
 
 }

@@ -23,10 +23,13 @@ import javax.swing.JTable;
 import javax.swing.JTextField;
 import javax.swing.JTree;
 
+public class DefaultTreeTableCellEditor extends DefaultCellEditor implements TreeTableCellEditor {
 
-public class DefaultTreeTableCellEditor extends DefaultCellEditor
-		implements TreeTableCellEditor {
-	
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public DefaultTreeTableCellEditor(JCheckBox checkBox) {
 		super(checkBox);
 		// TODO Auto-generated constructor stub
@@ -43,34 +46,29 @@ public class DefaultTreeTableCellEditor extends DefaultCellEditor
 	}
 
 	@Override
-	public Component getTreeTableCellEditorComponent(TreeTable treeTable,
-			Object value, boolean selected, int row, int column) {
-		treeTable.getUI().configureCellEditor(this,
-				treeTable, value, selected, row, column);
+	public Component getTreeTableCellEditorComponent(TreeTable treeTable, Object value, boolean selected, int row,
+			int column) {
+		treeTable.getUI().configureCellEditor(this, treeTable, value, selected, row, column);
 		return getComponent();
 	}
 
 	@Override
-	public Component getTreeTableCellEditorComponent(TreeTable treeTable,
-			Object value, boolean selected, int row, int column,
-			boolean expanded, boolean leaf) {
-		treeTable.getUI().configureCellEditor(this,
-				treeTable, value, selected, row, column, expanded, leaf);
+	public Component getTreeTableCellEditorComponent(TreeTable treeTable, Object value, boolean selected, int row,
+			int column, boolean expanded, boolean leaf) {
+		treeTable.getUI().configureCellEditor(this, treeTable, value, selected, row, column, expanded, leaf);
 		return getComponent();
 	}
-	
+
 	@Override
-	public /* final */ Component getTableCellEditorComponent(JTable table,
-			Object value, boolean selected, int row, int column) {
-		return super.getTableCellEditorComponent(
-				table, value, selected, row, column);
+	public /* final */ Component getTableCellEditorComponent(JTable table, Object value, boolean selected, int row,
+			int column) {
+		return super.getTableCellEditorComponent(table, value, selected, row, column);
 	}
-	
+
 	@Override
-	public /* final */ Component getTreeCellEditorComponent(JTree tree,
-			Object value, boolean selected, boolean expanded, boolean leaf, int row) {
-		return super.getTreeCellEditorComponent(
-				tree, value, selected, expanded, leaf, row);
+	public /* final */ Component getTreeCellEditorComponent(JTree tree, Object value, boolean selected,
+			boolean expanded, boolean leaf, int row) {
+		return super.getTreeCellEditorComponent(tree, value, selected, expanded, leaf, row);
 	}
 
 }

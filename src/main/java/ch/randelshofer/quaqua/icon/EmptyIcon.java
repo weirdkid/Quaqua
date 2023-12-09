@@ -14,6 +14,7 @@ package ch.randelshofer.quaqua.icon;
 import java.awt.Component;
 import java.awt.Graphics;
 import java.io.Serializable;
+
 import javax.swing.Icon;
 
 /**
@@ -23,24 +24,28 @@ import javax.swing.Icon;
  * @version $Id$
  */
 public class EmptyIcon implements Icon, Serializable {
-    private int width;
-    private int height;
-    
-    public EmptyIcon(int width, int height) {
-        this.width=width;
-        this.height=height;
-    }
+	private static final long serialVersionUID = 1L;
+	private int width;
+	private int height;
 
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        // empty
-    }
+	public EmptyIcon(int width, int height) {
+		this.width = width;
+		this.height = height;
+	}
 
-    public int getIconWidth() {
-        return width;
-    }
+	@Override
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		// empty
+	}
 
-    public int getIconHeight() {
-        return height;
-    }
+	@Override
+	public int getIconWidth() {
+		return width;
+	}
+
+	@Override
+	public int getIconHeight() {
+		return height;
+	}
 
 }

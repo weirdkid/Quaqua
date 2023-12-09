@@ -7,313 +7,316 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.util.*;
+import java.awt.Color;
+import java.awt.Font;
+import java.awt.FontMetrics;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Insets;
+import java.awt.Rectangle;
+import java.beans.PropertyChangeEvent;
+
+import javax.swing.Icon;
+import javax.swing.JComponent;
+import javax.swing.JLabel;
+import javax.swing.LookAndFeel;
+import javax.swing.SwingUtilities;
+import javax.swing.UIManager;
+import javax.swing.border.Border;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicGraphicsUtils;
+import javax.swing.plaf.basic.BasicLabelUI;
+
 import ch.randelshofer.quaqua.border.BackgroundBorder;
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
-import ch.randelshofer.quaqua.util.Debug;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.beans.*;
-
-import javax.swing.*;
-import javax.swing.border.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
+import ch.randelshofer.quaqua.util.Debug;
+import ch.randelshofer.quaqua.util.Fonts;
 
 /**
  * QuaquaLabelUI.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class QuaquaLabelUI extends BasicLabelUI implements VisuallyLayoutable {
 
-    protected final static QuaquaLabelUI labelUI = new QuaquaLabelUI();
-    /* These rectangles/insets are allocated once for this shared LabelUI
-     * implementation.  Re-using rectangles rather than allocating
-     * them in each getPreferredSize call sped up the method substantially.
-     */
-    private static Rectangle iconR = new Rectangle();
-    private static Rectangle textR = new Rectangle();
-    private static Rectangle viewR = new Rectangle();
-    private static Insets viewInsets = new Insets(0, 0, 0, 0);
+	protected final static QuaquaLabelUI labelUI = new QuaquaLabelUI();
+	/*
+	 * These rectangles/insets are allocated once for this shared LabelUI
+	 * implementation. Re-using rectangles rather than allocating them in each
+	 * getPreferredSize call sped up the method substantially.
+	 */
+	private static Rectangle iconR = new Rectangle();
+	private static Rectangle textR = new Rectangle();
+	private static Rectangle viewR = new Rectangle();
+	private static Insets viewInsets = new Insets(0, 0, 0, 0);
 
-    /**
-     * Preferred spacing between labels and other components.
-     * Pixels from colon and associated controls (RadioButton,
-     * CheckBox)
-     * /
-     * private final static Insets associatedRegularSpacing = new Insets(8,8,8,8);
-     * private final static Insets associatedSmallSpacing = new Insets(6,6,6,6);
-     * private final static Insets associatedMiniSpacing = new Insets(5,5,5,5);
-     */
-    public static ComponentUI createUI(JComponent c) {
-        return labelUI;
-    }
+	/**
+	 * Preferred spacing between labels and other components. Pixels from colon and
+	 * associated controls (RadioButton, CheckBox) / private final static Insets
+	 * associatedRegularSpacing = new Insets(8,8,8,8); private final static Insets
+	 * associatedSmallSpacing = new Insets(6,6,6,6); private final static Insets
+	 * associatedMiniSpacing = new Insets(5,5,5,5);
+	 */
+	public static ComponentUI createUI(JComponent c) {
+		return labelUI;
+	}
 
-    @Override
-    protected void installDefaults(JLabel b) {
-        super.installDefaults(b);
+	@Override
+	protected void installDefaults(JLabel b) {
+		super.installDefaults(b);
 
-        // load shared instance defaults
-        LookAndFeel.installBorder(b, "Label.border");
+		// load shared instance defaults
+		LookAndFeel.installBorder(b, "Label.border");
 
-        // FIXME - Very, very dirty trick to achieve small labels on sliders
-        //         This hack should be removed, when we implement a SliderUI
-        //         on our own.
-        if (b.getClass().getName().endsWith("LabelUIResource")) {
-            b.setFont(UIManager.getFont("Slider.labelFont"));
-        }
-        
-        QuaquaUtilities.applySizeVariant(b);
-    }
+		// FIXME - Very, very dirty trick to achieve small labels on sliders
+		// This hack should be removed, when we implement a SliderUI
+		// on our own.
+		if (b.getClass().getName().endsWith("LabelUIResource")) {
+			b.setFont(UIManager.getFont("Slider.labelFont"));
+		}
 
-    @Override
-    public void paint(Graphics gr, JComponent c) {
-        Graphics2D g = (Graphics2D) gr;
-        Object oldHints = QuaquaUtilities.beginGraphics(g);
+		QuaquaUtilities.applySizeVariant(b);
+	}
 
-        // Paint background again so that the texture paint is drawn
-        if (c.isOpaque()) {
-            g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
-            g.fillRect(0, 0, c.getWidth(), c.getHeight());
-        }
+	@Override
+	public void paint(Graphics gr, JComponent c) {
+		Graphics2D g = (Graphics2D) gr;
+		Object oldHints = QuaquaUtilities.beginGraphics(g);
 
-        // Paint background border
-        Border b = c.getBorder();
-        if (b != null && b instanceof BackgroundBorder) {
-            ((BackgroundBorder) b).getBackgroundBorder().paintBorder(c, g, 0, 0, c.getWidth(), c.getHeight());
-        }
+		// Paint background again so that the texture paint is drawn
+		if (c.isOpaque()) {
+			g.setPaint(PaintableColor.getPaint(c.getBackground(), c));
+			g.fillRect(0, 0, c.getWidth(), c.getHeight());
+		}
 
-        super.paint(g, c);
-        QuaquaUtilities.endGraphics(g, oldHints);
-        Debug.paint(g, c, this);
-    }
+		// Paint background border
+		Border b = c.getBorder();
+		if (b != null && b instanceof BackgroundBorder) {
+			((BackgroundBorder) b).getBackgroundBorder().paintBorder(c, g, 0, 0, c.getWidth(), c.getHeight());
+		}
 
-    /**
-     * Paint label with disabled text color.
-     *
-     * @see #paint
-     * @see #paintEnabledText
-     */
-    @Override
-    protected void paintDisabledText(JLabel l, Graphics g, String s, int textX, int textY) {
-        // Make sure we render with the right drawing properties and make sure
-        // we can edit them by client properties
-        Font font = l.getFont();
-        Color foreground = UIManager.getColor("Label.disabledForeground");
-        int accChar = -1; //l.getDisplayedMnemonicIndex();
+		super.paint(g, c);
+		QuaquaUtilities.endGraphics(g, oldHints);
+		Debug.paint(g, c, this);
+	}
 
-        String style = (String) l.getClientProperty("Quaqua.Label.style");
-        if (style != null) {
-            boolean selected = style.endsWith("Selected");
+	/**
+	 * Paint label with disabled text color.
+	 *
+	 * @see #paint
+	 * @see #paintEnabledText
+	 */
+	@Override
+	protected void paintDisabledText(JLabel l, Graphics g, String s, int textX, int textY) {
+		// Make sure we render with the right drawing properties and make sure
+		// we can edit them by client properties
+		Font font = l.getFont();
+		Color foreground = UIManager.getColor("Label.disabledForeground");
+		int accChar = -1; // l.getDisplayedMnemonicIndex();
 
-            if (style.startsWith("category")) {
+		String style = (String) l.getClientProperty("Quaqua.Label.style");
+		if (style != null) {
+			boolean selected = style.endsWith("Selected");
 
-                s = s.toUpperCase();
-                font = UIManager.getFont("Tree.sideBarCategory.font");
-                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
-                foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
+			if (style.startsWith("category")) {
 
-            } else if (style.startsWith("row")) {
+				s = s.toUpperCase();
+				font = UIManager.getFont("Tree.sideBarCategory.font");
+				style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle")
+						: UIManager.getString("Tree.sideBarCategory.style");
+				foreground = UIManager.getColor(
+						selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
 
-                font = selected ? UIManager.getFont("Tree.sideBar.selectionFont") : UIManager.getFont("Tree.sideBar.font");
+			} else if (style.startsWith("row")) {
 
-                // Preserve font style attributes as long as they don't interfere
-                // with the font style of the sidebar.
-                if (selected) {
-                    font = font.deriveFont(l.getFont().getStyle() | font.getStyle());
-                } else {
-                    font = font.deriveFont(l.getFont().getStyle());
-                }
+				font = selected ? UIManager.getFont("Tree.sideBar.selectionFont")
+						: UIManager.getFont("Tree.sideBar.font");
 
-                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
-            }
+				// Preserve font style attributes as long as they don't interfere
+				// with the font style of the sidebar.
+				if (selected) {
+					font = font.deriveFont(l.getFont().getStyle() | font.getStyle());
+				} else {
+					font = font.deriveFont(l.getFont().getStyle());
+				}
 
-            if (style != null && style.equals("emboss")) {
-                g.setFont(font);
-                g.setColor(UIManager.getColor("Label.embossForeground"));
-                QuaquaUtilities.drawString(g, s, accChar, textX, textY + 1);
-            } else if (style != null && style.equals("shadow")) {
-                g.setFont(font);
-                g.setColor(UIManager.getColor("Label.shadowForeground"));
-                QuaquaUtilities.drawString(g, s, accChar, textX, textY + 1);
-            }
-        }
+				style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle")
+						: UIManager.getString("Tree.sideBar.style");
+			}
 
-        g.setFont(font);
-        g.setColor(foreground);
-        QuaquaUtilities.drawString(g, s, accChar,
-                textX, textY);
-    }
+			if (style != null && style.equals("emboss")) {
+				g.setFont(font);
+				g.setColor(UIManager.getColor("Label.embossForeground"));
+				BasicGraphicsUtils.drawString(g, s, accChar, textX, textY + 1);
+			} else if (style != null && style.equals("shadow")) {
+				g.setFont(font);
+				g.setColor(UIManager.getColor("Label.shadowForeground"));
+				BasicGraphicsUtils.drawString(g, s, accChar, textX, textY + 1);
+			}
+		}
 
-    @Override
-    protected void paintEnabledText(JLabel l, Graphics g, String s, int textX, int textY) {
-        int mnemIndex = l.getDisplayedMnemonicIndex();
+		g.setFont(font);
+		g.setColor(foreground);
+		BasicGraphicsUtils.drawString(g, s, accChar, textX, textY);
+	}
 
-        // Make sure we render with the right drawing properties and make sure
-        // we can edit them by client properties
-        Font font = l.getFont();
-        Color foreground = l.getForeground();
+	@Override
+	protected void paintEnabledText(JLabel l, Graphics g, String s, int textX, int textY) {
+		int mnemIndex = l.getDisplayedMnemonicIndex();
 
-        String style = (String) l.getClientProperty("Quaqua.Label.style");
-        if (style != null) {
-            boolean selected = style.endsWith("Selected");
-            boolean active = style.indexOf("Inactive") == -1;
+		// Make sure we render with the right drawing properties and make sure
+		// we can edit them by client properties
+		Font font = l.getFont();
+		Color foreground = l.getForeground();
 
-            if (style.startsWith("category")) {
+		String style = (String) l.getClientProperty("Quaqua.Label.style");
+		if (style != null) {
+			boolean selected = style.endsWith("Selected");
+			boolean active = style.indexOf("Inactive") == -1;
 
-                s = s.toUpperCase();
-                font = UIManager.getFont(selected ? "Tree.sideBarCategory.selectionFont" : "Tree.sideBarCategory.font");
-                foreground = UIManager.getColor(selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
-                if (foreground instanceof InactivatableColorUIResource) {
-                    ((InactivatableColorUIResource) foreground).setActive(active);
-                }
-                style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle") :UIManager.getString("Tree.sideBarCategory.style");
+			if (style.startsWith("category")) {
 
-            } else if (style.startsWith("row")) {
-                font = selected ? UIManager.getFont("Tree.sideBar.selectionFont") : UIManager.getFont("Tree.sideBar.font");
-                if (font == null) {
-                    font = l.getFont();
-                }
+				s = s.toUpperCase();
+				font = UIManager.getFont(selected ? "Tree.sideBarCategory.selectionFont" : "Tree.sideBarCategory.font");
+				foreground = UIManager.getColor(
+						selected ? "Tree.sideBarCategory.selectionForeground" : "Tree.sideBarCategory.foreground");
+				if (foreground instanceof InactivatableColorUIResource) {
+					((InactivatableColorUIResource) foreground).setActive(active);
+				}
+				style = (selected) ? UIManager.getString("Tree.sideBarCategory.selectionStyle")
+						: UIManager.getString("Tree.sideBarCategory.style");
 
-                // Preserve font style attributes as long as they don't interfere
-                // with the font style of the sidebar.
-                if (selected) {
-                    font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
-                } else {
-                    font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
-                }
+			} else if (style.startsWith("row")) {
+				font = selected ? UIManager.getFont("Tree.sideBar.selectionFont")
+						: UIManager.getFont("Tree.sideBar.font");
+				if (font == null) {
+					font = l.getFont();
+				}
 
+				// Preserve font style attributes as long as they don't interfere
+				// with the font style of the sidebar.
+				if (selected) {
+					font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
+				} else {
+					font = font.deriveFont(l.getFont().getStyle() & Font.ITALIC | font.getStyle());
+				}
 
-                foreground = UIManager.getColor(selected ? "Tree.sideBar.selectionForeground" : "Tree.sideBar.foreground");
-                if (foreground instanceof InactivatableColorUIResource) {
-                    ((InactivatableColorUIResource) foreground).setActive(active);
-                }
-                style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle") :UIManager.getString("Tree.sideBar.style");
-            }
-            if (style != null && style.equals("emboss")) {
-                g.setFont(font);
-                g.setColor(UIManager.getColor("Label.embossForeground"));
-                QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY + 1);
-            } else if (style != null && style.equals("shadow")) {
-                g.setFont(font);
-                g.setColor(UIManager.getColor("Label.shadowForeground"));
-                QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY + 1);
-            }
-        }
+				foreground = UIManager
+						.getColor(selected ? "Tree.sideBar.selectionForeground" : "Tree.sideBar.foreground");
+				if (foreground instanceof InactivatableColorUIResource) {
+					((InactivatableColorUIResource) foreground).setActive(active);
+				}
+				style = (selected) ? UIManager.getString("Tree.sideBar.selectionStyle")
+						: UIManager.getString("Tree.sideBar.style");
+			}
+			if (style != null && style.equals("emboss")) {
+				g.setFont(font);
+				g.setColor(UIManager.getColor("Label.embossForeground"));
+				BasicGraphicsUtils.drawString(g, s, mnemIndex, textX, textY + 1);
+			} else if (style != null && style.equals("shadow")) {
+				g.setFont(font);
+				g.setColor(UIManager.getColor("Label.shadowForeground"));
+				BasicGraphicsUtils.drawString(g, s, mnemIndex, textX, textY + 1);
+			}
+		}
 
-        g.setFont(font);
-        g.setColor(foreground);
-        QuaquaUtilities.drawString(g, s, mnemIndex, textX, textY);
-    }
+		g.setFont(font);
+		g.setColor(foreground);
+		BasicGraphicsUtils.drawString(g, s, mnemIndex, textX, textY);
+	}
 
-    /**
-     * Forwards the call to SwingUtilities.layoutCompoundLabel().
-     * This method is here so that a subclass could do Label specific
-     * layout and to shorten the method name a little.
-     *
-     * @see SwingUtilities#layoutCompoundLabel
-     */
-    @Override
-    protected String layoutCL(
-            JLabel label,
-            FontMetrics fontMetrics,
-            String text,
-            Icon icon,
-            Rectangle viewR,
-            Rectangle iconR,
-            Rectangle textR) {
-        return SwingUtilities.layoutCompoundLabel(
-                (JComponent) label,
-                fontMetrics,
-                text,
-                icon,
-                label.getVerticalAlignment(),
-                label.getHorizontalAlignment(),
-                label.getVerticalTextPosition(),
-                label.getHorizontalTextPosition(),
-                viewR,
-                iconR,
-                textR,
-                label.getIconTextGap());
-    }
+	/**
+	 * Forwards the call to SwingUtilities.layoutCompoundLabel(). This method is
+	 * here so that a subclass could do Label specific layout and to shorten the
+	 * method name a little.
+	 *
+	 * @see SwingUtilities#layoutCompoundLabel
+	 */
+	@Override
+	protected String layoutCL(JLabel label, FontMetrics fontMetrics, String text, Icon icon, Rectangle viewR,
+			Rectangle iconR, Rectangle textR) {
+		return SwingUtilities.layoutCompoundLabel(label, fontMetrics, text, icon, label.getVerticalAlignment(),
+				label.getHorizontalAlignment(), label.getVerticalTextPosition(), label.getHorizontalTextPosition(),
+				viewR, iconR, textR, label.getIconTextGap());
+	}
 
-    @Override
-    public int getBaseline(JComponent c, int width, int height) {
-        Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
-        return (vb == null) ? -1 : vb.y + vb.height;
-    }
+	@Override
+	public int getBaseline(JComponent c, int width, int height) {
+		Rectangle vb = getVisualBounds(c, VisuallyLayoutable.TEXT_BOUNDS, width, height);
+		return (vb == null) ? -1 : vb.y + vb.height;
+	}
 
-    public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
-        Rectangle rect = new Rectangle(0, 0, width, height);
-        if (type == VisuallyLayoutable.CLIP_BOUNDS) {
-            return rect;
-        }
+	@Override
+	public Rectangle getVisualBounds(JComponent c, int type, int width, int height) {
+		Rectangle rect = new Rectangle(0, 0, width, height);
+		if (type == VisuallyLayoutable.CLIP_BOUNDS) {
+			return rect;
+		}
 
-        JLabel b = (JLabel) c;
-        String text = b.getText();
-        boolean isEmpty = (text == null || text.length() == 0);
-        if (isEmpty) {
-            text = " ";
-        }
-        Icon icon = (b.isEnabled()) ? b.getIcon() : b.getDisabledIcon();
+		JLabel b = (JLabel) c;
+		String text = b.getText();
+		boolean isEmpty = (text == null || text.length() == 0);
+		if (isEmpty) {
+			text = " ";
+		}
+		Icon icon = (b.isEnabled()) ? b.getIcon() : b.getDisabledIcon();
 
-        Font f = c.getFont();
-        FontMetrics fm = c.getFontMetrics(f);
-        Insets insets = c.getInsets(viewInsets);
+		Font f = c.getFont();
+		FontMetrics fm = c.getFontMetrics(f);
+		Insets insets = c.getInsets(viewInsets);
 
-        viewR.x = insets.left;
-        viewR.y = insets.top;
-        viewR.width = width - (insets.left + insets.right);
-        viewR.height = height - (insets.top + insets.bottom);
+		viewR.x = insets.left;
+		viewR.y = insets.top;
+		viewR.width = width - (insets.left + insets.right);
+		viewR.height = height - (insets.top + insets.bottom);
 
-        iconR.x = iconR.y = iconR.width = iconR.height = 0;
-        textR.x = textR.y = textR.width = textR.height = 0;
+		iconR.x = iconR.y = iconR.width = iconR.height = 0;
+		textR.x = textR.y = textR.width = textR.height = 0;
 
-        String clippedText =
-                layoutCL(b, fm, text, icon, viewR, iconR, textR);
+		String clippedText = layoutCL(b, fm, text, icon, viewR, iconR, textR);
 
-        Rectangle textBounds = Fonts.getPerceivedBounds(text, f, c);
-        if (isEmpty) {
-            textBounds.width = 0;
-        }
-        int ascent = fm.getAscent();
-        textR.x += textBounds.x;
-        textR.width = textBounds.width;
-        textR.y += ascent + textBounds.y;
-        textR.height -= fm.getHeight() - textBounds.height;
+		Rectangle textBounds = Fonts.getPerceivedBounds(text, f, c);
+		if (isEmpty) {
+			textBounds.width = 0;
+		}
+		int ascent = fm.getAscent();
+		textR.x += textBounds.x;
+		textR.width = textBounds.width;
+		textR.y += ascent + textBounds.y;
+		textR.height -= fm.getHeight() - textBounds.height;
 
-        // Determine text rectangle
-        switch (type) {
-            case VisuallyLayoutable.COMPONENT_BOUNDS:
-                if (icon != null) {
-                    rect = textR.union(iconR);
-                } else {
-                    rect.setBounds(textR);
-                }
-                break;
-            case VisuallyLayoutable.TEXT_BOUNDS:
-                if (text == null) {
-                    return rect;
-                }
-                rect.setBounds(textR);
-                break;
-        }
+		// Determine text rectangle
+		switch (type) {
+		case VisuallyLayoutable.COMPONENT_BOUNDS:
+			if (icon != null) {
+				rect = textR.union(iconR);
+			} else {
+				rect.setBounds(textR);
+			}
+			break;
+		case VisuallyLayoutable.TEXT_BOUNDS:
+			if (text == null) {
+				return rect;
+			}
+			rect.setBounds(textR);
+			break;
+		}
 
-        return rect;
-    }
+		return rect;
+	}
 
-    @Override
-    public void propertyChange(PropertyChangeEvent evt) {
-        String name = evt.getPropertyName();
+	@Override
+	public void propertyChange(PropertyChangeEvent evt) {
+		String name = evt.getPropertyName();
 
-        if (name.equals("JComponent.sizeVariant")) {
-            QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
-        } else if (name.equals("Quaqua.Label.style")) {
-            QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
-        } else {
-            super.propertyChange(evt);
-        }
-    }
+		if (name.equals("JComponent.sizeVariant")) {
+			QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
+		} else if (name.equals("Quaqua.Label.style")) {
+			QuaquaUtilities.applySizeVariant((JLabel) evt.getSource());
+		} else {
+			super.propertyChange(evt);
+		}
+	}
 }

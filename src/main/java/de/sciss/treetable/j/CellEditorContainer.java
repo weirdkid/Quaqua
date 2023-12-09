@@ -27,71 +27,72 @@ import javax.swing.event.CellEditorListener;
 import javax.swing.table.TableCellEditor;
 
 /**
- * A container that positions an editor component to a 
- * region of the cell.
+ * A container that positions an editor component to a region of the cell.
  * <p>
- * For the tree column the bounds are shifted past the
- * node's icon.
+ * For the tree column the bounds are shifted past the node's icon.
  * 
  * @param <E> The real CellEditor
  */
 public class CellEditorContainer<E extends CellEditor> extends Container
 		implements TreeTableCellEditor, TableCellEditor {
-	
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public CellEditorContainer(E editor) {
 		this.editor = editor;
 	}
-	
+
 	protected E editor;
-	
+
 	protected transient TreeTableCellRenderer renderer;
-	
+
 	protected transient Component rendererComponent;
-	
+
 	protected transient Dimension rendererSize;
-	
+
 	protected transient Component editingComponent;
-	
+
 	protected transient int iconOffset;
-	
+
 	public void clearState() {
 		removeAll();
 		renderer = null;
 		rendererSize = null;
 		editingComponent = null;
 	}
-	
 
 	@Override
-	public Component getTreeTableCellEditorComponent(TreeTable treeTable,
-			Object value, boolean selected, int row, int column) {
+	public Component getTreeTableCellEditorComponent(TreeTable treeTable, Object value, boolean selected, int row,
+			int column) {
 		return getEditorComponent(treeTable, value, selected, row, column, false, false, false);
 	}
 
 	@Override
-	public Component getTreeTableCellEditorComponent(TreeTable treeTable,
-			Object value, boolean selected, int row, int column,
-			boolean expanded, boolean leaf) {
+	public Component getTreeTableCellEditorComponent(TreeTable treeTable, Object value, boolean selected, int row,
+			int column, boolean expanded, boolean leaf) {
 		return getEditorComponent(treeTable, value, selected, row, column, true, expanded, leaf);
 	}
-	
-	private Component getEditorComponent(TreeTable treeTable, Object value,
-			boolean sel, int row, int col, boolean treeColumn, boolean exp, boolean leaf) {
-		if (editingComponent != null)
+
+	private Component getEditorComponent(TreeTable treeTable, Object value, boolean sel, int row, int col,
+			boolean treeColumn, boolean exp, boolean leaf) {
+		if (editingComponent != null) {
 			remove(editingComponent);
-		
+		}
+
 		renderer = treeTable.getCellRenderer(row, col);
-		
-		Component rc = rendererComponent = renderer.getTreeTableCellRendererComponent(
-				treeTable, value, sel, true, row, col, exp, leaf);
+
+		Component rc = rendererComponent = renderer.getTreeTableCellRendererComponent(treeTable, value, sel, true, row,
+				col, exp, leaf);
 		rendererSize = rc == null ? null : rc.getPreferredSize();
-		
+
 		if (treeColumn) {
-			JLabel label = rc instanceof JLabel ? (JLabel)rc : null;
+			JLabel label = rc instanceof JLabel ? (JLabel) rc : null;
 			Icon editingIcon = label == null ? null : label.getIcon();
 			if (editingIcon != null) {
-				iconOffset = label.getIconTextGap() +
-				editingIcon.getIconWidth();
+				iconOffset = label.getIconTextGap() + editingIcon.getIconWidth();
 			} else {
 				iconOffset = label == null ? 4 : label.getIconTextGap();
 			}
@@ -99,28 +100,30 @@ public class CellEditorContainer<E extends CellEditor> extends Container
 		} else {
 			iconOffset = 0;
 		}
-		
-		editingComponent = treeColumn ?
-				getCellEditorComponent(treeTable, value, sel, row, col, exp, leaf) :
-				getCellEditorComponent(treeTable, value, sel, row, col);
-		if (editingComponent != null)
+
+		editingComponent = treeColumn ? getCellEditorComponent(treeTable, value, sel, row, col, exp, leaf)
+				: getCellEditorComponent(treeTable, value, sel, row, col);
+		if (editingComponent != null) {
 			add(editingComponent);
+		}
 		return this;
 	}
-	
-	protected Component getCellEditorComponent(TreeTable treeTable,
-			Object value, boolean selected, int row, int column, boolean expanded, boolean leaf) {
-		if (editor instanceof TreeTableCellEditor)
-			return ((TreeTableCellEditor)editor).getTreeTableCellEditorComponent(
-				treeTable, value, selected, row, column, expanded, leaf);
+
+	protected Component getCellEditorComponent(TreeTable treeTable, Object value, boolean selected, int row, int column,
+			boolean expanded, boolean leaf) {
+		if (editor instanceof TreeTableCellEditor) {
+			return ((TreeTableCellEditor) editor).getTreeTableCellEditorComponent(treeTable, value, selected, row,
+					column, expanded, leaf);
+		}
 		return null;
 	}
-	
-	protected Component getCellEditorComponent(TreeTable treeTable,
-			Object value, boolean selected, int row, int column) {
-		if (editor instanceof TreeTableCellEditor)
-			return ((TreeTableCellEditor)editor).getTreeTableCellEditorComponent(
-				treeTable, value, selected, row, column);
+
+	protected Component getCellEditorComponent(TreeTable treeTable, Object value, boolean selected, int row,
+			int column) {
+		if (editor instanceof TreeTableCellEditor) {
+			return ((TreeTableCellEditor) editor).getTreeTableCellEditorComponent(treeTable, value, selected, row,
+					column);
+		}
 		return null;
 	}
 
@@ -128,7 +131,7 @@ public class CellEditorContainer<E extends CellEditor> extends Container
 	public Object getCellEditorValue() {
 		return editor.getCellEditorValue();
 	}
-	
+
 	@Override
 	public void addCellEditorListener(CellEditorListener l) {
 		editor.addCellEditorListener(l);
@@ -158,11 +161,10 @@ public class CellEditorContainer<E extends CellEditor> extends Container
 	public boolean stopCellEditing() {
 		return editor.stopCellEditing();
 	}
-	
-	
 
+	@Override
 	public void doLayout() {
-		if(editingComponent != null) {
+		if (editingComponent != null) {
 			int x;
 			int w;
 			if (getComponentOrientation().isLeftToRight()) {
@@ -170,25 +172,26 @@ public class CellEditorContainer<E extends CellEditor> extends Container
 				w = getWidth() - x;
 			} else {
 				x = 0;
-				w = getWidth()-iconOffset;
+				w = getWidth() - iconOffset;
 			}
 			editingComponent.setBounds(x, 0, w, getHeight());
 		}
 
 	}
-	
-	
+
+	@Override
 	public Dimension getPreferredSize() {
-		if(editingComponent != null) {
+		if (editingComponent != null) {
 			Dimension pSize = editingComponent.getPreferredSize();
 			pSize.width += iconOffset + 5;
-			if(rendererSize != null)
+			if (rendererSize != null) {
 				pSize.height = Math.max(pSize.height, rendererSize.height);
+			}
 			return pSize;
 		}
 		return new Dimension(0, 0);
 	}
-	
+
 	@Override
 	public Component getTableCellEditorComponent(JTable table, Object value, boolean selected, int row, int column) {
 		throw new UnsupportedOperationException();

@@ -7,18 +7,21 @@
  */
 package ch.randelshofer.quaqua.mavericks.filechooser;
 
+import javax.swing.JFileChooser;
+
 import ch.randelshofer.quaqua.lion.filechooser.LionColumnView;
-import javax.swing.*;
 
 /**
-  * The file chooser column view for Mavericks.
-*/
+ * The file chooser column view for Mavericks.
+ */
 
 public class MavericksColumnView extends LionColumnView {
 
-    public MavericksColumnView(JFileChooser fc) {
-        super(fc);
+	private static final long serialVersionUID = 1L;
 
-        browser.setFixedCellWidth(207);
-    }
+	public MavericksColumnView(JFileChooser fc) {
+		super(fc);
+
+		browser.setFixedCellWidth(207);
+	}
 }

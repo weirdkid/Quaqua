@@ -7,10 +7,10 @@
  */
 package ch.randelshofer.quaqua.lion.filechooser;
 
-import ch.randelshofer.quaqua.filechooser.BasicOSXFileSystemView;
+import java.io.File;
+import java.util.Arrays;
 
-import java.io.*;
-import java.util.*;
+import ch.randelshofer.quaqua.filechooser.BasicOSXFileSystemView;
 
 /**
  * OSXLionFileSystemView.
@@ -20,66 +20,26 @@ import java.util.*;
  */
 public class OSXLionFileSystemView extends BasicOSXFileSystemView {
 
-    public OSXLionFileSystemView() {
+	public OSXLionFileSystemView() {
 
-        
-    	String[] volnames = {
-    			"Preboot",
-    			"TimeMachine",
-    			"Time Machine Backups",
-    			"com.apple.TimeMachine.localsnapshots"
-    	};
-    	
-    	hiddenVolumeNames.addAll(Arrays.asList(volnames));
-    	
-    	
-    	String[] tlnames = {
-            "AppleShare PDS",
-            "automount",
-            "bin",
-            "Cleanup At Startup",
-            "cores",
-            "Desktop DB",
-            "Desktop DF",
-            "DesktopPrinters DB",
-            "dev",
-            "etc",
-            "home",
-            "installer.failurerequests",
-            "mach",
-            "mach_kernel",
-            "mach_kernel.ctfsys",
-            "mach.sym",
-            "net",
-            "Network",
-            "opt",
-            "private",
-            "sbin",
-            "Temporary Items",
-            "TheVolumeSettingsFolder",
-            "TheFindByContentFolder",
-            "tmp",
-            "Trash",
-            "usr",
-            "var",
-            "Volumes",
-            "\u0003\u0002\u0001Move&Rename",
-        };
+		String[] volnames = { "Preboot", "TimeMachine", "Time Machine Backups",
+				"com.apple.TimeMachine.localsnapshots" };
 
-        hiddenTopLevelNames.addAll(Arrays.asList(tlnames));
+		hiddenVolumeNames.addAll(Arrays.asList(volnames));
 
-        String[] dirnames = new String[] {
-            "$RECYCLE.BIN",
-            "Thumbs.db",
-            "desktop.ini",
-        };
+		String[] tlnames = { "AppleShare PDS", "automount", "bin", "Cleanup At Startup", "cores", "Desktop DB",
+				"Desktop DF", "DesktopPrinters DB", "dev", "etc", "home", "installer.failurerequests", "mach",
+				"mach_kernel", "mach_kernel.ctfsys", "mach.sym", "net", "Network", "opt", "private", "sbin",
+				"Temporary Items", "TheVolumeSettingsFolder", "TheFindByContentFolder", "tmp", "Trash", "usr", "var",
+				"Volumes", "\u0003\u0002\u0001Move&Rename", };
 
-        hiddenDirectoryNames.addAll(Arrays.asList(dirnames));
-        
+		hiddenTopLevelNames.addAll(Arrays.asList(tlnames));
 
-        File[] files={
-            new File(System.getProperty("user.home"), "Library")
-        };
-        hiddenFiles.addAll(Arrays.asList(files));
-    }
+		String[] dirnames = new String[] { "$RECYCLE.BIN", "Thumbs.db", "desktop.ini", };
+
+		hiddenDirectoryNames.addAll(Arrays.asList(dirnames));
+
+		File[] files = { new File(System.getProperty("user.home"), "Library") };
+		hiddenFiles.addAll(Arrays.asList(files));
+	}
 }

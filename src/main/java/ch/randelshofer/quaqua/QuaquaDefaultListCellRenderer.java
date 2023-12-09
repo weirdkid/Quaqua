@@ -8,7 +8,7 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.DefaultListCellRenderer;
 
 /**
  * QuaquaDefaultListCellRenderer.
@@ -17,10 +17,12 @@ import javax.swing.*;
  * @version $Id$
  */
 public class QuaquaDefaultListCellRenderer extends DefaultListCellRenderer.UIResource {
-    
-    /** Creates a new instance. */
-    public QuaquaDefaultListCellRenderer() {
-        setOpaque(false);
-    }
-    
+
+	private static final long serialVersionUID = 1L;
+
+	/** Creates a new instance. */
+	public QuaquaDefaultListCellRenderer() {
+		setOpaque(false);
+	}
+
 }

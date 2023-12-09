@@ -23,22 +23,27 @@ import de.sciss.treetable.j.TreeColumnModel;
 
 public class TreeColumnModelEvent extends EventObject {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public static final int ALL_COLUMNS = TableModelEvent.ALL_COLUMNS;
-	
+
 	public TreeColumnModelEvent(TreeColumnModel source, TreePath path, int column) {
 		super(source);
 		this.path = path;
 		this.column = column;
 	}
-	
+
 	private TreePath path;
-	
+
 	private int column;
-	
+
 	public TreePath getTreePath() {
 		return path;
 	}
-	
+
 	public int getColumn() {
 		return column;
 	}

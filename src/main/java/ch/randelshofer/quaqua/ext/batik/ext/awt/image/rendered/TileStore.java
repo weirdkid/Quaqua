@@ -18,23 +18,22 @@
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered;
 
-import  java.awt.image.Raster;
-
+import java.awt.image.Raster;
 
 /**
- * This the generic interface for a TileStore.  This is used to
- * store and retrieve tiles from the cache.
+ * This the generic interface for a TileStore. This is used to store and
+ * retrieve tiles from the cache.
  *
  * @version $Id: TileStore.java 498740 2007-01-22 18:35:57Z dvholten $
  */
 public interface TileStore {
 
-    void setTile(int x, int y, Raster ras);
+	void setTile(int x, int y, Raster ras);
 
-    Raster getTile(int x, int y);
+	Raster getTile(int x, int y);
 
-    // This is return the tile if it is available otherwise
-    // returns null.  It will not compute the tile if it is
-    // not present.
-    Raster getTileNoCompute(int x, int y);
+	// This is return the tile if it is available otherwise
+	// returns null. It will not compute the tile if it is
+	// not present.
+	Raster getTileNoCompute(int x, int y);
 }

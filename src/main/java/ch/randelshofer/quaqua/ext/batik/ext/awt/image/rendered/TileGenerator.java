@@ -18,14 +18,14 @@
  */
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image.rendered;
 
-import  java.awt.image.Raster;
+import java.awt.image.Raster;
 
 /**
- * This the generic interface for a source of tiles.  This is used
- * when the cache has a miss.
+ * This the generic interface for a source of tiles. This is used when the cache
+ * has a miss.
  *
  * @version $Id: TileGenerator.java 498740 2007-01-22 18:35:57Z dvholten $
  */
 public interface TileGenerator {
-        Raster genTile(int x, int y);
+	Raster genTile(int x, int y);
 }

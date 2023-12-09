@@ -27,19 +27,16 @@ import ch.randelshofer.quaqua.ext.batik.i18n.LocalizableSupport;
  * @version $Id: PropertyUtil.java 498740 2007-01-22 18:35:57Z dvholten $
  */
 public class PropertyUtil {
-    protected static final String RESOURCES =
-        "ch.randelshofer.quaqua.ext.batik.bridge.resources.properties";
+	protected static final String RESOURCES = "ch.randelshofer.quaqua.ext.batik.bridge.resources.properties";
 
+	protected static final LocalizableSupport localizableSupport = new LocalizableSupport(RESOURCES,
+			PropertyUtil.class.getClassLoader());
 
-    protected static final LocalizableSupport localizableSupport =
-        new LocalizableSupport
-        (RESOURCES, PropertyUtil.class.getClassLoader());
-
-    public static String getString(String key) {
-        try{
-            return localizableSupport.formatMessage(key, null);
-        }catch(MissingResourceException e){
-            return key;
-        }
-   }
+	public static String getString(String key) {
+		try {
+			return localizableSupport.formatMessage(key, null);
+		} catch (MissingResourceException e) {
+			return key;
+		}
+	}
 }

@@ -7,28 +7,30 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import javax.swing.*;
 import java.io.File;
 
+import javax.swing.Icon;
+
 /**
- * These are the methods used by other parts of Quaqua on sidebar tree nodes that represent files.
- * (Previously all FileInfo methods were nominally supported.)
+ * These are the methods used by other parts of Quaqua on sidebar tree nodes
+ * that represent files. (Previously all FileInfo methods were nominally
+ * supported.)
  */
 
 public interface SidebarTreeFileNode {
-    /**
-     * Returns the resolved file object.
-     */
-    public File getResolvedFile();
-    /**
-     * Returns the user name of the file.
-     */
-    public String getUserName();
+	/**
+	 * Returns the resolved file object.
+	 */
+	public File getResolvedFile();
 
-    /**
-     * Returns the icon of the file.
-     * Returns a proxy icon if the real icon has not yet been fetched from the
-     * file system.
-     */
-    public Icon getIcon();
+	/**
+	 * Returns the user name of the file.
+	 */
+	public String getUserName();
+
+	/**
+	 * Returns the icon of the file. Returns a proxy icon if the real icon has not
+	 * yet been fetched from the file system.
+	 */
+	public Icon getIcon();
 }

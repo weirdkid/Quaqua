@@ -16,10 +16,8 @@ package de.sciss.treetable.j;
 
 import javax.swing.Icon;
 
-import de.sciss.treetable.j.TreeTable;
-
 public interface IconMap {
 
 	Icon getIcon(TreeTable treeTable, Object node, boolean expanded, boolean leaf);
-	
+
 }

@@ -7,18 +7,19 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
+import javax.swing.JList;
 
 /**
- * Mouse behavior for JList. This class simulates Mavericks NSTableView behavior.
+ * Mouse behavior for JList. This class simulates Mavericks NSTableView
+ * behavior.
  */
 public class QuaquaListMouseBehavior extends QuaquaGenericListMouseBehavior {
 
-    public QuaquaListMouseBehavior(JList list) {
-        super(new JListModel(list));
-    }
+	public QuaquaListMouseBehavior(JList list) {
+		super(new JListModel(list));
+	}
 
-    public QuaquaListMouseBehavior(GenericList list) {
-        super(list);
-    }
+	public QuaquaListMouseBehavior(GenericList list) {
+		super(list);
+	}
 }

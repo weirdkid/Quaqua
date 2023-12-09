@@ -12,6 +12,7 @@ package ch.randelshofer.quaqua;
 
 import java.awt.Component;
 import java.awt.Insets;
+
 import javax.swing.border.Border;
 
 /**
@@ -21,5 +22,5 @@ import javax.swing.border.Border;
  * @version 1.0 2011-07-28 Created.
  */
 public interface VisualMargin extends Border {
-    public  Insets getVisualMargin(Component c) ;
+	public Insets getVisualMargin(Component c);
 }

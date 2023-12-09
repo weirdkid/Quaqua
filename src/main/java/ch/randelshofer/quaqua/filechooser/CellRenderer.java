@@ -7,16 +7,14 @@
  */
 package ch.randelshofer.quaqua.filechooser;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Component;
+
+import javax.swing.JComponent;
 
 /**
  * A cell renderer that does not care what kind of container it is used in.
  */
 
 public interface CellRenderer {
-    Component getCellRendererComponent(JComponent container,
-                                       Object value,
-                                       boolean isSelected,
-                                       boolean cellHasFocus);
+	Component getCellRendererComponent(JComponent container, Object value, boolean isSelected, boolean cellHasFocus);
 }

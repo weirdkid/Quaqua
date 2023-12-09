@@ -21,11 +21,12 @@ package ch.randelshofer.quaqua.ext.batik.ext.awt.image.codec.util;
 import java.io.Serializable;
 
 /**
- * An empty (marker) interface to be implemented by all image decoder
- * parameter classes.
+ * An empty (marker) interface to be implemented by all image decoder parameter
+ * classes.
  *
- * <p><b> This interface is not a committed part of the JAI API.  It may
- * be removed or changed in future releases of JAI.</b>
+ * <p>
+ * <b> This interface is not a committed part of the JAI API. It may be removed
+ * or changed in future releases of JAI.</b>
  *
  * @version $Id: ImageDecodeParam.java 498740 2007-01-22 18:35:57Z dvholten $
  */

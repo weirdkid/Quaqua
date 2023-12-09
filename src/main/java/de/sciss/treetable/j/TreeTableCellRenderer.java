@@ -16,16 +16,12 @@ package de.sciss.treetable.j;
 
 import java.awt.Component;
 
-import de.sciss.treetable.j.TreeTable;
-
 public interface TreeTableCellRenderer {
 
-	Component getTreeTableCellRendererComponent(TreeTable treeTable,
-			Object value, boolean selected, boolean hasFocus,
+	Component getTreeTableCellRendererComponent(TreeTable treeTable, Object value, boolean selected, boolean hasFocus,
 			int row, int column);
-	
-	Component getTreeTableCellRendererComponent(TreeTable treeTable,
-			Object value, boolean selected, boolean hasFocus,
+
+	Component getTreeTableCellRendererComponent(TreeTable treeTable, Object value, boolean selected, boolean hasFocus,
 			int row, int column, boolean expanded, boolean leaf);
-	
+
 }

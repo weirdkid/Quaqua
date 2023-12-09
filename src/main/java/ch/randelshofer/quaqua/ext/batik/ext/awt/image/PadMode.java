@@ -19,64 +19,65 @@
 package ch.randelshofer.quaqua.ext.batik.ext.awt.image;
 
 /**
- * This is a typesafe enumeration of the standard Composite rules for
- * the CompositeRable operation. (over, in, out, atop, xor, arith)
+ * This is a typesafe enumeration of the standard Composite rules for the
+ * CompositeRable operation. (over, in, out, atop, xor, arith)
  *
  * @author <a href="mailto:Thomas.DeWeeese@Kodak.com">Thomas DeWeese</a>
  * @version $Id: PadMode.java 475477 2006-11-15 22:44:28Z cam $
  */
 public final class PadMode implements java.io.Serializable {
-      /** Pad edges with zeros */
-    public static final int MODE_ZERO_PAD = 1;
+	private static final long serialVersionUID = 1L;
 
-      /** Pad edges by replicating edge pixels */
-    public static final int MODE_REPLICATE = 2;
+	/** Pad edges with zeros */
+	public static final int MODE_ZERO_PAD = 1;
 
-      /** Pad edges by wrapping around edge pixels */
-    public static final int MODE_WRAP = 3;
+	/** Pad edges by replicating edge pixels */
+	public static final int MODE_REPLICATE = 2;
 
-      /** Pad edges with zeros */
-    public static final PadMode ZERO_PAD = new PadMode(MODE_ZERO_PAD);
+	/** Pad edges by wrapping around edge pixels */
+	public static final int MODE_WRAP = 3;
 
-      /** Pad edges by replicating edge pixels */
-    public static final PadMode REPLICATE = new PadMode(MODE_REPLICATE);
+	/** Pad edges with zeros */
+	public static final PadMode ZERO_PAD = new PadMode(MODE_ZERO_PAD);
 
-      /** Pad edges by replicating edge pixels */
-    public static final PadMode WRAP = new PadMode(MODE_WRAP);
+	/** Pad edges by replicating edge pixels */
+	public static final PadMode REPLICATE = new PadMode(MODE_REPLICATE);
 
-    /**
-     * Returns the mode of this pad mode.
-     */
-    public int getMode() {
-        return mode;
-    }
+	/** Pad edges by replicating edge pixels */
+	public static final PadMode WRAP = new PadMode(MODE_WRAP);
 
-      /**
-       * The pad mode for this object.
-       */
-    private int mode;
+	/**
+	 * Returns the mode of this pad mode.
+	 */
+	public int getMode() {
+		return mode;
+	}
 
-    private PadMode(int mode) {
-        this.mode = mode;
-    }
+	/**
+	 * The pad mode for this object.
+	 */
+	private int mode;
 
-    /**
-     * This is called by the serialization code before it returns
-     * an unserialized object. To provide for unicity of
-     * instances, the instance that was read is replaced by its
-     * static equivalent. See the serialiazation specification for
-     * further details on this method's logic.
-     */
-    private Object readResolve() throws java.io.ObjectStreamException {
-        switch(mode){
-        case MODE_ZERO_PAD:
-            return ZERO_PAD;
-        case MODE_REPLICATE:
-            return REPLICATE;
-        case MODE_WRAP:
-            return WRAP;
-        default:
-            throw new Error("Unknown Pad Mode type");
-        }
-    }
+	private PadMode(int mode) {
+		this.mode = mode;
+	}
+
+	/**
+	 * This is called by the serialization code before it returns an unserialized
+	 * object. To provide for unicity of instances, the instance that was read is
+	 * replaced by its static equivalent. See the serialiazation specification for
+	 * further details on this method's logic.
+	 */
+	private Object readResolve() throws java.io.ObjectStreamException {
+		switch (mode) {
+		case MODE_ZERO_PAD:
+			return ZERO_PAD;
+		case MODE_REPLICATE:
+			return REPLICATE;
+		case MODE_WRAP:
+			return WRAP;
+		default:
+			throw new Error("Unknown Pad Mode type");
+		}
+	}
 }

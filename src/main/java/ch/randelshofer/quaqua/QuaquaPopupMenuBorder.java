@@ -12,8 +12,12 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.border.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
+import javax.swing.border.Border;
+
 /**
  * A replacement for the AquaMenuBorder.
  * <p>
@@ -27,16 +31,18 @@ import javax.swing.border.*;
  * @version $Id$
  */
 public class QuaquaPopupMenuBorder implements Border {
-    public void paintBorder(Component component, Graphics g, int x,
-    int y, int width, int height) {
-        /* empty */
-    }
-    
-    public Insets getBorderInsets(Component component) {
-return new Insets(4, 0, 4, 0);
-    }
-    
-    public boolean isBorderOpaque() {
-        return false;
-    }
+	@Override
+	public void paintBorder(Component component, Graphics g, int x, int y, int width, int height) {
+		/* empty */
+	}
+
+	@Override
+	public Insets getBorderInsets(Component component) {
+		return new Insets(4, 0, 4, 0);
+	}
+
+	@Override
+	public boolean isBorderOpaque() {
+		return false;
+	}
 }

@@ -7,56 +7,59 @@
  */
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Point;
+
+import javax.swing.JComponent;
+import javax.swing.TransferHandler;
 
 /**
- * A generic interface for a component that has list-like behavior (e.g. JList, JTable, JTree).
+ * A generic interface for a component that has list-like behavior (e.g. JList,
+ * JTable, JTree).
  */
 
 public interface GenericList {
 
-    JComponent getComponent();
+	JComponent getComponent();
 
-    boolean isEnabled();
+	boolean isEnabled();
 
-    void requestFocus();
+	void requestFocus();
 
-    int getRowCount();
+	int getRowCount();
 
-    Object getRow(int index);
+	Object getRow(int index);
 
-    boolean isMultipleSelection();
+	boolean isMultipleSelection();
 
-    boolean isRowSelected(int index);
+	boolean isRowSelected(int index);
 
-    boolean isSelectionEmpty();
+	boolean isSelectionEmpty();
 
-    void clearSelection();
+	void clearSelection();
 
-    void setSelectionInterval(int index1, int index2);
+	void setSelectionInterval(int index1, int index2);
 
-    void addSelectionInterval(int index1, int index2);
+	void addSelectionInterval(int index1, int index2);
 
-    void removeSelectionInterval(int index1, int index2);
+	void removeSelectionInterval(int index1, int index2);
 
-    int getAnchorSelectionIndex();
+	int getAnchorSelectionIndex();
 
-    void setAnchorSelectionIndex(int index);
+	void setAnchorSelectionIndex(int index);
 
-    int getMinSelectionIndex();
+	int getMinSelectionIndex();
 
-    int getMaxSelectionIndex();
+	int getMaxSelectionIndex();
 
-    boolean isValueAdjusting();
+	boolean isValueAdjusting();
 
-    void setValueIsAdjusting(boolean b);
+	void setValueIsAdjusting(boolean b);
 
-    int identifyRowAtLocation(Point loc);
+	int identifyRowAtLocation(Point loc);
 
-    void scrollToViewRows(int index1, int index2);
+	void scrollToViewRows(int index1, int index2);
 
-    boolean isDragEnabled();
+	boolean isDragEnabled();
 
-    TransferHandler getTransferHandler();
+	TransferHandler getTransferHandler();
 }

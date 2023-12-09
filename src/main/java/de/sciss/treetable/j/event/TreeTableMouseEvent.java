@@ -24,32 +24,36 @@ import de.sciss.treetable.j.TreeTable;
 
 public class TreeTableMouseEvent extends MouseEvent {
 
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+
 	public TreeTableMouseEvent(TreeTable source, MouseEvent e) {
-		super(source, e.getID(), e.getWhen(), e.getModifiers(),
-				e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
+		super(source, e.getID(), e.getWhen(), e.getModifiers(), e.getX(), e.getY(), e.getXOnScreen(), e.getYOnScreen(),
 				e.getClickCount(), e.isPopupTrigger(), e.getButton());
 	}
-	
+
 	private TreePath path = null;
-	
+
 	private int row = Integer.MIN_VALUE;
-	
+
 	private int column = Integer.MIN_VALUE;
-	
+
 	private int treePosition = Integer.MIN_VALUE;
-	
+
 	@Override
 	public Point getPoint() {
 		return new Point(getX(), getY());
 	}
-	
+
 	/**
 	 * @return the TreeTable source
 	 */
 	public TreeTable getTreeTable() {
-		return (TreeTable)getSource();
+		return (TreeTable) getSource();
 	}
-	
+
 	/**
 	 * @return the row for the location of this event
 	 */
@@ -59,7 +63,7 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return row;
 	}
-	
+
 	/**
 	 * @return the column for the location of this event
 	 */
@@ -69,7 +73,7 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return column;
 	}
-	
+
 	/**
 	 * @return the path for the location of this event
 	 */
@@ -79,17 +83,15 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return path;
 	}
-	
+
 	/**
-	 * Calculates the x distance from the tree handle. If the tree 
-	 * handle isn't present, it is the distance from the start of the
-	 * path bounds.
+	 * Calculates the x distance from the tree handle. If the tree handle isn't
+	 * present, it is the distance from the start of the path bounds.
 	 * <p>
 	 * A return value of 0 means the location is over the tree handle.
 	 * <p>
-	 * The return value will be negative for x locations that
-	 * fall in the leading region and positive for x locations
-	 * that fall in the trailing region.
+	 * The return value will be negative for x locations that fall in the leading
+	 * region and positive for x locations that fall in the trailing region.
 	 * 
 	 * @return distance from the tree handle
 	 */
@@ -99,34 +101,32 @@ public class TreeTableMouseEvent extends MouseEvent {
 		}
 		return treePosition;
 	}
-	
-	
+
 	/**
-	 * @return true if the location if over the leading margin
-	 * 		of the node bounds and not over the tree handle
+	 * @return true if the location if over the leading margin of the node bounds
+	 *         and not over the tree handle
 	 */
 	public boolean isOverTreeMargin() {
-		return getColumn() == getTreeTable().getHierarchicalColumn()
-			&& getDistanceToTreeHandle() < 0;
+		return getColumn() == getTreeTable().getHierarchicalColumn() && getDistanceToTreeHandle() < 0;
 	}
-	
+
 	/**
 	 * @return true if the location is over the tree handle
 	 */
 	public boolean isOverTreeHandle() {
 		return getDistanceToTreeHandle() == 0;
 	}
-	
+
 	/**
 	 * @return true if the location is over the path's bounds
 	 */
 	public boolean isOverTreeNode() {
 		int pos = getDistanceToTreeHandle();
-		if (pos <= 0)
+		if (pos <= 0) {
 			return false;
+		}
 		Rectangle nb = getTreeTable().getPathBounds(getTreePath());
 		return pos < nb.width;
 	}
-
 
 }

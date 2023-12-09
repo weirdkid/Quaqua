@@ -12,27 +12,31 @@
 
 package ch.randelshofer.quaqua.util;
 
-import java.util.*;
+import java.util.Enumeration;
+import java.util.Iterator;
+
 /**
  * This Enumeration is a wrapper over an Iterator.
  * 
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public class IteratorEnumeration implements Enumeration {
-    private Iterator iterator;
-    
-    /** Creates a new instance. */
-    public IteratorEnumeration(Iterator iterator) {
-        this.iterator = iterator;
-    }
-    
-    public boolean hasMoreElements() {
-        return iterator.hasNext();
-    }
-    
-    public Object nextElement() {
-        return iterator.next();
-    }
-    
+	private Iterator iterator;
+
+	/** Creates a new instance. */
+	public IteratorEnumeration(Iterator iterator) {
+		this.iterator = iterator;
+	}
+
+	@Override
+	public boolean hasMoreElements() {
+		return iterator.hasNext();
+	}
+
+	@Override
+	public Object nextElement() {
+		return iterator.next();
+	}
+
 }

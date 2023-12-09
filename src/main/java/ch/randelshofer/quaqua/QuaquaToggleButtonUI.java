@@ -8,28 +8,28 @@
 
 package ch.randelshofer.quaqua;
 
-import javax.swing.*;
-import javax.swing.plaf.*;
+import javax.swing.JComponent;
+import javax.swing.plaf.ComponentUI;
 
 /**
  * QuaquaButtonUI.
  *
- * @author  Werner Randelshofer
- * @version 1.0  05 March 2005  Created.
+ * @author Werner Randelshofer
+ * @version 1.0 05 March 2005 Created.
  */
 public class QuaquaToggleButtonUI extends QuaquaButtonUI {
-    // Shared UI object
-    private final static QuaquaToggleButtonUI buttonUI = new QuaquaToggleButtonUI();
+	// Shared UI object
+	private final static QuaquaToggleButtonUI buttonUI = new QuaquaToggleButtonUI();
 
+	// ********************************
+	// Create PLAF
+	// ********************************
+	public static ComponentUI createUI(JComponent c) {
+		return buttonUI;
+	}
 
-    // ********************************
-    //          Create PLAF
-    // ********************************
-    public static ComponentUI createUI(JComponent c) {
-        return buttonUI;
-    }
-
-    protected String getPropertyPrefix() {
-        return "ToggleButton.";
-    }
+	@Override
+	protected String getPropertyPrefix() {
+		return "ToggleButton.";
+	}
 }

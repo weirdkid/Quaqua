@@ -8,20 +8,21 @@
 
 package ch.randelshofer.quaqua.util;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Graphics;
+
+import javax.swing.JViewport;
+
 /**
- * This interface is implemented by user interface delegates that wish to
- * paint onto the content area of a JViewport.
+ * This interface is implemented by user interface delegates that wish to paint
+ * onto the content area of a JViewport.
  *
- * @author  Werner Randelshofer
+ * @author Werner Randelshofer
  * @version $Id$
  */
 public interface ViewportPainter {
-    /**
-     * Paints the viewport of a JViewport, that contains the component of the
-     * user interface delegate.
-     * This method is invoked by QuaquaViewportUI.
-     */
-    public void paintViewport(Graphics g, JViewport c);
+	/**
+	 * Paints the viewport of a JViewport, that contains the component of the user
+	 * interface delegate. This method is invoked by QuaquaViewportUI.
+	 */
+	public void paintViewport(Graphics g, JViewport c);
 }

@@ -8,8 +8,13 @@
 
 package ch.randelshofer.quaqua.icon;
 
-import java.awt.*;
-import javax.swing.*;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Point;
+import java.awt.Rectangle;
+
+import javax.swing.Icon;
+
 /**
  * ShiftedIcon renders a target icon at a different location and can return
  * different width and height values than the target.
@@ -18,33 +23,33 @@ import javax.swing.*;
  * @version 1.0 May 12, 2006 Created.
  */
 public class ShiftedIcon implements Icon {
-    private Icon target;
-    private Rectangle shift;
-    
-    /** Creates a new instance. */
-    public ShiftedIcon(Icon target, Point shift) {
-        this.target = target;
-        this.shift = new Rectangle(
-                shift.x, shift.y, 
-                target.getIconWidth(), 
-                target.getIconHeight()
-                );
-    }
-    public ShiftedIcon(Icon target, Rectangle shiftAndSize) {
-        this.target = target;
-        this.shift = shiftAndSize;
-    }
+	private Icon target;
+	private Rectangle shift;
 
-    public void paintIcon(Component c, Graphics g, int x, int y) {
-        target.paintIcon(c, g, x + shift.x, y + shift.y);
-    }
+	/** Creates a new instance. */
+	public ShiftedIcon(Icon target, Point shift) {
+		this.target = target;
+		this.shift = new Rectangle(shift.x, shift.y, target.getIconWidth(), target.getIconHeight());
+	}
 
-    public int getIconWidth() {
-        return shift.width;
-    }
+	public ShiftedIcon(Icon target, Rectangle shiftAndSize) {
+		this.target = target;
+		this.shift = shiftAndSize;
+	}
 
-    public int getIconHeight() {
-        return shift.height;
-    }
-    
+	@Override
+	public void paintIcon(Component c, Graphics g, int x, int y) {
+		target.paintIcon(c, g, x + shift.x, y + shift.y);
+	}
+
+	@Override
+	public int getIconWidth() {
+		return shift.width;
+	}
+
+	@Override
+	public int getIconHeight() {
+		return shift.height;
+	}
+
 }

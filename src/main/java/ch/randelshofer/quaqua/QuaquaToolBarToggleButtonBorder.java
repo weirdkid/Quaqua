@@ -8,51 +8,63 @@
 
 package ch.randelshofer.quaqua;
 
-import java.awt.*;
-import javax.swing.*;
-import javax.swing.border.*;
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Graphics;
+import java.awt.Insets;
+
+import javax.swing.AbstractButton;
+import javax.swing.ButtonModel;
+import javax.swing.JToolBar;
+import javax.swing.SwingConstants;
+import javax.swing.border.Border;
+
 /**
  * ToolBarButtonBorder.
  *
- * @author  Werner Randelshofer
- * @version 1.0  28 March 2005  Created.
+ * @author Werner Randelshofer
+ * @version 1.0 28 March 2005 Created.
  */
 public class QuaquaToolBarToggleButtonBorder implements Border {
-    private static Color borderColor = new Color(0xb9b9b9);
-    private static Color fillColor = new Color(0x1a000000, true);
-    public Insets getBorderInsets(Component c) {
-        return new Insets(6,10,6,10);
-    }
+	private static Color borderColor = new Color(0xb9b9b9);
+	private static Color fillColor = new Color(0x1a000000, true);
 
-    public boolean isBorderOpaque() {
-        return false;
-    }
+	@Override
+	public Insets getBorderInsets(Component c) {
+		return new Insets(6, 10, 6, 10);
+	}
 
-    public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
-        AbstractButton b = (AbstractButton) c;
-        ButtonModel  model = b.getModel();
-        if (model.isSelected()) {
-            g.setColor(fillColor);
-            g.fillRect(x, y, width, height);
+	@Override
+	public boolean isBorderOpaque() {
+		return false;
+	}
 
-            int orientation = -1;
-            if (b.getParent() instanceof JToolBar) {
-                orientation = ((JToolBar) b.getParent()).getOrientation();
-            }
-            g.setColor(borderColor);
-            switch (orientation) {
-                case SwingConstants.HORIZONTAL :
-                    g.fillRect(x, y, 1, height);
-                    g.fillRect(x + width - 1, y, 1, height);
-                    break;
-                case SwingConstants.VERTICAL :
-                    g.fillRect(x, y, width, 1);
-                    g.fillRect(x, y + height - 1, width, 1);
-                    break;
-                default :
-                    g.drawRect(x, y, width, height);
-                    break;
-            }
-        }
-    }
+	@Override
+	public void paintBorder(Component c, Graphics g, int x, int y, int width, int height) {
+		AbstractButton b = (AbstractButton) c;
+		ButtonModel model = b.getModel();
+		if (model.isSelected()) {
+			g.setColor(fillColor);
+			g.fillRect(x, y, width, height);
+
+			int orientation = -1;
+			if (b.getParent() instanceof JToolBar) {
+				orientation = ((JToolBar) b.getParent()).getOrientation();
+			}
+			g.setColor(borderColor);
+			switch (orientation) {
+			case SwingConstants.HORIZONTAL:
+				g.fillRect(x, y, 1, height);
+				g.fillRect(x + width - 1, y, 1, height);
+				break;
+			case SwingConstants.VERTICAL:
+				g.fillRect(x, y, width, 1);
+				g.fillRect(x, y + height - 1, width, 1);
+				break;
+			default:
+				g.drawRect(x, y, width, height);
+				break;
+			}
+		}
+	}
 }
