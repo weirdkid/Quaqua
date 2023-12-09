@@ -1,0 +1,61 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+
+    <groupId>com.weirdkid</groupId>
+    <artifactId>quaqua-jfc</artifactId>
+    <version>23.12-SNAPSHOT</version>
+
+    <repositories>
+        <!-- Custom repository -->
+        <repository>
+            <id>artifactory-home</id>
+            <url>http://artifactory.home.lan:8081/artifactory/ivy-release</url>
+        </repository>
+    </repositories>
+
+    <distributionManagement>
+        <!-- Configuration for publishing artifacts -->
+        <repository>
+            <id>artifactory-home</id>
+            <url>http://artifactory.home.lan:8081/artifactory/libs-release-local</url>
+        </repository>
+        <snapshotRepository>
+            <id>artifactory-home</id>
+            <url>http://artifactory.home.lan:8081/artifactory/libs-snapshot-local</url>
+        </snapshotRepository>
+    </distributionManagement>
+
+    <dependencies>
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-core</artifactId>
+            <version>3.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-metadata</artifactId>
+            <version>3.5-SNAPSHOT</version>
+        </dependency>
+        <dependency>
+            <groupId>com.twelvemonkeys.imageio</groupId>
+            <artifactId>imageio-icns</artifactId>
+            <version>3.5-SNAPSHOT</version>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <version>3.8.1</version> <!-- Use the latest version available -->
+                <configuration>
+                    <source>1.8</source> <!-- Set your JDK version -->
+                    <target>1.8</target> <!-- Set your JDK version -->
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+</project>
