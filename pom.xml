@@ -1,73 +1,143 @@
 <project xmlns="http://maven.apache.org/POM/4.0.0"
-         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
-    <modelVersion>4.0.0</modelVersion>
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+	<modelVersion>4.0.0</modelVersion>
 
-    <groupId>com.weirdkid</groupId>
-    <artifactId>quaqua-jfc</artifactId>
-    <version>23.12-SNAPSHOT</version>
-    
-    <properties>
-    	<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+	<groupId>com.weirdkid</groupId>
+	<artifactId>quaqua-jfc</artifactId>
+	<version>23.12-SNAPSHOT</version>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 	</properties>
 
-    <repositories>
-        <!-- Custom repository -->
-        <repository>
-            <id>artifactory-home</id>
-            <url>http://artifactory.home.lan:8081/artifactory/ivy-release</url>
-        </repository>
-    </repositories>
+	<repositories>
+		<!-- Custom repository -->
+		<repository>
+			<id>artifactory-home</id>
+			<url>http://artifactory.home.lan:8081/artifactory/ivy-release</url>
+		</repository>
+	</repositories>
 
-    <distributionManagement>
-        <!-- Configuration for publishing artifacts -->
-        <repository>
-            <id>artifactory-home</id>
-            <url>http://artifactory.home.lan:8081/artifactory/libs-release-local</url>
-        </repository>
-        <snapshotRepository>
-            <id>artifactory-home</id>
-            <url>http://artifactory.home.lan:8081/artifactory/libs-snapshot-local</url>
-        </snapshotRepository>
-    </distributionManagement>
+	<distributionManagement>
+		<!-- Configuration for publishing artifacts -->
+		<repository>
+			<id>artifactory-home</id>
+			<url>http://artifactory.home.lan:8081/artifactory/libs-release-local</url>
+		</repository>
+		<snapshotRepository>
+			<id>artifactory-home</id>
+			<url>
+				http://artifactory.home.lan:8081/artifactory/libs-snapshot-local</url>
+		</snapshotRepository>
+	</distributionManagement>
 
-    <dependencies>
-        <dependency>
-            <groupId>com.twelvemonkeys.imageio</groupId>
-            <artifactId>imageio-core</artifactId>
-            <version>3.5-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.twelvemonkeys.imageio</groupId>
-            <artifactId>imageio-metadata</artifactId>
-            <version>3.5-SNAPSHOT</version>
-        </dependency>
-        <dependency>
-            <groupId>com.twelvemonkeys.imageio</groupId>
-            <artifactId>imageio-icns</artifactId>
-            <version>3.5-SNAPSHOT</version>
-        </dependency>
-    </dependencies>
+	<dependencies>
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-core</artifactId>
+			<version>3.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-metadata</artifactId>
+			<version>3.5-SNAPSHOT</version>
+		</dependency>
+		<dependency>
+			<groupId>com.twelvemonkeys.imageio</groupId>
+			<artifactId>imageio-icns</artifactId>
+			<version>3.5-SNAPSHOT</version>
+		</dependency>
+	</dependencies>
 
-    <build>
+
+	<build>
+
 		<finalName>${project.artifactId}-${project.version}</finalName>
-        <plugins>
+
+		<resources>
+			<resource>
+				<directory>${project.basedir}/src/main/java</directory> <!--
+				Specify your source directory -->
+				<includes>
+					<include>**/*.properties</include>
+					<include>**/Browser*.png</include>
+					<include>**/FileChooser.*.png</include>
+					<include>**/FileView.*.png</include>
+					<include>**/GroupBox*.png</include>
+					<include>**/Tree.*.png</include>
+					<include>**/*.txt</include>
+				</includes>
+				<targetPath>${project.build.directory}/classes</targetPath> <!--
+				Specify your target directory -->
+			</resource>
+		</resources>
+
+		<plugins>
+
 			<!-- compile the code -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-compiler-plugin</artifactId>
-                <version>3.11.0</version> <!-- Use the latest version available -->
-                <configuration>
-                    <source>1.8</source> <!-- newer jdk will not compile because lib uses sun.awt packages -->
-                    <target>1.8</target> 
-                </configuration>
-            </plugin>
-            <!-- jar the compiled code -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-jar-plugin</artifactId>
-                <version>3.3.0</version> <!-- use the latest version -->
-            </plugin>
-        </plugins>
-    </build>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-compiler-plugin</artifactId>
+				<version>3.11.0</version> <!-- Use the latest version available -->
+				<configuration>
+					<source>1.8</source> <!-- newer jdk will not compile because
+												lib uses sun.awt packages -->
+					<target>1.8</target>
+					<!-- limit the compile to the classes identified in the original
+			     			build.xml for the jfc-only target  -->
+					<includes>
+						<include>**/QuaquaPantherFileChooserLAF.java</include>
+						<include>**/QuaquaLeopardFileChooserLAF.java</include>
+						<include>**/Quaqua16LionFileChooserLAF.java</include>
+						<include>**/QuaquaMavericksFileChooserLAF.java</include>
+						<include>**/QuaquaLookAndFeel.java</include>
+						<include>**/QuaquaBrowserUI.java</include>
+						<include>**/QuaquaFileChooserBrowserListUI.java</include>
+						<include>**/DefaultBrowserCellRenderer.java</include>
+						<include>**/QuaquaTreeUI.java</include>
+						<include>**/QuaquaPanelUI.java</include>
+						<include>**/QuaquaPantherFileChooserUI.java</include>
+						<include>**/QuaquaLeopardFileChooserUI.java</include>
+						<include>**/QuaquaLionFileChooserUI.java</include>
+						<include>**/QuaquaMavericksFileChooserUI.java</include>
+						<include>**/QuaquaJaguarFileChooserUI.java</include>
+						<include>**/filechooser/*FileSystemView.java</include>
+						<include>**/QuaquaIconFactory.java</include>
+						<include>**/QuaquaLeopardSideBarSelectionBorder.java</include>
+						<include>**/QuaquaLionSideBarSelectionBorder.java</include>
+						<include>**/QuaquaNativeButtonBorder.java</include>
+						<include>**/QuaquaTextFieldFocusHandler.java</include>
+						<include>de/sciss/treetable/**</include>
+					</includes>
+					<excludes>
+						<exclude>**/*15*.java</exclude>
+					</excludes>
+
+				</configuration>
+			</plugin>
+
+			<!-- Copy the image files into the build output -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-resources-plugin</artifactId>
+				<version>3.3.1</version>
+				<executions>
+					<execution>
+						<phase>process-resources</phase>
+						<goals>
+							<goal>resources</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- jar the compiled code -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-jar-plugin</artifactId>
+				<version>3.3.0</version> <!-- use the latest version -->
+			</plugin>
+		</plugins>
+	</build>
 </project>

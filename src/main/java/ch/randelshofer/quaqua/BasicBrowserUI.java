@@ -7,12 +7,21 @@
  */
 package ch.randelshofer.quaqua;
 
-import ch.randelshofer.quaqua.datatransfer.*;
-import java.awt.datatransfer.*;
+import java.awt.datatransfer.Transferable;
 import java.util.ArrayList;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.tree.*;
+
+import javax.swing.Icon;
+import javax.swing.ImageIcon;
+import javax.swing.JComponent;
+import javax.swing.ListCellRenderer;
+import javax.swing.TransferHandler;
+import javax.swing.UIManager;
+import javax.swing.plaf.UIResource;
+import javax.swing.tree.TreeModel;
+import javax.swing.tree.TreePath;
+
+import ch.randelshofer.quaqua.datatransfer.CompositeTransferable;
+import ch.randelshofer.quaqua.datatransfer.DefaultTransferable;
 
 /**
  * BasicBrowserUI.
@@ -76,14 +85,17 @@ public class BasicBrowserUI extends BrowserUI {
         return sizeHandleIcon;
     }
 
-    protected ListCellRenderer createCellRenderer() {
+    @SuppressWarnings("rawtypes")
+	protected ListCellRenderer createCellRenderer() {
         return new DefaultColumnCellRenderer.UIResource(browser);
     }
+    
     private static final TransferHandler defaultTransferHandler = new BrowserTransferHandler();
 
     static class BrowserTransferHandler extends TransferHandler implements UIResource/*, Comparator*/ {
 
-        private JBrowser browser;
+        private static final long serialVersionUID = 1L;
+		private JBrowser browser;
 
         /**
          * Create a Transferable to use as the source for a data transfer.
@@ -114,7 +126,7 @@ public class BasicBrowserUI extends BrowserUI {
                 htmlBuf.append("<html>\n<body>\n<ul>\n");
 
                 TreeModel model = browser.getModel();
-                TreePath lastPath = null;
+                //TreePath lastPath = null;
                 TreePath[] displayPaths = getDisplayOrderPaths(paths);
 
                 for (int i = 0; i < displayPaths.length; i++) {
@@ -150,7 +162,8 @@ public class BasicBrowserUI extends BrowserUI {
         }
          */
 
-        String getDisplayString(TreePath path, boolean selected, boolean leaf) {
+        @SuppressWarnings("unused")
+		String getDisplayString(TreePath path, boolean selected, boolean leaf) {
             Object node = path.getLastPathComponent();
             if (node != null) {
                 String sValue = node.toString();
@@ -168,7 +181,7 @@ public class BasicBrowserUI extends BrowserUI {
          */
         TreePath[] getDisplayOrderPaths(TreePath[] paths) {
             // sort the paths to display order rather than selection order
-            ArrayList selOrder = new ArrayList();
+            ArrayList<TreePath> selOrder = new ArrayList<TreePath>();
             for (int i = 0; i < paths.length; i++) {
                 selOrder.add(paths[i]);
             }
@@ -176,12 +189,13 @@ public class BasicBrowserUI extends BrowserUI {
             int n = selOrder.size();
             TreePath[] displayPaths = new TreePath[n];
             for (int i = 0; i < n; i++) {
-                displayPaths[i] = (TreePath) selOrder.get(i);
+                displayPaths[i] = selOrder.get(i);
             }
             return displayPaths;
         }
 
-        public int getSourceActions(JComponent c) {
+        @Override
+		public int getSourceActions(JComponent c) {
             return COPY;
         }
     }

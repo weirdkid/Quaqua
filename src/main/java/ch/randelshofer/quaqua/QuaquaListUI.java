@@ -7,16 +7,35 @@
  */
 package ch.randelshofer.quaqua;
 
+import java.awt.Color;
+import java.awt.Component;
+import java.awt.Dimension;
+import java.awt.Graphics;
+import java.awt.Graphics2D;
+import java.awt.Point;
+import java.awt.Rectangle;
+import java.awt.event.FocusEvent;
+import java.awt.event.FocusListener;
+import java.beans.PropertyChangeEvent;
+import java.beans.PropertyChangeListener;
+import java.lang.reflect.Method;
+import java.util.List;
+
+import javax.swing.CellRendererPane;
+import javax.swing.JComponent;
+import javax.swing.JList;
+import javax.swing.ListCellRenderer;
+import javax.swing.ListModel;
+import javax.swing.ListSelectionModel;
+import javax.swing.UIManager;
+import javax.swing.event.ListDataEvent;
+import javax.swing.event.ListDataListener;
+import javax.swing.event.MouseInputListener;
+import javax.swing.plaf.ComponentUI;
+import javax.swing.plaf.basic.BasicListUI;
+
 import ch.randelshofer.quaqua.color.InactivatableColorUIResource;
 import ch.randelshofer.quaqua.color.PaintableColor;
-import java.awt.*;
-import java.awt.event.*;
-import java.beans.*;
-import javax.swing.*;
-import javax.swing.plaf.*;
-import javax.swing.plaf.basic.*;
-import javax.swing.event.*;
-import java.lang.reflect.*;
 
 /**
  * QuaquaListUI for Java 1.4.
@@ -307,31 +326,34 @@ public class QuaquaListUI extends BasicListUI {
      */
     public class FocusHandler implements FocusListener {
 
-        protected void repaintCellFocus() {
-            Object[] cells = list.getSelectedValues();
-            if (cells.length > 1) {
-                list.repaint();
-                return;
-            }
+    	protected void repaintCellFocus() {
+    	    List<?> cells = list.getSelectedValuesList(); // Updated to use getSelectedValuesList
+    	    if (cells.size() > 1) { // Use size() instead of length
+    	        list.repaint();
+    	        return;
+    	    }
 
-            int leadIndex = list.getLeadSelectionIndex();
-            if (leadIndex != -1) {
-                Rectangle r = getCellBounds(list, leadIndex, leadIndex);
-                if (r != null) {
-                    list.repaint(r.x, r.y, r.width, r.height);
-                }
-            }
-        }
+    	    int leadIndex = list.getLeadSelectionIndex();
+    	    if (leadIndex != -1) {
+    	        Rectangle r = getCellBounds(list, leadIndex, leadIndex);
+    	        if (r != null) {
+    	            list.repaint(r.x, r.y, r.width, r.height);
+    	        }
+    	    }
+    	}
+
 
         /* The focusGained() focusLost() methods run when the JList
          * focus changes.
          */
-        public void focusGained(FocusEvent event) {
+        @Override
+		public void focusGained(FocusEvent event) {
             // hasFocus = true;
             repaintCellFocus();
         }
 
-        public void focusLost(FocusEvent event) {
+        @Override
+		public void focusLost(FocusEvent event) {
             // hasFocus = false;
             repaintCellFocus();
         }
@@ -418,7 +440,8 @@ public class QuaquaListUI extends BasicListUI {
         // ListDataListener
         //
 
-        public void intervalAdded(ListDataEvent e) {
+        @Override
+		public void intervalAdded(ListDataEvent e) {
             updateLayoutStateNeeded = modelChanged;
 
             int minIndex = Math.min(e.getIndex0(), e.getIndex1());
@@ -439,7 +462,8 @@ public class QuaquaListUI extends BasicListUI {
             redrawList();
         }
 
-        public void intervalRemoved(ListDataEvent e) {
+        @Override
+		public void intervalRemoved(ListDataEvent e) {
             updateLayoutStateNeeded = modelChanged;
 
             /* Sync the SelectionModel with the DataModel.
@@ -458,7 +482,8 @@ public class QuaquaListUI extends BasicListUI {
             redrawList();
         }
 
-        public void contentsChanged(ListDataEvent e) {
+        @Override
+		public void contentsChanged(ListDataEvent e) {
             updateLayoutStateNeeded = modelChanged;
 
             if (list.getFixedCellHeight() == -1) {
