@@ -5,7 +5,7 @@
 			<attribute name="maven.pomderived" value="true"/>
 		</attributes>
 	</classpathentry>
-	<classpathentry excluding="**/*15*.java" including="**/QuaquaPantherFileChooserLAF.java|**/QuaquaLeopardFileChooserLAF.java|**/Quaqua16LionFileChooserLAF.java|**/QuaquaMavericksFileChooserLAF.java|**/QuaquaLookAndFeel.java|**/QuaquaBrowserUI.java|**/QuaquaFileChooserBrowserListUI.java|**/DefaultBrowserCellRenderer.java|**/QuaquaTreeUI.java|**/QuaquaPanelUI.java|**/QuaquaPantherFileChooserUI.java|**/QuaquaLeopardFileChooserUI.java|**/QuaquaLionFileChooserUI.java|**/QuaquaMavericksFileChooserUI.java|**/QuaquaJaguarFileChooserUI.java|**/filechooser/*FileSystemView.java|**/QuaquaIconFactory.java|**/QuaquaLeopardSideBarSelectionBorder.java|**/QuaquaLionSideBarSelectionBorder.java|**/QuaquaNativeButtonBorder.java|**/QuaquaTextFieldFocusHandler.java|de/sciss/treetable/**|com/weirdkid/quaqua/**|**/*.java" kind="src" output="target/classes" path="src/main/java">
+	<classpathentry including="**/*.java" kind="src" output="target/classes" path="src/main/java">
 		<attributes>
 			<attribute name="optional" value="true"/>
 			<attribute name="maven.pomderived" value="true"/>

@@ -63,37 +63,6 @@
 					<source>1.8</source> <!-- newer jdk will not compile because
 												lib uses sun.awt packages -->
 					<target>1.8</target>
-					<!-- limit the compile to the classes identified in the
-					original build.xml for the jfc-only target  -->
-					<includes>
-						<include>**/QuaquaPantherFileChooserLAF.java</include>
-						<include>**/QuaquaLeopardFileChooserLAF.java</include>
-						<include>**/Quaqua16LionFileChooserLAF.java</include>
-						<include>**/QuaquaMavericksFileChooserLAF.java</include>
-						<include>**/QuaquaLookAndFeel.java</include>
-						<include>**/QuaquaBrowserUI.java</include>
-						<include>**/QuaquaFileChooserBrowserListUI.java</include>
-						<include>**/DefaultBrowserCellRenderer.java</include>
-						<include>**/QuaquaTreeUI.java</include>
-						<include>**/QuaquaPanelUI.java</include>
-						<include>**/QuaquaPantherFileChooserUI.java</include>
-						<include>**/QuaquaLeopardFileChooserUI.java</include>
-						<include>**/QuaquaLionFileChooserUI.java</include>
-						<include>**/QuaquaMavericksFileChooserUI.java</include>
-						<include>**/QuaquaJaguarFileChooserUI.java</include>
-						<include>**/filechooser/*FileSystemView.java</include>
-						<include>**/QuaquaIconFactory.java</include>
-						<include>**/QuaquaLeopardSideBarSelectionBorder.java</include>
-						<include>**/QuaquaLionSideBarSelectionBorder.java</include>
-						<include>**/QuaquaNativeButtonBorder.java</include>
-						<include>**/QuaquaTextFieldFocusHandler.java</include>
-						<include>de/sciss/treetable/**</include>
-						<include>com/weirdkid/quaqua/**</include>
-					</includes>
-					<excludes>
-						<exclude>**/*15*.java</exclude>
-					</excludes>
-
 				</configuration>
 			</plugin>
 

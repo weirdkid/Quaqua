@@ -121,7 +121,6 @@ import ch.randelshofer.quaqua.util.SizeConstrainedPanel;
  * editable by the user.</li>
  * </ul>
  *
- * @see JBrowserViewport
  *
  *
  * @author Werner Randelshofer
