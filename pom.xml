@@ -89,6 +89,7 @@
 						<include>**/QuaquaNativeButtonBorder.java</include>
 						<include>**/QuaquaTextFieldFocusHandler.java</include>
 						<include>de/sciss/treetable/**</include>
+						<include>com/weirdkid/quaqua/**</include>
 					</includes>
 					<excludes>
 						<exclude>**/*15*.java</exclude>

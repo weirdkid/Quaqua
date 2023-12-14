@@ -140,7 +140,7 @@ public class QuaquaComboBoxButton extends JButton {
 	}
 
 	@Override
-	public boolean isFocusTraversable() {
+	public boolean isFocusable() {
 		return false;
 	}
 

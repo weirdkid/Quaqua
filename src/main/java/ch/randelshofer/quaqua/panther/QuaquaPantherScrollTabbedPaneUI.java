@@ -1198,7 +1198,7 @@ public class QuaquaPantherScrollTabbedPaneUI extends BasicTabbedPaneUI implement
 			visibleComponent.requestFocus();
 			return true;
 		} else if (visibleComponent instanceof JComponent) {
-			if (((JComponent) visibleComponent).requestDefaultFocus()) {
+			if (((JComponent) visibleComponent).requestFocusInWindow()) {
 				return true;
 			}
 		}

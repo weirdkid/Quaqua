@@ -1549,7 +1549,7 @@ public class QuaquaJaguarTabbedPaneUI extends BasicTabbedPaneUI implements Visua
 			QuaquaUtilities.compositeRequestFocus(visibleComponent);
 			return true;
 		} else if (visibleComponent instanceof JComponent) {
-			if (((JComponent) visibleComponent).requestDefaultFocus()) {
+			if (((JComponent) visibleComponent).requestFocusInWindow()) {
 				return true;
 			}
 

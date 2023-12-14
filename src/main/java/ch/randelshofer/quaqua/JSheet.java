@@ -388,9 +388,19 @@ public class JSheet extends JDialog {
 				ownersGlassPane = null;
 			}
 		}
-		super.hide();
+		super.setVisible(false);
 	}
 
+	@Override
+	public void setVisible(boolean makeItVisible) {
+		if(makeItVisible) {
+			oldShow();
+		}
+		else {
+			oldHide();
+		}
+	}
+	
 	protected void show0() {
 		JRootPane rp = null;
 		if (getOwner() instanceof JFrame) {
@@ -405,12 +415,11 @@ public class JSheet extends JDialog {
 			rp.setGlassPane(blockingPanel);
 			blockingPanel.setVisible(true);
 		}
-		super.show();
+		super.setVisible(true);
 	}
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public void hide() {
+	
+	public void oldHide() {
 		if (isExperimentalSheet()) {
 			OSXSheetSupport.hideSheet(this);
 			hide0();
@@ -461,9 +470,8 @@ public class JSheet extends JDialog {
 		}
 	}
 
-	@Override
-	@SuppressWarnings("deprecation")
-	public void show() {
+
+	public void oldShow() {
 		if (isExperimentalSheet()) {
 			// Install the sheet
 			installSheet();
@@ -652,7 +660,7 @@ public class JSheet extends JDialog {
 	public static void showSheet(JOptionPane pane, Component parentComponent, SheetListener listener) {
 		final JSheet sheet = createSheet(pane, parentComponent, styleFromMessageType(pane.getMessageType()));
 		sheet.addSheetListener(listener);
-		sheet.show();
+		sheet.setVisible(true);
 	}
 
 	/**
@@ -838,7 +846,7 @@ public class JSheet extends JDialog {
 		 * windowClosed(WindowEvent evt) { sheet.dispose(); } });
 		 */
 		sheet.addSheetListener(listener);
-		sheet.show();
+		sheet.setVisible(true);
 		sheet.toFront();
 	}
 
@@ -987,7 +995,7 @@ public class JSheet extends JDialog {
 		JSheet sheet = createSheet(pane, parentComponent, style);
 		pane.selectInitialValue();
 		sheet.addSheetListener(listener);
-		sheet.show();
+		sheet.setVisible(true);
 		sheet.toFront();
 	}
 
@@ -1170,7 +1178,7 @@ public class JSheet extends JDialog {
 				} else {
 					option = JFileChooser.CANCEL_OPTION;
 				}
-				sheet.hide();
+				sheet.setVisible(false);
 				sheet.fireOptionSelected(chooser, option);
 				chooser.removeActionListener(this);
 			}
@@ -1186,7 +1194,7 @@ public class JSheet extends JDialog {
 		});
 		chooser.rescanCurrentDirectory();
 		sheet.pack();
-		sheet.show();
+		sheet.setVisible(true);
 		sheet.toFront();
 	}
 }

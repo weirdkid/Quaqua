@@ -50,8 +50,7 @@ public class QuaquaArrowButton extends JButton implements SwingConstants {
 	 */
 
 	@Override
-	@SuppressWarnings("deprecation")
-	public boolean isFocusTraversable() {
+	public boolean isFocusable() {
 		return false;
 	}
 }
