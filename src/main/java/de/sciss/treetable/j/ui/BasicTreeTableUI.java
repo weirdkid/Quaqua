@@ -994,7 +994,6 @@ public class BasicTreeTableUI extends TreeTableUI {
 
 		@Override
 		public boolean requestFocus(boolean temporary) {
-			javax.swing.plaf.basic.BasicTableUI u;
 			return treeTable.requestFocus(temporary);
 		}
 
@@ -2941,8 +2940,6 @@ public class BasicTreeTableUI extends TreeTableUI {
 
 		rect = getHDropLineRect(loc);
 		if (rect != null) {
-			int x = rect.x;
-			int w = rect.width;
 			if (color != null) {
 				extendRect(rect, true);
 				g.setColor(color);
@@ -2967,8 +2964,6 @@ public class BasicTreeTableUI extends TreeTableUI {
 
 		rect = getVDropLineRect(loc);
 		if (rect != null) {
-			int y = rect.y;
-			int h = rect.height;
 			if (color != null) {
 				extendRect(rect, false);
 				g.setColor(color);

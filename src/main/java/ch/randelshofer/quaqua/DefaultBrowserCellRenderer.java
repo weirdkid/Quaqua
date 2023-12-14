@@ -18,7 +18,6 @@ import javax.swing.JLabel;
 import javax.swing.SwingConstants;
 import javax.swing.UIManager;
 import javax.swing.plaf.ColorUIResource;
-import javax.swing.plaf.basic.BasicGraphicsUtils;
 
 /**
  * DefaultBrowserCellRenderer.
@@ -365,44 +364,10 @@ public class DefaultBrowserCellRenderer extends JLabel implements BrowserCellRen
 			} else if (imageOffset == -1) {
 				imageOffset = getLabelStart();
 			}
-			if (getComponentOrientation().isLeftToRight()) {
-				paintFocus(g, imageOffset, 0, getWidth() - imageOffset, getHeight());
-			} else {
-				paintFocus(g, 0, 0, getWidth() - imageOffset, getHeight());
-			}
 		}
 		super.paintComponent(g);
 	}
 
-	private void paintFocus(Graphics g, int x, int y, int w, int h) {
-		if (true) {
-			return;
-		}
-		Color bsColor = getBorderSelectionColor();
-
-		if (bsColor != null && (selected || !drawDashedFocusIndicator)) {
-			g.setColor(bsColor);
-			g.drawRect(x, y, w - 1, h - 1);
-		}
-		if (drawDashedFocusIndicator) {
-			Color color;
-			if (selected) {
-				color = getBackgroundSelectionColor();
-			} else {
-				color = getBackgroundNonSelectionColor();
-				if (color == null) {
-					color = getBackground();
-				}
-			}
-
-			if (treeBGColor != color) {
-				treeBGColor = color;
-				focusBGColor = new Color(~color.getRGB());
-			}
-			g.setColor(focusBGColor);
-			BasicGraphicsUtils.drawDashedRect(g, x, y, w, h);
-		}
-	}
 
 	private int getLabelStart() {
 		Icon currentI = getIcon();
