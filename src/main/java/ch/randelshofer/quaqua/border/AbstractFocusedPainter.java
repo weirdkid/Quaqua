@@ -148,22 +148,22 @@ public abstract class AbstractFocusedPainter {
 		return gaussian;
 	}
 
-	/** Creates a pyramid kernel with the specified radius and sum. */
-	private static float[] pyramid(float radius, float sum) {
-		int r = (int) Math.ceil(radius);
-		float[] pyramid = new float[r * 2 + 1];
-
-		// compute the pyramid
-		float c = r; // position of the centre of the peak
-
-		for (int i = 0; i < pyramid.length; i++) {
-			float x = i;
-			pyramid[i] = c - abs(x - c);
-		}
-
-		normalizeKernel(pyramid, sum);
-		return pyramid;
-	}
+//	/** Creates a pyramid kernel with the specified radius and sum. */
+//	private static float[] pyramid(float radius, float sum) {
+//		int r = (int) Math.ceil(radius);
+//		float[] pyramid = new float[r * 2 + 1];
+//
+//		// compute the pyramid
+//		float c = r; // position of the centre of the peak
+//
+//		for (int i = 0; i < pyramid.length; i++) {
+//			float x = i;
+//			pyramid[i] = c - abs(x - c);
+//		}
+//
+//		normalizeKernel(pyramid, sum);
+//		return pyramid;
+//	}
 
 	/**
 	 * Normalizes the kernel so that all its elements add up to the given sum.

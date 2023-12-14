@@ -55,7 +55,8 @@ public abstract class AbstractTreeColumnModel implements TreeColumnModel {
 		}
 	}
 
-	protected Object convertValue(Object value, Object node, int column, NumberFormatException e) {
+	@SuppressWarnings("unused")
+	protected static Object convertValue(Object value, Object node, int column, NumberFormatException e) {
 		return value;
 	}
 
