@@ -64,8 +64,7 @@
 												lib uses sun.awt packages -->
 					<target>1.8</target>
 					<!-- limit the compile to the classes identified in the
-					original
-			     			build.xml for the jfc-only target  -->
+					original build.xml for the jfc-only target  -->
 					<includes>
 						<include>**/QuaquaPantherFileChooserLAF.java</include>
 						<include>**/QuaquaLeopardFileChooserLAF.java</include>
