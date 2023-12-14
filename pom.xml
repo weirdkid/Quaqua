@@ -63,7 +63,8 @@
 					<source>1.8</source> <!-- newer jdk will not compile because
 												lib uses sun.awt packages -->
 					<target>1.8</target>
-					<!-- limit the compile to the classes identified in the original
+					<!-- limit the compile to the classes identified in the
+					original
 			     			build.xml for the jfc-only target  -->
 					<includes>
 						<include>**/QuaquaPantherFileChooserLAF.java</include>
@@ -117,48 +118,73 @@
 				<artifactId>maven-jar-plugin</artifactId>
 				<version>3.3.0</version> <!-- use the latest version -->
 				<configuration>
-                <archive>
-                    <manifest>
-                        <addClasspath>true</addClasspath>
-                        <mainClass>com.weirdkid.quaqua.test.JFileChooserTestApp</mainClass> <!-- Replace with your main class -->
-                        <!-- Add other custom manifest entries here -->
-                    </manifest>
-                </archive>
-            </configuration>
+					<archive>
+						<manifest>
+							<addClasspath>true</addClasspath>
+							<mainClass>
+								com.weirdkid.quaqua.test.JFileChooserTestApp</mainClass> <!--
+							Replace with your main class -->
+							<!-- Add other custom manifest entries here -->
+						</manifest>
+					</archive>
+				</configuration>
 			</plugin>
-			
-			<!-- Plugin for generating source JAR -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-source-plugin</artifactId>
-                <version>3.2.1</version> <!-- Use the latest version -->
-                <executions>
-                    <execution>
-                        <id>attach-sources</id>
-                        <goals>
-                            <goal>jar-no-fork</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
 
-            <!-- Plugin for generating Javadoc JAR -->
-            <plugin>
-                <groupId>org.apache.maven.plugins</groupId>
-                <artifactId>maven-javadoc-plugin</artifactId>
-                <version>3.3.1</version> <!-- Use the latest version -->
-                <configuration>
-                	<failOnError>false</failOnError> <!-- Set this to false to ignore Javadoc errors -->
-            	</configuration>
-                <executions>
-                    <execution>
-                        <id>attach-javadocs</id>
-                        <goals>
-                            <goal>jar</goal>
-                        </goals>
-                    </execution>
-                </executions>
-            </plugin>
+			<!-- Plugin for generating source JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-source-plugin</artifactId>
+				<version>3.3.0</version> <!-- Use the latest version -->
+				<executions>
+					<execution>
+						<id>attach-sources</id>
+						<goals>
+							<goal>jar-no-fork</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Plugin for generating Javadoc JAR -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-javadoc-plugin</artifactId>
+				<version>3.6.3</version> <!-- Use the latest version -->
+				<configuration>
+					<failOnError>false</failOnError> <!-- Set this to false to
+					ignore Javadoc errors -->
+				</configuration>
+				<executions>
+					<execution>
+						<id>attach-javadocs</id>
+						<goals>
+							<goal>jar</goal>
+						</goals>
+					</execution>
+				</executions>
+			</plugin>
+
+			<!-- Maven GPG Plugin for signing artifacts -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-gpg-plugin</artifactId>
+				<version>3.1.0</version> <!-- Use the latest version -->
+				<executions>
+					<execution>
+						<id>sign-artifacts</id>
+						<phase>verify</phase>
+						<goals>
+							<goal>sign</goal>
+						</goals>
+						<configuration>
+							<!-- Replace with your key ID -->
+							<keyname>5AA4A293</keyname> 
+							<!-- The passphrase is specified in the settings.xml -->
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
+
 		</plugins>
 	</build>
 </project>
