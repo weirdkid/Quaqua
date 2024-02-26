@@ -38,7 +38,7 @@ import java.util.LinkedList;
  * this:
  * 
  * <pre>
- * <tt>
+ * <code>
  * public class AsyncDisplay
  * extends AbstractEventLoop {
  *     public void display(String string) {
@@ -48,17 +48,17 @@ import java.util.LinkedList;
  *          System.out.println((String) event);
  *    }
  * }
- * </tt>
+ * </code>
  * </pre>
  * <p>
  * To use the class proceed like this:
  * <p>
  * 
  * <pre>
- * <tt>
+ * <code>
  * AsyncDisplay a = new AsyncDisplay();
  *  a.display("Hello World");
- * </tt>
+ * </code>
  * </pre>
  *
  * @author Werner Randelshofer

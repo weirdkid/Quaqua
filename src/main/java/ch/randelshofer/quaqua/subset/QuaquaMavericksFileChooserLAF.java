@@ -24,17 +24,17 @@ import javax.swing.plaf.ColorUIResource;
  * Quaqua16LionLookAndFeel. It is for use in environments, where the size of the
  * whole Quaqua look and feel would be too excessive.
  * <p>
- * <h3>Fixes and Enhancements</h3> This class provides the following bug fixes
+ * <h2>Fixes and Enhancements</h2> This class provides the following bug fixes
  * end enhancements to Apple's Aqua Look and Feel:
  *
- * <h4>FileChooserUI</h4>
+ * <h3>FileChooserUI</h3>
  * <ul>
  * <li>FileChooserUI supports a list view and a column view similar to the
  * native file dialog of Mac OS X 10.9 Mavericks.</li>
  * <li>The FileChooserUI resolves aliases to files and folders.</li>
  * </ul>
  *
- * <h3>Usage</h3> Please use the <code>QuaquaManager</code> to activate this
+ * <h2>Usage</h2> Please use the <code>QuaquaManager</code> to activate this
  * look and feel in your application. Or use the generic
  * <code>QuaquaLookAndFeel</code>. Both are designed to automatically detect the
  * appropriate Quaqua Look and Feel implementation for current Java VM.

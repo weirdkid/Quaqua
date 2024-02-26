@@ -291,8 +291,8 @@ public class XMLElement {
 	 * Creates and initializes a new XML element. Calling the construction is
 	 * equivalent to:
 	 * <ul>
-	 * {@code new XMLElement(new HashMap(), false, true)
-	 * }
+	 * <li>{@code new XMLElement(new HashMap(), false, true)
+	 * }</li>
 	 * </ul>
 	 *
 	 * <dl>
@@ -323,8 +323,8 @@ public class XMLElement {
 	 * Creates and initializes a new XML element. Calling the construction is
 	 * equivalent to:
 	 * <ul>
-	 * {@code new XMLElement(entities, false, true)
-	 * }
+	 * <li>{@code new XMLElement(entities, false, true)
+	 * }</li>
 	 * </ul>
 	 *
 	 * @param entities The entity conversion table.
@@ -366,8 +366,8 @@ public class XMLElement {
 	 * Creates and initializes a new XML element. Calling the construction is
 	 * equivalent to:
 	 * <ul>
-	 * {@code new XMLElement(new HashMap(), skipLeadingWhitespace, true)
-	 * }
+	 * <li>{@code new XMLElement(new HashMap(), skipLeadingWhitespace, true)
+	 * }</li>
 	 * </ul>
 	 *
 	 * @param skipLeadingWhitespace {@code true} if leading and trailing whitespace
@@ -402,8 +402,8 @@ public class XMLElement {
 	 * Creates and initializes a new XML element. Calling the construction is
 	 * equivalent to:
 	 * <ul>
-	 * {@code new XMLElement(entities, skipLeadingWhitespace, true)
-	 * }
+	 * <li>{@code new XMLElement(entities, skipLeadingWhitespace, true)
+	 * }</li>
 	 * </ul>
 	 *
 	 * @param entities              The entity conversion table.

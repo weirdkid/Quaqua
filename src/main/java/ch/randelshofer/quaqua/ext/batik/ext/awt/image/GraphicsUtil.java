@@ -66,8 +66,8 @@ public class GraphicsUtil {
 	public final static AffineTransform IDENTITY = new AffineTransform();
 
 	/**
-	 * Draws <tt>ri</tt> into <tt>g2d</tt>. It does this be requesting tiles from
-	 * <tt>ri</tt> and drawing them individually in <tt>g2d</tt> it also takes care
+	 * Draws <code>ri</code> into <code>g2d</code>. It does this be requesting tiles from
+	 * <code>ri</code> and drawing them individually in <code>g2d</code> it also takes care
 	 * of some colorspace and alpha issues.
 	 * 
 	 * @param g2d The Graphics2D to draw into.
@@ -78,8 +78,8 @@ public class GraphicsUtil {
 	}
 
 	/**
-	 * Draws a <tt>Filter</tt> (<tt>RenderableImage</tt>) into a Graphics 2D after
-	 * taking into account a particular <tt>RenderContext</tt>.
+	 * Draws a <code>Filter</code> (<code>RenderableImage</code>) into a Graphics 2D after
+	 * taking into account a particular <code>RenderContext</code>.
 	 * <p>
 	 *
 	 * This method also attempts to unwind the rendering chain a bit. So it knows
@@ -113,7 +113,7 @@ public class GraphicsUtil {
 	}
 
 	/**
-	 * Draws a <tt>Filter</tt> (<tt>RenderableImage</tt>) into a Graphics 2D.
+	 * Draws a <code>Filter</code> (<code>RenderableImage</code>) into a Graphics 2D.
 	 * <p>
 	 *
 	 * This method also attempts to unwind the rendering chain a bit. So it knows
@@ -154,7 +154,7 @@ public class GraphicsUtil {
 	 * This allows for accurate determination of the 'devices' size, and colorspace.
 	 * 
 	 * @param bi The BufferedImage that the returned Graphics should draw into.
-	 * @return A Graphics2D that draws into BufferedImage with <tt>bi</tt> stored in
+	 * @return A Graphics2D that draws into BufferedImage with <code>bi</code> stored in
 	 *         a rendering hint.
 	 */
 	public static Graphics2D createGraphics(BufferedImage bi, RenderingHints hints) {
@@ -300,7 +300,7 @@ public class GraphicsUtil {
 	 * 
 	 * @param premult True if the ColorModel should have premultiplied alpha.
 	 * @return a ColorMdoel with Linear sRGB colorSpace and the alpha channel set in
-	 *         accordance with <tt>premult</tt>
+	 *         accordance with <code>premult</code>
 	 */
 	public static ColorModel makeLinear_sRGBCM(boolean premult) {
 
@@ -323,12 +323,12 @@ public class GraphicsUtil {
 
 	/**
 	 * This method will return a CacheableRed that has it's data in the linear sRGB
-	 * colorspace. If <tt>src</tt> is already in linear sRGB then this method does
-	 * nothing and returns <tt>src</tt>. Otherwise it creates a transform that will
-	 * convert <tt>src</tt>'s output to linear sRGB and returns that CacheableRed.
+	 * colorspace. If <code>src</code> is already in linear sRGB then this method does
+	 * nothing and returns <code>src</code>. Otherwise it creates a transform that will
+	 * convert <code>src</code>'s output to linear sRGB and returns that CacheableRed.
 	 *
 	 * @param src The image to convert to linear sRGB.
-	 * @return An equivilant image to <tt>src</tt> who's data is in linear sRGB.
+	 * @return An equivilant image to <code>src</code> who's data is in linear sRGB.
 	 */
 	public static CachableRed convertToLsRGB(CachableRed src) {
 		ColorModel cm = src.getColorModel();
@@ -342,12 +342,12 @@ public class GraphicsUtil {
 
 	/**
 	 * This method will return a CacheableRed that has it's data in the sRGB
-	 * colorspace. If <tt>src</tt> is already in sRGB then this method does nothing
-	 * and returns <tt>src</tt>. Otherwise it creates a transform that will convert
-	 * <tt>src</tt>'s output to sRGB and returns that CacheableRed.
+	 * colorspace. If <code>src</code> is already in sRGB then this method does nothing
+	 * and returns <code>src</code>. Otherwise it creates a transform that will convert
+	 * <code>src</code>'s output to sRGB and returns that CacheableRed.
 	 *
 	 * @param src The image to convert to sRGB.
-	 * @return An equivilant image to <tt>src</tt> who's data is in sRGB.
+	 * @return An equivilant image to <code>src</code> who's data is in sRGB.
 	 */
 	public static CachableRed convertTosRGB(CachableRed src) {
 		ColorModel cm = src.getColorModel();
@@ -362,10 +362,10 @@ public class GraphicsUtil {
 	/**
 	 * Convertes any RenderedImage to a CacheableRed.
 	 * <p>
-	 * If <tt>ri</tt> is already a CacheableRed it casts it down and returns it.
+	 * If <code>ri</code> is already a CacheableRed it casts it down and returns it.
 	 * <p>
 	 *
-	 * In cases where <tt>ri</tt> is not already a CacheableRed it wraps <tt>ri</tt>
+	 * In cases where <code>ri</code> is not already a CacheableRed it wraps <code>ri</code>
 	 * with a helper class. The wrapped CacheableRed "Pretends" that it has no
 	 * sources since it has no way of inteligently handling the dependency/dirty
 	 * region calls if it exposed the source.
@@ -524,7 +524,7 @@ public class GraphicsUtil {
 
 	/**
 	 * Copies data from one raster to another. Only the region of overlap between
-	 * src and dst is copied. <tt>Src</tt> and <tt>Dst</tt> must have compatible
+	 * src and dst is copied. <code>Src</code> and <code>Dst</code> must have compatible
 	 * SampleModels.
 	 *
 	 * @param src The source of the data
@@ -540,28 +540,28 @@ public class GraphicsUtil {
 	}
 
 	/**
-	 * Creates a new raster that has a <b>copy</b> of the data in <tt>ras</tt>. This
+	 * Creates a new raster that has a <b>copy</b> of the data in <code>ras</code>. This
 	 * is highly optimized for speed. There is no provision for changing any aspect
 	 * of the SampleModel.
 	 *
 	 * This method should be used when you need to change the contents of a Raster
-	 * that you do not "own" (ie the result of a <tt>getData</tt> call).
+	 * that you do not "own" (ie the result of a <code>getData</code> call).
 	 * 
 	 * @param ras The Raster to copy.
-	 * @return A writable copy of <tt>ras</tt>
+	 * @return A writable copy of <code>ras</code>
 	 */
 	public static WritableRaster copyRaster(Raster ras) {
 		return copyRaster(ras, ras.getMinX(), ras.getMinY());
 	}
 
 	/**
-	 * Creates a new raster that has a <b>copy</b> of the data in <tt>ras</tt>. This
+	 * Creates a new raster that has a <b>copy</b> of the data in <code>ras</code>. This
 	 * is highly optimized for speed. There is no provision for changing any aspect
 	 * of the SampleModel. However you can specify a new location for the returned
 	 * raster.
 	 *
 	 * This method should be used when you need to change the contents of a Raster
-	 * that you do not "own" (ie the result of a <tt>getData</tt> call).
+	 * that you do not "own" (ie the result of a <code>getData</code> call).
 	 *
 	 * @param ras  The Raster to copy.
 	 *
@@ -571,7 +571,7 @@ public class GraphicsUtil {
 	 * @param minY The y location for the upper left corner of the returned
 	 *             WritableRaster.
 	 *
-	 * @return A writable copy of <tt>ras</tt>
+	 * @return A writable copy of <code>ras</code>
 	 */
 	public static WritableRaster copyRaster(Raster ras, int minX, int minY) {
 		WritableRaster ret = Raster.createWritableRaster(ras.getSampleModel(), new Point(0, 0));
@@ -620,7 +620,7 @@ public class GraphicsUtil {
 	}
 
 	/**
-	 * Coerces <tt>ras</tt> to be writable. The returned Raster continues to
+	 * Coerces <code>ras</code> to be writable. The returned Raster continues to
 	 * reference the DataBuffer from ras, so modifications to the returned
 	 * WritableRaster will be seen in ras.
 	 * <p>
@@ -628,17 +628,17 @@ public class GraphicsUtil {
 	 * This method should only be used if you need a WritableRaster due to an
 	 * interface (such as to construct a BufferedImage), but have no intention of
 	 * modifying the contents of the returned Raster. If you have any doubt about
-	 * other users of the data in <tt>ras</tt>, use copyRaster (above).
+	 * other users of the data in <code>ras</code>, use copyRaster (above).
 	 * 
 	 * @param ras The raster to make writable.
-	 * @return A Writable version of ras (shares DataBuffer with <tt>ras</tt>).
+	 * @return A Writable version of ras (shares DataBuffer with <code>ras</code>).
 	 */
 	public static WritableRaster makeRasterWritable(Raster ras) {
 		return makeRasterWritable(ras, ras.getMinX(), ras.getMinY());
 	}
 
 	/**
-	 * Coerces <tt>ras</tt> to be writable. The returned Raster continues to
+	 * Coerces <code>ras</code> to be writable. The returned Raster continues to
 	 * reference the DataBuffer from ras, so modifications to the returned
 	 * WritableRaster will be seen in ras.
 	 * <p>
@@ -650,7 +650,7 @@ public class GraphicsUtil {
 	 * This method should only be used if you need a WritableRaster due to an
 	 * interface (such as to construct a BufferedImage), but have no intention of
 	 * modifying the contents of the returned Raster. If you have any doubt about
-	 * other users of the data in <tt>ras</tt>, use copyRaster (above).
+	 * other users of the data in <code>ras</code>, use copyRaster (above).
 	 *
 	 * @param ras  The raster to make writable.
 	 *
@@ -660,9 +660,9 @@ public class GraphicsUtil {
 	 * @param minY The y location for the upper left corner of the returned
 	 *             WritableRaster.
 	 *
-	 * @return A Writable version of <tT>ras</tt> with it's upper left hand
+	 * @return A Writable version of <code>ras</code> with it's upper left hand
 	 *         coordinate set to minX, minY (shares it's DataBuffer with
-	 *         <tt>ras</tt>).
+	 *         <code>ras</code>).
 	 */
 	public static WritableRaster makeRasterWritable(Raster ras, int minX, int minY) {
 		WritableRaster ret = Raster.createWritableRaster(ras.getSampleModel(), ras.getDataBuffer(), new Point(0, 0));

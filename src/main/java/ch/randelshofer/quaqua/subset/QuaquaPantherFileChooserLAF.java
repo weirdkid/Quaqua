@@ -15,8 +15,6 @@ import java.awt.Point;
 import java.awt.Toolkit;
 import java.awt.image.BufferedImage;
 import java.net.URL;
-import java.security.AccessController;
-import java.security.PrivilegedAction;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.ResourceBundle;
@@ -47,16 +45,16 @@ import ch.randelshofer.quaqua.util.Images;
  * QuaquaPantherLookAndFeel. It is for use in environments, where the size of
  * the whole Quaqua look and feel would be too excessive.
  * <p>
- * <h3>Fixes and Enhancements</h3> This class provides the following bug fixes
+ * <h2>Fixes and Enhancements</h2> This class provides the following bug fixes
  * end enhancements to Apple's Aqua Look and Feel:
  *
- * <h4>ComboBoxUI</h4>
+ * <h3>ComboBoxUI</h3>
  * <ul>
  * <li>Combo boxes use the font "Lucida Grande 13" instead of "Lucida Grande
  * 14".</li>
  * </ul>
  *
- * <h4>FileChooserUI</h4>
+ * <h3>FileChooserUI</h3>
  * <ul>
  * <li>FileChooserUI uses a column view similar to the native file dialog of Mac
  * OS X 10.3 Panther.</li>
@@ -68,13 +66,13 @@ import ch.randelshofer.quaqua.util.Images;
  * <li>The FileChooserUI resolves aliases to files and folders.</li>
  * </ul>
  *
- * <h4>TableUI</h4>
+ * <h3>TableUI</h3>
  * <ul>
  * <li>Table headers use the font "Lucida Grande 11" instead of "Lucida Grande
  * 13".</li>
  * </ul>
  *
- * <h3>Usage</h3> Please use the <code>QuaquaManager</code> to activate this
+ * <h2>Usage</h2> Please use the <code>QuaquaManager</code> to activate this
  * look and feel in your application. Or use the generic
  * <code>QuaquaLookAndFeel</code>. Both are designed to automatically detect the
  * appropriate Quaqua Look and Feel implementation for current Java VM.
@@ -155,23 +153,17 @@ public class QuaquaPantherFileChooserLAF extends LookAndFeelProxy {
 	 */
 	@Override
 	public void initialize() {
-		// Note: We initialize in a privileged block, because if we are
-		// installed as a Standard Extension in the Java VM, we
-		// are allowed to access our resources (i.e. images),
-		// even then, when the calling application is not allowed
-		// to do so.
-		AccessController.doPrivileged(new PrivilegedAction() {
-			@Override
-			public Object run() {
-				target.initialize();
-				myDefaults = target.getDefaults();
-				initResourceBundle(myDefaults);
-				initClassDefaults(myDefaults);
-				initGeneralDefaults(myDefaults);
-				initComponentDefaults(myDefaults);
-				return null;
-			}
-		});
+		
+		// Directly initialize without a privileged block, assuming
+	    // the environment does not enforce strict security constraints
+	    // that would prevent these operations.
+	    
+	    target.initialize();
+	    myDefaults = target.getDefaults();
+	    initResourceBundle(myDefaults);
+	    initClassDefaults(myDefaults);
+	    initGeneralDefaults(myDefaults);
+	    initComponentDefaults(myDefaults);
 	}
 
 	/**

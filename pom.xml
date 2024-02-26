@@ -9,6 +9,8 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven.compiler.source>1.8</maven.compiler.source>
+    	<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
@@ -130,8 +132,10 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.6.3</version> <!-- Use the latest version -->
 				<configuration>
+					<source>8</source> <!-- Specifies the source version for Javadoc -->
 					<failOnError>false</failOnError> <!-- Set this to false to
 					ignore Javadoc errors -->
+					<doclint>none</doclint> <!-- Ignore all doclint warnings -->
 				</configuration>
 				<executions>
 					<execution>
@@ -140,6 +144,17 @@
 							<goal>jar</goal>
 						</goals>
 					</execution>
+					<execution>
+                        <id>generate-javadocs</id>
+                        <phase>none</phase> <!-- Not bound to any build phase by default -->
+                        <goals>
+                            <goal>javadoc</goal>
+                        </goals>
+                        <configuration>
+                            <!-- Specific configuration for this execution -->
+                            <doclint>none</doclint> <!-- Ignore all doclint warnings -->
+                        </configuration>
+                    </execution>
 				</executions>
 			</plugin>
 
