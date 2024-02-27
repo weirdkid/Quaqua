@@ -5,42 +5,71 @@
 
 	<groupId>com.weirdkid</groupId>
 	<artifactId>quaqua-jfc</artifactId>
-	<version>23.12-SNAPSHOT</version>
+	<version>24.02</version>
+
+	<name>Quaqua-JFC</name>
+	<description>Pure Java JFileChooser for Mac, forked from Quaqua LAF</description>
+	<url>https://github.com/weirdkid/Quaqua</url>
+
+	<licenses>
+		<license>
+			<name>BSD 3-Clause License</name>
+        	<url>https://opensource.org/licenses/BSD-3-Clause</url>
+        	<distribution>repo</distribution>
+		</license>
+	</licenses>
+
+	<scm>
+    	<url>https://github.com/weirdkid/Quaqua</url>
+    	<connection>scm:git:https://github.com/weirdkid/Quaqua.git</connection>
+    	<developerConnection>scm:git:ssh://github.com:weirdkid/Quaqua.git</developerConnection>
+    	<tag>HEAD</tag>
+	</scm>
+
+	<developers>
+		<developer>
+			<id>developer-id</id>
+			<name>Matt Hovey</name>
+			<email>matt@weirdkid.com</email>
+		</developer>
+	</developers>
+
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
 		<maven.compiler.source>1.8</maven.compiler.source>
-    	<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.target>1.8</maven.compiler.target>
 	</properties>
 
 	<dependencies>
 		<dependency>
 			<groupId>com.twelvemonkeys.imageio</groupId>
 			<artifactId>imageio-core</artifactId>
-			<version>3.5-SNAPSHOT</version>
+			<version>3.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.twelvemonkeys.imageio</groupId>
 			<artifactId>imageio-metadata</artifactId>
-			<version>3.5-SNAPSHOT</version>
+			<version>3.10.1</version>
 		</dependency>
 		<dependency>
 			<groupId>com.twelvemonkeys.imageio</groupId>
 			<artifactId>imageio-icns</artifactId>
-			<version>3.5-SNAPSHOT</version>
+			<version>3.10.1</version>
 		</dependency>
 	</dependencies>
 
 	<!-- for publishing to public maven repo -->
 	<distributionManagement>
-	  <snapshotRepository>
-	    <id>ossrh</id>
-	    <url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-	  </snapshotRepository>
-	  <repository>
-    	<id>ossrh</id>
-    	<url>https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-  	</repository>
+		<snapshotRepository>
+			<id>ossrh</id>
+			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
+		</snapshotRepository>
+		<repository>
+			<id>ossrh</id>
+			<url>
+				https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
+		</repository>
 	</distributionManagement>
 
 	<build>
@@ -73,7 +102,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version> <!-- Use the latest version available -->
 				<configuration>
-					<source>1.8</source> 
+					<source>1.8</source>
 					<target>1.8</target>
 				</configuration>
 			</plugin>
@@ -132,7 +161,8 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.6.3</version> <!-- Use the latest version -->
 				<configuration>
-					<source>8</source> <!-- Specifies the source version for Javadoc -->
+					<source>8</source> <!-- Specifies the source version for
+					Javadoc -->
 					<failOnError>false</failOnError> <!-- Set this to false to
 					ignore Javadoc errors -->
 					<doclint>none</doclint> <!-- Ignore all doclint warnings -->
@@ -145,16 +175,18 @@
 						</goals>
 					</execution>
 					<execution>
-                        <id>generate-javadocs</id>
-                        <phase>none</phase> <!-- Not bound to any build phase by default -->
-                        <goals>
-                            <goal>javadoc</goal>
-                        </goals>
-                        <configuration>
-                            <!-- Specific configuration for this execution -->
-                            <doclint>none</doclint> <!-- Ignore all doclint warnings -->
-                        </configuration>
-                    </execution>
+						<id>generate-javadocs</id>
+						<phase>none</phase> <!-- Not bound to any build phase by
+						default -->
+						<goals>
+							<goal>javadoc</goal>
+						</goals>
+						<configuration>
+							<!-- Specific configuration for this execution -->
+							<doclint>none</doclint> <!-- Ignore all doclint
+							warnings -->
+						</configuration>
+					</execution>
 				</executions>
 			</plugin>
 
@@ -172,7 +204,7 @@
 						</goals>
 						<configuration>
 							<!-- Replace with your key ID -->
-							<keyname>5AA4A293</keyname> 
+							<keyname>5AA4A293</keyname>
 							<!-- The passphrase is specified in the settings.xml -->
 						</configuration>
 					</execution>
@@ -181,17 +213,39 @@
 
 			<!-- plugin for publishing to public repo -->
 			<plugin>
-      			<groupId>org.sonatype.plugins</groupId>
-      			<artifactId>nexus-staging-maven-plugin</artifactId>
-      			<version>1.6.7</version>
-     			<extensions>true</extensions>
-      			<configuration>
-        			<serverId>ossrh</serverId>
-        			<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-        			<!-- change to true after validating this all works -->
-        			<autoReleaseAfterClose>false</autoReleaseAfterClose>
-      			</configuration>
-    		</plugin>
+				<groupId>org.sonatype.plugins</groupId>
+				<artifactId>nexus-staging-maven-plugin</artifactId>
+				<version>1.6.13</version>
+				<extensions>true</extensions>
+				<configuration>
+					<serverId>ossrh</serverId>
+					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
+					<!-- change to true after validating this all works -->
+					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+				</configuration>
+			</plugin>
+
+			<!-- Add this block for the Maven Enforcer plugin -->
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-enforcer-plugin</artifactId>
+				<version>3.0.0-M3</version> <!-- Use the latest version available -->
+				<executions>
+					<execution>
+						<id>enforce-maven</id>
+						<goals>
+							<goal>enforce</goal>
+						</goals>
+						<configuration>
+							<rules>
+								<requireMavenVersion>
+									<version>3.6.3</version>
+								</requireMavenVersion>
+							</rules>
+						</configuration>
+					</execution>
+				</executions>
+			</plugin>
 
 		</plugins>
 	</build>
