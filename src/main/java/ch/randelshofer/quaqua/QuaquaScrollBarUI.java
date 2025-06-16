@@ -69,12 +69,12 @@ public class QuaquaScrollBarUI extends BasicScrollBarUI {
 	}
 
 	private void updatePlaceButtonsTogether() {
-		Object value = scrollbar.getClientProperty("Quaqua.ScrollBar.placeButtonsTogether");
-		if (value == null) {
-			isPlaceButtonsTogether = UIManager.getBoolean("ScrollBar.placeButtonsTogether");
-		} else {
-			isPlaceButtonsTogether = value.equals(Boolean.TRUE);
-		}
+                Object value = scrollbar.getClientProperty("Quaqua.ScrollBar.placeButtonsTogether");
+                if (value == null) {
+                        isPlaceButtonsTogether = UIManager.getBoolean("ScrollBar.placeButtonsTogether");
+                } else {
+                        isPlaceButtonsTogether = Boolean.TRUE.equals(value);
+                }
 	}
 
 	private boolean isPlaceButtonsTogether() {
