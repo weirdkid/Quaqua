@@ -3,7 +3,7 @@ Quaqua-JFC - pure Java JFileChooser for Mac
 
 A fork of karlvr's Quaqua, which appears to be the official continuation of Werner Randelshofer's original work here:  http://www.randelshofer.ch/quaqua/
 
-Mr. Randelshofer did a awesome job on Quaqua for many years, but then he had to let it go. Perhaps due to less interest in Java on Mac, Java Swing, or he just got bored. You can tell by looking at the code (through the lens of what code looked like during the Java 1.5-1.6 era) that Randdelshofer cared deeply about responsiveness and accuracy of his look and feel. 
+Mr. Randelshofer did a awesome job on Quaqua for many years, but then he had to let it go. Perhaps due to less interest in Java on Mac, Java Swing, or he just got bored. You can tell by looking at the code (through the lens of what code looked like during the Java 1.5-1.6 era) that Randelshofer cared deeply about responsiveness and accuracy of his look and feel. 
 
 I'd been using the Quaqua JFileChooser for years. It's hands-down THE BEST JFileChooser component for Mac. The default Swing one is barely usable for Mac users, so if any part of Quaqua needs to live on, it's this.
 
@@ -23,7 +23,7 @@ Requirements/Dependencies
 
 Illegal Reflective Access Warnings in JDK9+
 -----------
-To hide the warnings about illegal reflective access, launch your app with the jvm paramater:
+To hide the warnings about illegal reflective access, launch your app with the jvm parameter:
 
 java --add-opens java.desktop/com.apple.laf=ALL-UNNAMED ...
 
