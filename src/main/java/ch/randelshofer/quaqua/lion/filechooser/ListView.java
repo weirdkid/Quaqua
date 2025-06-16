@@ -429,15 +429,15 @@ public class ListView extends ch.randelshofer.quaqua.filechooser.ListView {
 		} else {
 			float scaledLength;
 			String label;
-			if (fileLength >= 1000000000l) {
-				label = "FileChooser.sizeGBytesOnly";
-				scaledLength = (float) fileLength / 1000000000l;
-			} else if (fileLength >= 1000000l) {
-				label = "FileChooser.sizeMBytesOnly";
-				scaledLength = (float) fileLength / 1000000l;
-			} else if (fileLength >= 1024) {
-				label = "FileChooser.sizeKBytesOnly";
-				scaledLength = (float) fileLength / 1000;
+                        if (fileLength >= 1024L * 1024L * 1024L) {
+                                label = "FileChooser.sizeGBytesOnly";
+                                scaledLength = (float) fileLength / (1024f * 1024f * 1024f);
+                        } else if (fileLength >= 1024L * 1024L) {
+                                label = "FileChooser.sizeMBytesOnly";
+                                scaledLength = (float) fileLength / (1024f * 1024f);
+                        } else if (fileLength >= 1024) {
+                                label = "FileChooser.sizeKBytesOnly";
+                                scaledLength = (float) fileLength / 1024f;
 			} else {
 				label = "FileChooser.sizeBytesOnly";
 				scaledLength = fileLength;
