@@ -697,8 +697,8 @@ public class QuaquaComboPopup extends BasicComboPopup {
 				}
 			} else if (propertyName == "lightWeightPopupEnabled") {
 				setLightWeightPopupEnabled(comboBox.isLightWeightPopupEnabled());
-			} else if (propertyName.equals("renderer") || propertyName.equals(QuaquaComboBoxUI.IS_TABLE_CELL_EDITOR)) {
-				updateCellRenderer(e.getNewValue().equals(Boolean.TRUE));
+                        } else if (propertyName.equals("renderer") || propertyName.equals(QuaquaComboBoxUI.IS_TABLE_CELL_EDITOR)) {
+                                updateCellRenderer(Boolean.TRUE.equals(e.getNewValue()));
 			} else if (propertyName.equals("JComboBox.lightweightKeyboardNavigation")) {
 				// In Java 1.3 we have to use this property to guess whether we
 				// are a table cell editor or not.
