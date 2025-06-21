@@ -59,18 +59,14 @@
 		</dependency>
 	</dependencies>
 
-	<!-- for publishing to public maven repo -->
-	<distributionManagement>
-		<snapshotRepository>
-			<id>ossrh</id>
-			<url>https://s01.oss.sonatype.org/content/repositories/snapshots</url>
-		</snapshotRepository>
-		<repository>
-			<id>ossrh</id>
-			<url>
-				https://s01.oss.sonatype.org/service/local/staging/deploy/maven2/</url>
-		</repository>
-	</distributionManagement>
+
+<!--	<distributionManagement>-->
+<!--		<repository>-->
+<!--			<id>central</id>-->
+<!--			<url>https://central.sonatype.com/publish/</url>-->
+<!--		</repository>-->
+<!--	</distributionManagement>-->
+
 
 	<build>
 
@@ -148,6 +144,7 @@
 				<executions>
 					<execution>
 						<id>attach-sources</id>
+						<phase>package</phase>
 						<goals>
 							<goal>jar-no-fork</goal>
 						</goals>
@@ -170,6 +167,7 @@
 				<executions>
 					<execution>
 						<id>attach-javadocs</id>
+						<phase>package</phase>
 						<goals>
 							<goal>jar</goal>
 						</goals>
@@ -194,7 +192,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-gpg-plugin</artifactId>
-				<version>3.1.0</version> <!-- Use the latest version -->
+				<version>3.2.7</version> <!-- Use the latest version -->
 				<executions>
 					<execution>
 						<id>sign-artifacts</id>
@@ -205,7 +203,14 @@
 						<configuration>
 							<!-- Replace with your key ID -->
 							<keyname>5AA4A293</keyname>
-							<!-- The passphrase is specified in the settings.xml -->
+							<useAgent>false</useAgent>
+							<gpgArguments>
+								<arg>--batch</arg>
+								<arg>--yes</arg>
+								<arg>--armor</arg>
+								<arg>--pinentry-mode</arg>
+								<arg>loopback</arg>
+							</gpgArguments>
 						</configuration>
 					</execution>
 				</executions>
@@ -213,17 +218,19 @@
 
 			<!-- plugin for publishing to public repo -->
 			<plugin>
-				<groupId>org.sonatype.plugins</groupId>
-				<artifactId>nexus-staging-maven-plugin</artifactId>
-				<version>1.6.13</version>
+				<groupId>org.sonatype.central</groupId>
+				<artifactId>central-publishing-maven-plugin</artifactId>
+				<version>0.8.0</version>
 				<extensions>true</extensions>
 				<configuration>
-					<serverId>ossrh</serverId>
-					<nexusUrl>https://s01.oss.sonatype.org/</nexusUrl>
-					<!-- change to true after validating this all works -->
-					<autoReleaseAfterClose>true</autoReleaseAfterClose>
+					<publishingServerId>central</publishingServerId>
+					<!--
+					<autoPublish>true</autoPublish>
+					<waitUntil>uploaded</waitUntil>
+					-->
 				</configuration>
 			</plugin>
+
 
 			<!-- Add this block for the Maven Enforcer plugin -->
 			<plugin>
