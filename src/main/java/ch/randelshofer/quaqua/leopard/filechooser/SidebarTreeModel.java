@@ -15,6 +15,7 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.Comparator;
 import java.util.HashMap;
+import java.net.InetAddress;
 
 import javax.swing.Icon;
 import javax.swing.JFileChooser;
@@ -78,6 +79,18 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 	private final static File[] defaultUserItems = new File[] { new File(QuaquaManager.getProperty("user.home")),
 			new File(QuaquaManager.getProperty("user.home"), "Desktop"),
 			new File(QuaquaManager.getProperty("user.home"), "Documents") };
+
+	private final String backupPrefix = "Backups of ";
+	// this is unreliable on macOS
+	//	{
+//		String computerName;
+//		try {
+//			computerName = InetAddress.getLocalHost().getHostName();
+//		} catch (Exception e) {
+//			computerName = ""; // fallback if hostname can't be determined
+//		}
+//		backupPrefix = "Backups of " + computerName;
+//	}
 
 	/** Creates a new instance. */
 	public SidebarTreeModel(JFileChooser fileChooser, TreePath path, TreeModel model) {
@@ -157,7 +170,8 @@ public class SidebarTreeModel extends DefaultTreeModel implements TreeModelListe
 		// in the view. Only add non-leaf nodes
 		for (int i = 0, n = modelDevicesNode.getChildCount(); i < n; i++) {
 			FileSystemTreeModel.Node modelNode = (FileSystemTreeModel.Node) modelDevicesNode.getChildAt(i);
-			if (!modelNode.isLeaf()) {
+			String deviceName = modelNode.getUserName();
+			if (!modelNode.isLeaf() && !(deviceName != null && deviceName.startsWith(backupPrefix))) {
 				boolean isInView = false;
 				for (int j = 0, m = devicesNode.getChildCount(); j < m; j++) {
 					SidebarViewToModelNode viewNode = (SidebarViewToModelNode) devicesNode.getChildAt(j);

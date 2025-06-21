@@ -15,24 +15,16 @@ Now that JavaFX is being spun out of Java, some may yet still find this useful.
 
 Requirements/Dependencies
 ------------
-- Java 8
+- Java 8, but tested with Java 11 and 17
 - TwelveMonkeys ImageIO 3.5-SNAPSHOT or newer, include these artifacts:
   - core
   - metadata
   - icns
 
-Illegal Reflective Access Warnings in JDK9+
------------
-To hide the warnings about illegal reflective access, launch your app with the jvm parameter:
-
-java --add-opens java.desktop/com.apple.laf=ALL-UNNAMED ...
-
-This will hide the warnings, but this does not fix the issue. Future jdk could remove the ability to force allowing the reflective access if not explicity allowed by the library. 
-
 
 Code notes:
 -----------
 
-- There are variations of the UI for every version of macOS up through Mavericks, but the last one to not rely on native code was the QuaquaLeopardFileChooserUI, so that's where my effort is focused. The QuaquaManager only provides this option for UI now.
-- QuaquaFileSystemView picks a macOS version-specific implementation of a FileSystemView. Ever since Lion, they all use OSXLionFileSystemView, so that's also where I focus.
+- There are variations of the UI for every version of macOS up through Mavericks, but the last one to not rely on native code was the QuaquaLeopardFileChooserUI. The QuaquaManager only provides this option for UI now.
+- QuaquaFileSystemView picks a macOS version-specific implementation of a FileSystemView. Ever since Lion, they all use OSXLionFileSystemView.
 

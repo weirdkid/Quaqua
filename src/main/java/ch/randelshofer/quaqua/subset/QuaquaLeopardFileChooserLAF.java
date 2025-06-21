@@ -96,16 +96,38 @@ public class QuaquaLeopardFileChooserLAF extends LookAndFeelProxy {
 	/**
 	 * Creates a new instance.
 	 */
+//	public QuaquaLeopardFileChooserLAF() {
+//		// System.out.println(UIManager.getSystemLookAndFeelClassName());
+//		String targetClassName = "com.apple.laf.AquaLookAndFeel";
+//		try {
+//			setTarget((LookAndFeel) Class.forName(targetClassName).getDeclaredConstructor().newInstance());
+//		} catch (Exception e) {
+//			throw new InternalError(
+//					"Unable to instanciate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());
+//		}
+//	}
+
 	public QuaquaLeopardFileChooserLAF() {
-		// System.out.println(UIManager.getSystemLookAndFeelClassName());
-		String targetClassName = "com.apple.laf.AquaLookAndFeel";
+		String targetClassName = UIManager.getSystemLookAndFeelClassName();
+
+		//System.out.println("QuaquaLeopardFileChooserLAF: Using target Look and Feel: " + targetClassName);
+		// only install Quaqua on macOS/Aqua
+//		if (!"com.apple.laf.AquaLookAndFeel".equals(targetClassName)) {
+//			return;
+//		}
 		try {
-			setTarget((LookAndFeel) Class.forName(targetClassName).getDeclaredConstructor().newInstance());
-		} catch (Exception e) {
+			// ask UIManager (inside java.desktop) to load it
+			UIManager.setLookAndFeel(targetClassName);
+			setTarget( UIManager.getLookAndFeel() );
+		}
+		catch (Exception e) {
 			throw new InternalError(
-					"Unable to instanciate target Look and Feel \"" + targetClassName + "\". " + e.getMessage());
+					"Unable to instantiate system L&F \"" + targetClassName + "\": " + e
+			);
 		}
 	}
+
+
 
 	/**
 	 * Return a one line description of this look and feel implementation, e.g. "The

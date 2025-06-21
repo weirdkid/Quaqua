@@ -5,7 +5,7 @@
 
 	<groupId>com.weirdkid</groupId>
 	<artifactId>quaqua-jfc</artifactId>
-	<version>24.02</version>
+	<version>25.6</version>
 
 	<name>Quaqua-JFC</name>
 	<description>Pure Java JFileChooser for Mac, forked from Quaqua LAF</description>
