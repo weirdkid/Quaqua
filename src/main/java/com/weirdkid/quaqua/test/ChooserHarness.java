@@ -1,5 +1,7 @@
 package com.weirdkid.quaqua.test;
 
+import java.awt.Window;
+import javax.swing.JDialog;
 import javax.swing.JFileChooser;
 import javax.swing.JFrame;
 import javax.swing.SwingUtilities;
@@ -45,7 +47,11 @@ public class ChooserHarness {
 
 				Timer timer = new Timer(6000, e -> {
 					System.out.println("Auto-closing dialog after 6s");
-					fc.setVisible(false);
+					for (Window w : Window.getWindows()) {
+						if (w instanceof JDialog) {
+							w.setVisible(false);
+						}
+					}
 				});
 				timer.setRepeats(false);
 				timer.start();
