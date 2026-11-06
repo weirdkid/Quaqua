@@ -1615,12 +1615,12 @@ public class QuaquaLeopardFileChooserUI extends BasicFileChooserUI implements Su
 			// END FIX QUAQUA-148
 
 			// the devices
-			else if (file.getParentFile().getPath().equals("/Volumes")) {
+			else if (file.getParentFile() != null && file.getParentFile().getPath().equals("/Volumes")) {
 				icon = UIManager.getIcon("FileView.hardDriveIcon");
 			}
 
 			// the home folder
-			else if (file.getParentFile().getPath().equals("/Users")
+			else if ((file.getParentFile() != null && file.getParentFile().getPath().equals("/Users"))
 					|| file.getPath().equals(System.getProperty("user.home"))) {
 				icon = UIManager.getIcon("FileChooser.sideBarIcon.Home");
 			}

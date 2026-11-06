@@ -37,8 +37,7 @@
 
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-		<maven.compiler.source>1.8</maven.compiler.source>
-		<maven.compiler.target>1.8</maven.compiler.target>
+		<maven.compiler.release>11</maven.compiler.release>
 	</properties>
 
 	<dependencies>
@@ -98,8 +97,7 @@
 				<artifactId>maven-compiler-plugin</artifactId>
 				<version>3.11.0</version> <!-- Use the latest version available -->
 				<configuration>
-					<source>1.8</source>
-					<target>1.8</target>
+					<release>11</release>
 				</configuration>
 			</plugin>
 
@@ -158,8 +156,7 @@
 				<artifactId>maven-javadoc-plugin</artifactId>
 				<version>3.6.3</version> <!-- Use the latest version -->
 				<configuration>
-					<source>8</source> <!-- Specifies the source version for
-					Javadoc -->
+					<release>11</release> <!-- Specifies the source version for Javadoc -->
 					<failOnError>false</failOnError> <!-- Set this to false to
 					ignore Javadoc errors -->
 					<doclint>none</doclint> <!-- Ignore all doclint warnings -->

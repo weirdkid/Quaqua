@@ -1750,6 +1750,10 @@ public class BasicTreeTableUI extends TreeTableUI {
 			try {
 				LookAndFeel nimbusLaf = UIManager.getLookAndFeel();
 				Class nimbusLafClass = nimbusLaf.getClass();
+				// This reflection is only valid for Nimbus; skip all other LAFs
+				if (!nimbusLafClass.getName().contains("Nimbus") && !"Nimbus".equals(nimbusLaf.getID())) {
+					return;
+				}
 
 				final Field defaultsField = nimbusLafClass.getDeclaredField("defaults");
 				defaultsField.setAccessible(true);

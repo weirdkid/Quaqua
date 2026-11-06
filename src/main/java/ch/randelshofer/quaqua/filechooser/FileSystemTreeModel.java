@@ -1609,7 +1609,7 @@ public class FileSystemTreeModel implements TreeModel {
 		 *
 		 * The value 0 is used to mark nodes which have never been validated before.
 		 * Directories which have never been visited before are validated with
-		 * precedence over directories which had been visited already. 
+		 * precedence over directories which had been visited already.
 		 */
 		private long bestBeforeTimeMillis = 0;
 

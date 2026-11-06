@@ -15,7 +15,7 @@ Now that JavaFX is being spun out of Java, some may yet still find this useful.
 
 Requirements/Dependencies
 ------------
-- Java 8, but tested with Java 11 and 17
+- Java 11 or later (tested with Java 11, 17, 21, and 25)
 - TwelveMonkeys ImageIO 3.5-SNAPSHOT or newer, include these artifacts:
   - core
   - metadata
